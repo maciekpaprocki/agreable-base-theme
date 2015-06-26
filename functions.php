@@ -93,20 +93,6 @@ class AgreableBase extends TimberSite {
     return $context;
   }
 
-  function get_js_file() {
-    $string = file_get_contents(get_template_directory()."/stats.json");
-    $json = json_decode($string);
-    $js_file = ($json->assetsByChunkName->main[0]);
-    return $js_file;
-  }
-
-  function get_css_file() {
-    $string = file_get_contents(get_template_directory()."/stats.json");
-    $json = json_decode($string);
-    $css_file = ($json->assetsByChunkName->main[1]);
-    return $css_file;
-  }
-
 	function add_to_twig( $twig ) {
 		$twig->addExtension(new Twig_Extension_StringLoader());
 
