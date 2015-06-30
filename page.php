@@ -14,14 +14,38 @@
  * /mytheme/page-mypage.php
  * (in which case you'll want to duplicate this file and save to the above path)
  *
- * Methods for TimberHelper can be found in the /lib sub-directory
+ * Methods for TimberHelper can be found in the /functions sub-directory
  *
  * @package  WordPress
  * @subpackage  Timber
  * @since    Timber 0.1
  */
 
-$context = Timber::get_context();
-$post = new TimberPost();
-$context['post'] = $post;
-Timber::render( array( 'page-' . $post->post_name . '.twig', 'page.twig' ), $context );
+if (!isset($context)) {
+  $context = Timber::get_context();
+  $post = new TimberPost();
+  $context['category'] = get_category_by_slug('home');
+  $context['post'] = $post;
+} else {
+  $context['category'] = $post;
+}
+
+if (!isset($_GET['format'])) {
+  $_GET['format'] = 'html';
+}
+
+if ($_GET["format"] === 'json') {
+  if (isset($_GET['currentPage'])) {
+    $currentPage = $_GET['currentPage'];
+  } else {
+    $currentPage = 1;
+  }
+  require_once 'libs/services/ApiService.php';
+  return TroisiemeApiService::handleRequest("section", $post, $currentPage);
+}
+
+if ($_GET['format'] === 'widgets-only') {
+  Timber::render('partials/section-widgets.twig', $context, false);
+} else {
+  Timber::render('section.twig', $context, false);
+}

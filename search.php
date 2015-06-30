@@ -9,10 +9,18 @@
  * @since   Timber 0.1
  */
 
-$templates = array( 'search.twig', 'archive.twig', 'index.twig' );
-$context = Timber::get_context();
+if (!isset($context)) {
+  $context = Timber::get_context();
+  $post = new TimberPost();
+  $context['category'] = get_category_by_slug('home');
+  $context['post'] = $post;
+} else {
+  $context['category'] = $post;
+}
 
-$context['title'] = 'Search results for '. get_search_query();
-$context['posts'] = Timber::get_posts();
-
-Timber::render( $templates, $context );
+if (isset($_GET["q"])) {
+  require_once 'libs/services/SearchService.php';
+  $context['searchResponse'] = TroisiemeSearchService::getSearchResults($_GET["q"]);
+  $context['query'] = $_GET["q"];
+}
+Timber::render('search-results.twig', $context, false);
