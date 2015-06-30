@@ -77,9 +77,12 @@ class AgreableBase extends TimberSite {
   }
 
   function register_custom_fields() {
-    include_once('custom-fields/article-basic-details.php');
+    // Custom post type custom fields.
+    include_once('custom-fields/tile.php');
     include_once('custom-fields/list.php');
     include_once('custom-fields/reusable-widgets.php');
+
+    include_once('custom-fields/article-basic-details.php');
     include_once("custom-fields/article-images.php");
     include_once('custom-fields/article-widgets.php');
     include_once('custom-fields/section-widgets.php');
