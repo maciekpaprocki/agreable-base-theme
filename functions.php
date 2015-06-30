@@ -24,6 +24,9 @@ class AgreableBase extends TimberSite {
 		add_action('init', array($this, 'register_taxonomies'));
 		add_action('init', array($this, 'register_post_types'));
 		add_action('init', array($this, 'register_custom_fields'));
+
+    add_filter('custom_menu_order', array($this, 'custom_menu_order'));
+    add_filter('menu_order', array($this, 'custom_menu_order'));
     /*
     add_action('do_meta_boxes', array($this, 'move_featured_image_meta_box'));
     add_action('admin_menu', array($this, 'remove_unused_cms_menus'));
@@ -45,6 +48,23 @@ class AgreableBase extends TimberSite {
     add_image_size('portrait', 720, 960, true);
     add_image_size('landscape', 1680, 1120, true);
     add_image_size('letterbox', 1680, 840, true);
+  }
+
+  function custom_menu_order($menu_order) {
+    if (!$menu_order){
+       return true;
+    }
+
+    // Move Pages next to Posts.
+    unset($menu_order[array_search("edit.php?post_type=page", $menu_order)]);
+    array_splice($menu_order, 3, 0, "edit.php?post_type=page");
+
+    // Remove media and reinsert above comments.
+    unset($menu_order[array_search("upload.php", $menu_order)]);
+    $comments_index = array_search("edit-comments.php", $menu_order);
+    array_splice($menu_order, $comments_index-1, 0, "upload.php");
+
+    return $menu_order;
   }
 
   function remove_unused_cms_menus(){
@@ -79,6 +99,7 @@ class AgreableBase extends TimberSite {
 	function register_post_types() {
     include_once __DIR__ . '/custom-post-types/reusable-widget.php';
     include_once __DIR__ . '/custom-post-types/list.php';
+    include_once __DIR__ . '/custom-post-types/tile.php';
 	}
 
 	function register_taxonomies() {

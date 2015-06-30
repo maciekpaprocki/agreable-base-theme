@@ -16,7 +16,6 @@ $labels = array(
   'not_found_in_trash'  => __('Not found in Trash', 'text_domain'),
 );
 $args = array(
-  'label'               => __('reusable_widget', 'text_domain'),
   'description'         => __('Widgets that can be reused across the site', 'text_domain'),
   'labels'              => $labels,
   'supports'            => array('title'),
@@ -27,7 +26,7 @@ $args = array(
   'show_in_menu'        => true,
   'show_in_nav_menus'   => true,
   'show_in_admin_bar'   => true,
-  'menu_position'       => 5,
+  'menu_position'       => 7,
   'menu_icon'           => 'dashicons-networking',
   'can_export'          => true,
   'has_archive'         => true,
