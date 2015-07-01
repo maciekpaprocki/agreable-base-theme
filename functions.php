@@ -45,6 +45,7 @@ class AgreableBase extends TimberSite {
     update_option('thumbnail_size_w', 720);
     update_option('thumbnail_size_h', 720);
     update_option('thumbnail_crop', 1);
+    add_image_size('square', 720, 720, true);
     add_image_size('portrait', 720, 960, true);
     add_image_size('landscape', 1680, 1120, true);
     add_image_size('letterbox', 1680, 840, true);
