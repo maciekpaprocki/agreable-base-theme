@@ -1,12 +1,44 @@
 <?php
+
 class WidgetLoader {
-  public function findByUsage($contextType = null, $contentSizes = array()) {
+
+  private static $initialized = false;
+  protected static $config = array(
+    'image_choices' => array(
+        'square' => 'Square',
+        'landscape' => 'Landscape',
+        'portrait' => 'Portrait'
+      )
+  );
+
+  private static function initialize()
+  {
+    if (self::$initialized)
+      return;
+
+    self::$initialized = true;
+  }
+
+  /*
+   * Configures shared object for use throughout widgets.
+   * @param array $config associative array of config options.
+   */
+  public static function configure($config) {
+    self::initialize();
+    foreach($config as $key => $item){
+      self::$config[$key] = $item;
+    }
+  }
+
+  public static function findByUsage($contextType = null, $contentSizes = array()) {
+    self::initialize();
+
     $widget_layouts = array();
 
     // get_stylsheet_directory() returns child theme path.
     $directory = get_stylesheet_directory() . "/views/widgets";
-    $acf_files = $this->traverseHierarchy($directory);
-    $acf_files = array_merge($acf_files, $this->traversePlugins());
+    $acf_files = self::traverseHierarchy($directory);
+    $acf_files = array_merge($acf_files, self::traversePlugins());
 
     foreach($acf_files as $file) {
       include $file;
@@ -27,7 +59,7 @@ class WidgetLoader {
     return $widget_layouts;
   }
 
-  protected function traverseHierarchy($path) {
+  protected static function traverseHierarchy($path) {
     if(file_exists($path) === false){
       throw new RuntimeException("Widgets folder not found in: $path");
     }
@@ -37,14 +69,14 @@ class WidgetLoader {
       if($file[0] == '.') continue;
       $fullpath = $path . '/' . $file;
       if(is_dir($fullpath))
-        $return_array = array_merge($return_array, $this->traverseHierarchy($fullpath));
+        $return_array = array_merge($return_array, self::traverseHierarchy($fullpath));
       elseif(substr($file, -7) == "acf.php")
         $return_array[] = $fullpath;
     }
     return $return_array;
   }
 
-  protected function traversePlugins() {
+  protected static function traversePlugins() {
     $return_array = array();
     if ( ! function_exists( 'get_plugins' ) ) {
       require_once ABSPATH . 'wp-admin/includes/plugin.php';

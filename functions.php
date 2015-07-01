@@ -13,7 +13,6 @@ class AgreableBase extends TimberSite {
     remove_action('wp_head', 'print_emoji_detection_script', 7);
     remove_action('wp_print_styles', 'print_emoji_styles');
 
-    $this->add_image_sizes();
     $this->hide_wordpress_admin_bar();
 
 		add_theme_support('post-formats');
@@ -39,16 +38,6 @@ class AgreableBase extends TimberSite {
 
   protected function hide_wordpress_admin_bar() {
     add_filter('show_admin_bar', '__return_false');
-  }
-
-  protected function add_image_sizes() {
-    update_option('thumbnail_size_w', 720);
-    update_option('thumbnail_size_h', 720);
-    update_option('thumbnail_crop', 1);
-    add_image_size('square', 720, 720, true);
-    add_image_size('portrait', 720, 960, true);
-    add_image_size('landscape', 1680, 1120, true);
-    add_image_size('letterbox', 1680, 840, true);
   }
 
   function custom_menu_order($menu_order) {
@@ -78,6 +67,7 @@ class AgreableBase extends TimberSite {
   }
 
   function register_custom_fields() {
+
     // Custom post type custom fields.
     include_once('custom-fields/tile.php');
     include_once('custom-fields/list.php');

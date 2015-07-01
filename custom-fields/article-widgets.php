@@ -2,8 +2,7 @@
 
 include_once "WidgetLoader.php";
 
-$widgetLoader = new WidgetLoader();
-$articleWidgets = $widgetLoader->findByUsage("post");
+$articleWidgets = WidgetLoader::findByUsage("post");
 
 register_field_group(array (
   'key' => 'article_widgets_group',
