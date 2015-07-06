@@ -27,8 +27,8 @@ class AgreableBase extends TimberSite {
     add_filter('custom_menu_order', array($this, 'custom_menu_order'));
     add_filter('menu_order', array($this, 'custom_menu_order'));
 
-    //  add_action('do_meta_boxes', array($this, 'move_featured_image_meta_box'));
-    // add_action('admin_menu', array($this, 'remove_unused_cms_menus'));
+    add_action('do_meta_boxes', array($this, 'remove_unused_meta_box'));
+    add_action('admin_menu', array($this, 'remove_unused_cms_menus'));
 
     // Admin Customisations with Jigsaw https://wordpress.org/plugins/jigsaw/
     Jigsaw::add_css('admin-customisations/agreable-admin.css');
@@ -58,11 +58,15 @@ class AgreableBase extends TimberSite {
 
   function remove_unused_cms_menus(){
     remove_menu_page('edit-comments.php');
+
   }
 
-  function move_featured_image_meta_box() {
+  function remove_unused_meta_box() {
     remove_meta_box('postimagediv', 'post', 'side');
-    add_meta_box('postimagediv', __('Featured Image'), 'post_thumbnail_meta_box', 'post', 'normal', 'high');
+    remove_meta_box('commentsdiv','post','normal');
+    remove_meta_box('commentstatusdiv', 'post', 'normal');
+    remove_meta_box('formatdiv','post','side');
+    remove_meta_box('tagsdiv-post_tag','post','side');
   }
 
   function register_custom_fields() {
