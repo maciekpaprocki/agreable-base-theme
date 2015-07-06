@@ -30,6 +30,8 @@ class AgreableBase extends TimberSite {
     add_action('do_meta_boxes', array($this, 'remove_unused_meta_box'));
     add_action('admin_menu', array($this, 'remove_unused_cms_menus'));
 
+    add_action('login_enqueue_scripts', array($this, 'change_login_logo'));
+
     // Admin Customisations with Jigsaw https://wordpress.org/plugins/jigsaw/
     Jigsaw::add_css('admin-customisations/agreable-admin.css');
     parent::__construct();
@@ -56,9 +58,21 @@ class AgreableBase extends TimberSite {
     return $menu_order;
   }
 
+  function change_login_logo() {
+
+    $login_image = get_field('login_image', 'options')['url'];
+    echo <<<HTML
+        <style type="text/css">
+            .login h1 a {
+                background-image: url($login_image);
+            }
+        </style>
+HTML;
+
+  }
+
   function remove_unused_cms_menus(){
     remove_menu_page('edit-comments.php');
-
   }
 
   function remove_unused_meta_box() {
@@ -82,9 +96,8 @@ class AgreableBase extends TimberSite {
     include_once('custom-fields/reusable-widgets.php');
     include_once('custom-fields/tile.php');
 
-    // TODO - ???
-    // include_once("custom-fields-acf/options-page.php");
-    // acf_add_options_page();
+    include_once("custom-fields/options-page.php");
+    acf_add_options_page();
   }
 
   function register_post_types() {
@@ -101,6 +114,7 @@ class AgreableBase extends TimberSite {
     $context['user'] = new TimberUser();
     $context['menu'] = new TimberMenu('main');
     $context['site'] = $this;
+    $context['options'] = get_fields('options');
     $context['environment'] = WP_ENV;
     return $context;
   }
