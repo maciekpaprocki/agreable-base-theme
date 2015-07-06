@@ -3,7 +3,7 @@ class BaseWidget {
   public static function addWidgetDeviceTargetting($widgetConfig) {
 
     $widgetConfig["sub_fields"][] = array (
-      'key' => $widgetConfig["key"] . '_show_settings',
+      'key' => $widgetConfig["key"] . '_show_advanced_widget_settings',
       'label' => 'Show advanced settings',
       'name' => 'show_advanced_settings',
       'type' => 'true_false',
@@ -33,7 +33,7 @@ class BaseWidget {
       'conditional_logic' => array (
         array (
           array (
-            'field' => $widgetConfig["key"] . '_show_settings',
+            'field' => $widgetConfig["key"] . '_show_advanced_widget_settings',
             'operator' => '==',
             'value' => '1',
           ),

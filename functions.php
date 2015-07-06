@@ -18,19 +18,20 @@ class AgreableBase extends TimberSite {
     add_theme_support('post-formats');
     add_theme_support('post-thumbnails');
     add_theme_support('menus');
+
     add_filter('timber_context', array($this, 'add_to_context'));
     add_filter('get_twig', array($this, 'add_to_twig'));
-    add_action('init', array($this, 'register_taxonomies'));
-    add_action('init', array($this, 'register_post_types'));
-    add_action('init', array($this, 'register_custom_fields'));
-
     add_filter('custom_menu_order', array($this, 'custom_menu_order'));
     add_filter('menu_order', array($this, 'custom_menu_order'));
 
+    add_action('init', array($this, 'register_taxonomies'));
+    add_action('init', array($this, 'register_post_types'));
+    add_action('init', array($this, 'register_custom_fields'));
     add_action('do_meta_boxes', array($this, 'remove_unused_meta_box'));
     add_action('admin_menu', array($this, 'remove_unused_cms_menus'));
-
     add_action('login_enqueue_scripts', array($this, 'change_login_logo'));
+
+    add_action('acf/save_post', array($this, 'prevent_show_advanced_settings_save'), 1);
 
     // Admin Customisations with Jigsaw https://wordpress.org/plugins/jigsaw/
     Jigsaw::add_css('admin-customisations/agreable-admin.css');
@@ -39,6 +40,26 @@ class AgreableBase extends TimberSite {
 
   protected function hide_wordpress_admin_bar() {
     add_filter('show_admin_bar', '__return_false');
+  }
+
+  function prevent_show_advanced_settings_save() {
+    // Bail early if no ACF data.
+    if(empty($_POST['acf']) && isset($_POST['acf']['article_widgets']) === false){
+        return;
+    }
+
+    // Ensure that the advanced settings checkbox isn't saved as true so that
+    // it always starts closed.
+    $search_key_suffix = '_show_advanced_widget_settings';
+    $len = count($_POST['acf']['article_widgets']);
+    for($i = 0; $i < $len; $i++) {
+      $widget = $_POST['acf']['article_widgets'][$i];
+      foreach($widget as $key=>$val){
+        if(substr($key, 0-strlen($search_key_suffix)) === $search_key_suffix){
+          $_POST['acf']['article_widgets'][$i][$key] = 0;
+        }
+      }
+    }
   }
 
   function custom_menu_order($menu_order) {
