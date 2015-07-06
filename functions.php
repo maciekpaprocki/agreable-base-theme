@@ -76,6 +76,7 @@ class AgreableBase extends TimberSite {
     include_once('custom-fields/section-widgets.php');
     include_once('custom-fields/list.php');
     include_once('custom-fields/reusable-widgets.php');
+    include_once('custom-fields/tile.php');
 
     // TODO - ???
     // include_once("custom-fields-acf/options-page.php");
