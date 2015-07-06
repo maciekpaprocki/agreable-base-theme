@@ -1,0 +1,13 @@
+.advanced-widget-settings {
+}
+
+.advanced-widget-settings .acf-label {
+  float: left;
+}
+
+.advanced-widget-settings .acf-bl > li {
+  float: left;
+  position: relative;
+  top: -4px;
+  left: 10px;
+}
