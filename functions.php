@@ -129,7 +129,7 @@ HTML;
     $twig->addExtension(new TroisiemeTwigList());
 
     require_once "libs/twig-extension/TwigReusableWidget.php";
-    $twig->addExtension(new TroisiemeTwigReusableWidget());
+    $twig->addExtension(new AgreableTwigReusableWidget());
 
     return $twig;
   }

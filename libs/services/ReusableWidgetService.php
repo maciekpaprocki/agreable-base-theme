@@ -1,5 +1,5 @@
 <?php
-class TroisiemeReusableWidgetService {
+class AgreableReusableWidgetService {
   public static function getWidget($widgetSlug) {
     $args = array(
       'name' => $widgetSlug,

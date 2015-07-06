@@ -1,9 +1,9 @@
 <?php
 require_once __DIR__ . "/../services/ReusableWidgetService.php";
-class TroisiemeTwigReusableWidget extends Twig_Extension {
+class AgreableTwigReusableWidget extends Twig_Extension {
   public function getFunctions() {
     return array(
-      new Twig_SimpleFunction('getReusableWidget', array('TroisiemeReusableWidgetService','getWidget'))
+      new Twig_SimpleFunction('get_reusable_widget', array('AgreableReusableWidgetService','getWidget'))
     );
   }
 
