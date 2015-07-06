@@ -1,5 +1,5 @@
 <?php
-class TroisiemeArticleService {
+class AgreableArticleService {
   public static function isLive($post) {
     $liveTimestamp = get_field('live_date', $post);
     $expiryTimestamp = get_field('expiry_date', $post);

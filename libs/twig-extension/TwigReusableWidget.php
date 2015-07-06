@@ -8,6 +8,6 @@ class AgreableTwigReusableWidget extends Twig_Extension {
   }
 
   public function getName() {
-    return 'troisieme_reusable_widget';
+    return 'agreable_reusable_widget';
   }
 }

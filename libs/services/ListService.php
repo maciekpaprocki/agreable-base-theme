@@ -1,7 +1,7 @@
 <?php
 require_once "ArticleService.php";
 
-class TroisiemeListService {
+class AgreableListService {
   protected static $dupes = array();
 
   public static function getPosts($lists, $manualPosts = null, $limitOverride = null, $offset = 0, $caresAboutDupes = true) {
@@ -12,14 +12,14 @@ class TroisiemeListService {
       $lists = array($lists);
     }
 
-    // Add manual which are live 
+    // Add manual which are live
     $posts = array();
     if ($manualPosts) {
       if (!is_array($manualPosts)) {
         $manualPosts = array($manualPosts);
       }
       foreach($manualPosts as $manualPost) {
-        if (TroisiemeArticleService::isLive($manualPost)) {
+        if (AgreableArticleService::isLive($manualPost)) {
         // if (true) {
           if (is_integer($manualPost) || get_class($manualPost) === 'WP_Post') {
             $timberPost = new TimberPost($manualPost);
@@ -66,13 +66,13 @@ class TroisiemeListService {
       $query_args = array(
         'cat' => implode(',' , $sections),
         'post_type' => 'post',
-        'posts_per_page' => $limitOverride ? $limitOverride : get_field("limit", $list->ID), 
-        // 'posts_per_page' => 100, 
+        'posts_per_page' => $limitOverride ? $limitOverride : get_field("limit", $list->ID),
+        // 'posts_per_page' => 100,
         'post__not_in' => $post_not_in,
-        'no_found_rows' => 1, 
-        'offset' => $offset, 
+        'no_found_rows' => 1,
+        'offset' => $offset,
         'post_status' => 'publish',
-        // 'meta_key'=>'display_date', 
+        // 'meta_key'=>'display_date',
         // 'orderby' => 'meta_value',
         // 'orderby' => 'rand',
         'orderby' => 'date',
@@ -135,8 +135,8 @@ class TroisiemeListService {
     $query_args = array(
       'post_type' => 'post',
       'author' => $authorId,
-      'posts_per_page' => $limit, 
-      'no_found_rows' => 1, 
+      'posts_per_page' => $limit,
+      'no_found_rows' => 1,
       'post_status' => 'publish',
       'orderby' => 'date',
       'order' => 'DESC',

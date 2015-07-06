@@ -123,10 +123,10 @@ HTML;
     $twig->addExtension(new Twig_Extension_StringLoader());
 
     require_once "libs/twig-extension/TwigArticle.php";
-    $twig->addExtension(new TroisiemeTwigArticle());
+    $twig->addExtension(new AgreableTwigArticle());
 
     require_once "libs/twig-extension/TwigList.php";
-    $twig->addExtension(new TroisiemeTwigList());
+    $twig->addExtension(new AgreableTwigList());
 
     require_once "libs/twig-extension/TwigReusableWidget.php";
     $twig->addExtension(new AgreableTwigReusableWidget());

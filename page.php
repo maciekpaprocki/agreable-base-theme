@@ -41,7 +41,7 @@ if ($_GET["format"] === 'json') {
     $currentPage = 1;
   }
   require_once 'libs/services/ApiService.php';
-  return TroisiemeApiService::handleRequest("section", $post, $currentPage);
+  return AgreableApiService::handleRequest("section", $post, $currentPage);
 }
 
 if ($_GET['format'] === 'widgets-only') {

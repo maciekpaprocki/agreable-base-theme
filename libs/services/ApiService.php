@@ -1,5 +1,5 @@
 <?php
-class TroisiemeApiService {
+class AgreableApiService {
   public static function handleRequest($pageType, $post, $currentPageIndex = 1) {
     header('Content-Type: application/json');
 
@@ -29,7 +29,7 @@ class TroisiemeApiService {
     $limit = 50;
     $offset = ($currentPageIndex -1) * $limit;
 
-    $posts = TroisiemeListService::getPosts($mostRecentList, null, $limit, $offset);
+    $posts = AgreableListService::getPosts($mostRecentList, null, $limit, $offset);
     foreach($posts as $post) {
       $response->articles[] = self::getPostAsPlainObject($post);
     }
@@ -151,7 +151,7 @@ class TroisiemeApiService {
 
       $data->widgets[] = $widget;
     }
-    
+
     return $data;
 
   }

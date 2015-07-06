@@ -19,8 +19,8 @@ if (!isset($context)) {
 }
 
 if (isset($_GET["q"])) {
-  require_once 'libs/services/SearchService.php';
-  $context['searchResponse'] = TroisiemeSearchService::getSearchResults($_GET["q"]);
-  $context['query'] = $_GET["q"];
+  // require_once 'libs/services/SearchService.php';
+  // $context['searchResponse'] = AgreableSearchService::getSearchResults($_GET["q"]);
+  // $context['query'] = $_GET["q"];
 }
 Timber::render('search-results.twig', $context, false);
