@@ -2,7 +2,7 @@
 if( function_exists('register_field_group') ):
 
 register_field_group(array (
-  'key' => 'aricle_layout_group',
+  'key' => 'article_layout_group',
   'title' => 'Layout',
   'fields' => array (
     array (
