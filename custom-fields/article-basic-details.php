@@ -64,11 +64,7 @@ register_field_group(array (
         'id' => '',
       ),
       'choices' => array (
-        'article' => 'Standard Article',
-        'gallery' => 'Gallery',
-        'competition' => 'Competition',
-        'quiz' => 'Quiz',
-        'commercial_microsite' => 'Commercial Microsite',
+        'article' => 'Standard Article'
       ),
       'default_value' => array (
         '' => '',
