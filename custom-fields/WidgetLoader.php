@@ -11,8 +11,7 @@ class WidgetLoader {
       )
   );
 
-  private static function initialize()
-  {
+  private static function initialize(){
     if (self::$initialized)
       return;
 
@@ -23,7 +22,7 @@ class WidgetLoader {
    * Configures shared object for use throughout widgets.
    * @param array $config associative array of config options.
    */
-  public static function configure($config) {
+  public static function configure($config){
     self::initialize();
     foreach($config as $key => $item){
       self::$config[$key] = $item;

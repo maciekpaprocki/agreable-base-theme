@@ -1,40 +1,39 @@
 <?php
 
 if ( ! class_exists( 'Timber' ) ) {
-	add_action( 'admin_notices', function() {
-			echo '<div class="error"><p>Timber not activated. Make sure you activate the plugin in <a href="' . esc_url( admin_url( 'plugins.php#timber' ) ) . '">' . esc_url( admin_url( 'plugins.php' ) ) . '</a></p></div>';
-		} );
-	return;
+  add_action( 'admin_notices', function() {
+      echo '<div class="error"><p>Timber not activated. Make sure you activate the plugin in <a href="' . esc_url( admin_url( 'plugins.php#timber' ) ) . '">' . esc_url( admin_url( 'plugins.php' ) ) . '</a></p></div>';
+    } );
+  return;
 }
 
 class AgreableBase extends TimberSite {
 
-	function __construct() {
+  function __construct() {
     remove_action('wp_head', 'print_emoji_detection_script', 7);
     remove_action('wp_print_styles', 'print_emoji_styles');
 
     $this->hide_wordpress_admin_bar();
 
-		add_theme_support('post-formats');
-		add_theme_support('post-thumbnails');
-		add_theme_support('menus');
-		add_filter('timber_context', array($this, 'add_to_context'));
-		add_filter('get_twig', array($this, 'add_to_twig'));
-		add_action('init', array($this, 'register_taxonomies'));
-		add_action('init', array($this, 'register_post_types'));
-		add_action('init', array($this, 'register_custom_fields'));
+    add_theme_support('post-formats');
+    add_theme_support('post-thumbnails');
+    add_theme_support('menus');
+    add_filter('timber_context', array($this, 'add_to_context'));
+    add_filter('get_twig', array($this, 'add_to_twig'));
+    add_action('init', array($this, 'register_taxonomies'));
+    add_action('init', array($this, 'register_post_types'));
+    add_action('init', array($this, 'register_custom_fields'));
 
     add_filter('custom_menu_order', array($this, 'custom_menu_order'));
     add_filter('menu_order', array($this, 'custom_menu_order'));
-    /*
-    add_action('do_meta_boxes', array($this, 'move_featured_image_meta_box'));
-    add_action('admin_menu', array($this, 'remove_unused_cms_menus'));
 
-     */
+    //  add_action('do_meta_boxes', array($this, 'move_featured_image_meta_box'));
+    // add_action('admin_menu', array($this, 'remove_unused_cms_menus'));
+
     // Admin Customisations with Jigsaw https://wordpress.org/plugins/jigsaw/
     Jigsaw::add_css('admin-customisations/agreable-admin.css');
-		parent::__construct();
-	}
+    parent::__construct();
+  }
 
   protected function hide_wordpress_admin_bar() {
     add_filter('show_admin_bar', '__return_false');
@@ -68,48 +67,41 @@ class AgreableBase extends TimberSite {
 
   function register_custom_fields() {
 
-    // Custom post type custom fields.
-    include_once('custom-fields/tile.php');
-    include_once('custom-fields/list.php');
-    include_once('custom-fields/reusable-widgets.php');
-
     include_once('custom-fields/article-basic-details.php');
     include_once("custom-fields/article-images.php");
     include_once('custom-fields/article-widgets.php');
+    include_once("custom-fields/article-related.php");
+    include_once("custom-fields/article-layout.php");
+    include_once("custom-fields/article-social.php");
     include_once('custom-fields/section-widgets.php');
+    include_once('custom-fields/list.php');
+    include_once('custom-fields/reusable-widgets.php');
 
-    // TODO - Elliot handling.
-    // include_once("custom-fields-acf/article-related.php");
-    // include_once("custom-fields-acf/article-scheduling.php");
-    // TODO - Perhaps not needed?
-    // include_once("custom-fields-acf/article-commenting.php");
-    // include_once("custom-fields-acf/article-layout.php");
     // TODO - ???
-    // include_once("custom-fields-acf/article-social.php");
     // include_once("custom-fields-acf/options-page.php");
     // acf_add_options_page();
   }
 
-	function register_post_types() {
+  function register_post_types() {
     include_once __DIR__ . '/custom-post-types/reusable-widget.php';
     include_once __DIR__ . '/custom-post-types/list.php';
     include_once __DIR__ . '/custom-post-types/tile.php';
-	}
+  }
 
-	function register_taxonomies() {
-		//this is where you can register custom taxonomies
-	}
+  function register_taxonomies() {
+    //this is where you can register custom taxonomies
+  }
 
-	function add_to_context($context) {
-		$context['user'] = new TimberUser();
-		$context['menu'] = new TimberMenu('main');
-		$context['site'] = $this;
+  function add_to_context($context) {
+    $context['user'] = new TimberUser();
+    $context['menu'] = new TimberMenu('main');
+    $context['site'] = $this;
     $context['environment'] = WP_ENV;
     return $context;
   }
 
-	function add_to_twig( $twig ) {
-		$twig->addExtension(new Twig_Extension_StringLoader());
+  function add_to_twig( $twig ) {
+    $twig->addExtension(new Twig_Extension_StringLoader());
 
     require_once "libs/twig-extension/TwigArticle.php";
     $twig->addExtension(new TroisiemeTwigArticle());
@@ -120,8 +112,8 @@ class AgreableBase extends TimberSite {
     require_once "libs/twig-extension/TwigReusableWidget.php";
     $twig->addExtension(new TroisiemeTwigReusableWidget());
 
-		return $twig;
-	}
+    return $twig;
+  }
 
 }
 
