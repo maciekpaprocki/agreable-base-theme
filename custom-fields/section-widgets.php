@@ -6,10 +6,8 @@ if(!function_exists('register_field_group') ) {
 $contextType = "section";
 include_once "WidgetLoader.php";
 
-$widgetLoader = new WidgetLoader();
-
-$widget_layouts_main = $widgetLoader->findByUsage("section", "main");
-$widget_layouts_sidebar = $widgetLoader->findByUsage("section", "sidebar");
+$widget_layouts_main = WidgetLoader::findByUsage("section", "main");
+$widget_layouts_sidebar = WidgetLoader::findByUsage("section", "sidebar");
 
 register_field_group(array (
   'key' => 'section_widgets_group',

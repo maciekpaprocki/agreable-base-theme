@@ -5,9 +5,7 @@ if(!function_exists('register_field_group') ) {
 
 include_once "WidgetLoader.php";
 
-$widgetLoader = new WidgetLoader();
-
-$widgets = $widgetLoader->findByUsage();
+$widgets = WidgetLoader::findByUsage();
 
 register_field_group(array (
   'key' => 'reusable_widgets_group',
