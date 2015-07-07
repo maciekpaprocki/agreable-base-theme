@@ -23,6 +23,34 @@ class BaseWidget {
     );
 
     $widgetConfig["sub_fields"][] = array (
+      'key' => $widgetConfig["key"] . '_full_bleed',
+      'label' => 'Full bleed',
+      'name' => 'full_bleed',
+      'type' => 'true_false',
+      'instructions' => 'Does the widget need to expand to full available browser width?',
+      'required' => 0,
+      'conditional_logic' => array (
+        array (
+          array (
+            'field' => $widgetConfig["key"] . '_show_advanced_widget_settings',
+            'operator' => '==',
+            'value' => '1',
+          ),
+        ),
+      ),
+      'wrapper' => array (
+        'width' => '',
+        'class' => '',
+        'id' => '',
+      ),
+      'choices' => array (
+        '' => '',
+      ),
+      'default_value' => 0,
+      'layout' => 'vertical',
+    );
+
+    $widgetConfig["sub_fields"][] = array (
       'key' => $widgetConfig["key"] . '_device_targetting',
       'label' => 'Display on devices',
       'name' => 'display_on_devices',
