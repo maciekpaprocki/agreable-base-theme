@@ -11,3 +11,8 @@
   top: -4px;
   left: 10px;
 }
+
+.acf-field-image .acf-image-uploader img {
+  max-height: 256px;
+}
+
