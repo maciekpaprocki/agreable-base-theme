@@ -34,7 +34,7 @@ register_field_group(array (
       'prefix' => '',
       'type' => 'text',
       'instructions' => 'Summary to entice the reader to view the full article. This will display on many widgets.',
-      'required' => 0,
+      'required' => 1,
       'conditional_logic' => 0,
       'wrapper' => array (
         'width' => '',

@@ -35,7 +35,7 @@ register_field_group(array (
       'prefix' => '',
       'type' => 'post_object',
       'instructions' => 'Add a List of content to add if any of the manual related articles are unavailable. ',
-      'required' => 1,
+      'required' => 0,
       'conditional_logic' => 0,
       'wrapper' => array (
         'width' => '',
