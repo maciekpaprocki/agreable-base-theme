@@ -28,6 +28,8 @@ class AgreableBase extends TimberSite {
     add_action('init', array($this, 'register_post_types'));
     add_action('init', array($this, 'register_custom_fields'));
     add_action('do_meta_boxes', array($this, 'remove_unused_meta_box'));
+    add_action('do_meta_boxes', array( $this, 'move_featured_image_meta_box') );
+
     add_action('admin_menu', array($this, 'remove_unused_cms_menus'));
     add_action('login_enqueue_scripts', array($this, 'change_login_logo'));
 
@@ -96,6 +98,11 @@ HTML;
     remove_menu_page('edit-comments.php');
   }
 
+  function move_featured_image_meta_box () {
+    remove_meta_box( 'postimagediv', 'post', 'side' );
+    add_meta_box('postimagediv', __('Featured Image'), 'post_thumbnail_meta_box', 'post', 'normal', 'high');
+  }
+
   function remove_unused_meta_box() {
     remove_meta_box('postimagediv', 'post', 'side');
     remove_meta_box('commentsdiv','post','normal');
@@ -107,7 +114,6 @@ HTML;
   function register_custom_fields() {
 
     include_once('custom-fields/article-basic-details.php');
-    include_once("custom-fields/article-images.php");
     include_once('custom-fields/article-widgets.php');
     include_once("custom-fields/article-related.php");
     include_once("custom-fields/article-layout.php");
