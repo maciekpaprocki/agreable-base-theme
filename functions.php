@@ -141,8 +141,6 @@ HTML;
   }
 
   function add_to_twig( $twig ) {
-    $twig->addExtension(new Twig_Extension_StringLoader());
-
     require_once "libs/twig-extension/TwigArticle.php";
     $twig->addExtension(new AgreableTwigArticle());
 
