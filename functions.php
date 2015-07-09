@@ -140,6 +140,7 @@ HTML;
   function add_to_context($context) {
     $context['user'] = new TimberUser();
     $context['menu'] = new TimberMenu('main');
+    $context['menu_footer'] = new TimberMenu('footer');
     $context['site'] = $this;
     $context['options'] = get_fields('options');
     $context['environment'] = WP_ENV;
