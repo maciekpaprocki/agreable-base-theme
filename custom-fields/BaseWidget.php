@@ -12,7 +12,7 @@ class BaseWidget {
       'conditional_logic' => 0,
       'wrapper' => array (
         'width' => '',
-        'class' => 'advanced-widget-settings',
+        'class' => 'extra-widget-settings',
         'id' => '',
       ),
       'choices' => array (
