@@ -47,5 +47,5 @@ if ($_GET["format"] === 'json') {
 if ($_GET['format'] === 'widgets-only') {
   Timber::render('partials/section-widgets.twig', $context, false);
 } else {
-  Timber::render('section.twig', $context, false);
+  Timber::render('page.twig', $context, false);
 }
