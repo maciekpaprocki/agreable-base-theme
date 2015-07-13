@@ -54,11 +54,12 @@ class AgreableBase extends TimberSite {
     // it always starts closed.
     $search_key_suffix = '_show_advanced_widget_settings';
     $len = count($_POST['acf']['article_widgets']);
-    for($i = 0; $i < $len; $i++) {
-      $widget = $_POST['acf']['article_widgets'][$i];
-      foreach($widget as $key=>$val){
-        if(substr($key, 0-strlen($search_key_suffix)) === $search_key_suffix){
-          $_POST['acf']['article_widgets'][$i][$key] = 0;
+    if ($len) {
+      foreach($_POST['acf']['article_widgets'] as $widget) {
+        foreach($widget as $key=>$val){
+          if(substr($key, 0-strlen($search_key_suffix)) === $search_key_suffix){
+            $widget[$key] = 0;
+          }
         }
       }
     }
