@@ -2,5 +2,7 @@ public/css/*
 public/js/*
 public/assets/*
 stats.json
+node_modules/
+npm-debug.log
 
 vendor/
