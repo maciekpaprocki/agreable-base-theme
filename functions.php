@@ -27,6 +27,7 @@ class AgreableBase extends TimberSite {
     add_action('init', array($this, 'register_taxonomies'));
     add_action('init', array($this, 'register_post_types'));
     add_action('init', array($this, 'register_custom_fields'));
+    add_action('after_setup_theme', array($this, 'remove_wordpress_meta_from_head'));
     add_action('do_meta_boxes', array($this, 'remove_unused_meta_box'));
     add_action('do_meta_boxes', array( $this, 'move_featured_image_meta_box') );
 
@@ -110,6 +111,15 @@ HTML;
     remove_meta_box('commentstatusdiv', 'post', 'normal');
     remove_meta_box('formatdiv','post','side');
     remove_meta_box('tagsdiv-post_tag','post','side');
+  }
+
+  function remove_wordpress_meta_from_head() {
+    remove_action('wp_head', 'rsd_link');
+    remove_action('wp_head', 'wlwmanifest_link');
+    remove_action('wp_head', 'wp_shortlink_wp_head');
+    remove_action('wp_head', 'wp_generator');
+    remove_action('wp_head', 'feed_links', 2);
+    remove_action('wp_head', 'feed_links_extra', 3);
   }
 
   function register_custom_fields() {
