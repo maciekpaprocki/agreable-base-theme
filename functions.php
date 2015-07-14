@@ -47,7 +47,7 @@ class AgreableBase extends TimberSite {
 
   function prevent_show_advanced_settings_save() {
     // Bail early if no ACF data.
-    if(empty($_POST['acf']) && isset($_POST['acf']['article_widgets']) === false){
+    if(empty($_POST['acf']) || isset($_POST['acf']['article_widgets']) === false){
         return;
     }
 
