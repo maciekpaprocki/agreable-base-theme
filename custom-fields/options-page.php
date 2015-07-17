@@ -3,7 +3,7 @@ if( function_exists('register_field_group') ):
 
 register_field_group(array (
   'key' => 'options_group_settings',
-  'title' => 'Settings',
+  'title' => 'Tracking, Data & Third Party settings',
   'fields' => array (
     array (
       'key' => 'options_google_analytics_id',
