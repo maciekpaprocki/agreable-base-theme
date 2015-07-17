@@ -46,15 +46,24 @@ class AgreableBase extends TimberSite {
   }
 
   function prevent_show_advanced_settings_save() {
-    // Bail early if no ACF data.
-    if(empty($_POST['acf']) || isset($_POST['acf']['article_widgets']) === false){
+    // Bail early if no ACF data...
+    if(empty($_POST['acf'])){
+        return;
+    }
+
+    // ...or no widgets.
+    $has_widgets = isset($_POST['acf']['article_widgets']) && ! empty($_POST['acf']['article_widgets']);
+    if($has_widgets === false){
         return;
     }
 
     // Ensure that the advanced settings checkbox isn't saved as true so that
     // it always starts closed.
     $search_key_suffix = '_show_advanced_widget_settings';
-    $len = count($_POST['acf']['article_widgets']);
+    $len = isset($_POST['acf']['article_widgets'])
+      ? count($_POST['acf']['article_widgets'])
+      : false;
+
     if ($len) {
       foreach($_POST['acf']['article_widgets'] as $widget) {
         foreach($widget as $key=>$val){
