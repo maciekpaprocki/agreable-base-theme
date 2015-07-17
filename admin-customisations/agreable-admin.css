@@ -1,11 +1,11 @@
 .extra-widget-settings {
 }
 
-.extra-widget-settings .acf-label {
+div.extra-widget-settings .acf-label {
   float: left;
 }
 
-.extra-widget-settings .acf-bl > li {
+div.extra-widget-settings .acf-bl > li {
   float: left;
   position: relative;
   top: -4px;
