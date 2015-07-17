@@ -55,7 +55,8 @@ class AgreableListService {
         continue;
       }
 
-      $sections = get_field("sections", $list->ID) ?: [];
+      $list_id = is_numeric($list) ? $list : $list->ID;
+      $sections = get_field("sections", $list_id) ?: [];
 
       foreach($sections as $sectionId) {
         if (get_the_category_by_ID($sectionId) === 'CURRENT') {
