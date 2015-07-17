@@ -27,6 +27,7 @@ class AgreableBase extends TimberSite {
     add_action('init', array($this, 'register_taxonomies'));
     add_action('init', array($this, 'register_post_types'));
     add_action('init', array($this, 'register_custom_fields'));
+    add_action('after_setup_theme', array($this, 'remove_wordpress_meta_from_head'));
     add_action('do_meta_boxes', array($this, 'remove_unused_meta_box'));
     add_action('do_meta_boxes', array( $this, 'move_featured_image_meta_box') );
 
@@ -46,7 +47,7 @@ class AgreableBase extends TimberSite {
 
   function prevent_show_advanced_settings_save() {
     // Bail early if no ACF data.
-    if(empty($_POST['acf']) && isset($_POST['acf']['article_widgets']) === false){
+    if(empty($_POST['acf']) || isset($_POST['acf']['article_widgets']) === false){
         return;
     }
 
@@ -54,11 +55,12 @@ class AgreableBase extends TimberSite {
     // it always starts closed.
     $search_key_suffix = '_show_advanced_widget_settings';
     $len = count($_POST['acf']['article_widgets']);
-    for($i = 0; $i < $len; $i++) {
-      $widget = $_POST['acf']['article_widgets'][$i];
-      foreach($widget as $key=>$val){
-        if(substr($key, 0-strlen($search_key_suffix)) === $search_key_suffix){
-          $_POST['acf']['article_widgets'][$i][$key] = 0;
+    if ($len) {
+      foreach($_POST['acf']['article_widgets'] as $widget) {
+        foreach($widget as $key=>$val){
+          if(substr($key, 0-strlen($search_key_suffix)) === $search_key_suffix){
+            $widget[$key] = 0;
+          }
         }
       }
     }
@@ -109,6 +111,15 @@ HTML;
     remove_meta_box('commentstatusdiv', 'post', 'normal');
     remove_meta_box('formatdiv','post','side');
     remove_meta_box('tagsdiv-post_tag','post','side');
+  }
+
+  function remove_wordpress_meta_from_head() {
+    remove_action('wp_head', 'rsd_link');
+    remove_action('wp_head', 'wlwmanifest_link');
+    remove_action('wp_head', 'wp_shortlink_wp_head');
+    remove_action('wp_head', 'wp_generator');
+    remove_action('wp_head', 'feed_links', 2);
+    remove_action('wp_head', 'feed_links_extra', 3);
   }
 
   function register_custom_fields() {
