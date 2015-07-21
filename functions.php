@@ -36,6 +36,8 @@ class AgreableBase extends TimberSite {
 
     add_action('acf/save_post', array($this, 'prevent_show_advanced_settings_save'), 1);
 
+    add_filter('robots_txt', array($this, 'force_robots_txt_disallow_non_production'), 10, 2);
+
     // Admin Customisations with Jigsaw https://wordpress.org/plugins/jigsaw/
     Jigsaw::add_css('admin-customisations/agreable-admin.css');
     parent::__construct();
@@ -43,6 +45,19 @@ class AgreableBase extends TimberSite {
 
   protected function hide_wordpress_admin_bar() {
     add_filter('show_admin_bar', '__return_false');
+  }
+
+  /**
+   * robots.txt to show "disallow all" on staging and development
+   */
+  function force_robots_txt_disallow_non_production($rv, $public) {
+    if (WP_ENV === 'production') {
+      return $rv;      
+    }
+
+    $disallow = "User-agent: *" . PHP_EOL . "Disallow: /";
+
+    return $disallow;
   }
 
   function prevent_show_advanced_settings_save() {
