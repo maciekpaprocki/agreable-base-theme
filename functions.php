@@ -131,7 +131,7 @@ HTML;
   }
 
   function remove_unused_meta_box() {
-    // remove_meta_box('postimagediv', 'post', 'side');
+    remove_meta_box('postimagediv', 'post', 'side');
     remove_meta_box('commentsdiv','post','normal');
     remove_meta_box('commentstatusdiv', 'post', 'normal');
     remove_meta_box('formatdiv','post','side');
