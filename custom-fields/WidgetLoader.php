@@ -85,7 +85,7 @@ class WidgetLoader {
     foreach($all_plugins as $file => $obj){
       $fullpath = plugin_dir_path(WP_CONTENT_DIR.'/plugins/'.$file).'widget-loader-acf.php';
       // If plugin directory contains acf.php file and is slm prefixed...
-      if(substr($file, 0, 3) === "slm" && file_exists($fullpath)){
+      if(substr($file, 0, 8) === "agreable" && file_exists($fullpath)){
         $return_array[] = $fullpath;
       }
     }
