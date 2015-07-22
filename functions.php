@@ -13,8 +13,6 @@ class AgreableBase extends TimberSite {
     remove_action('wp_head', 'print_emoji_detection_script', 7);
     remove_action('wp_print_styles', 'print_emoji_styles');
 
-    $this->hide_wordpress_admin_bar();
-
     add_theme_support('post-formats');
     add_theme_support('post-thumbnails');
     add_theme_support('menus');
@@ -41,10 +39,6 @@ class AgreableBase extends TimberSite {
     // Admin Customisations with Jigsaw https://wordpress.org/plugins/jigsaw/
     Jigsaw::add_css('admin-customisations/agreable-admin.css');
     parent::__construct();
-  }
-
-  protected function hide_wordpress_admin_bar() {
-    add_filter('show_admin_bar', '__return_false');
   }
 
   function article_image_set_wp_thumbnail($values, $post_id){
