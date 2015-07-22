@@ -29,12 +29,12 @@ class AgreableBase extends TimberSite {
     add_action('init', array($this, 'register_custom_fields'));
     add_action('after_setup_theme', array($this, 'remove_wordpress_meta_from_head'));
     add_action('do_meta_boxes', array($this, 'remove_unused_meta_box'));
-    add_action('do_meta_boxes', array( $this, 'move_featured_image_meta_box') );
 
     add_action('admin_menu', array($this, 'remove_unused_cms_menus'));
     add_action('login_enqueue_scripts', array($this, 'change_login_logo'));
 
     add_action('acf/save_post', array($this, 'prevent_show_advanced_settings_save'), 1);
+    add_filter('acf/update_value/key=article_basic_hero_images', array($this, 'article_image_set_wp_thumbnail'), 10, 3);
 
     add_filter('robots_txt', array($this, 'force_robots_txt_disallow_non_production'), 10, 2);
 
@@ -47,12 +47,18 @@ class AgreableBase extends TimberSite {
     add_filter('show_admin_bar', '__return_false');
   }
 
+  function article_image_set_wp_thumbnail($values, $post_id){
+    // Use the first image in gallery as the post thumbnail.
+    set_post_thumbnail($post_id, $values[0]);
+    return $values;
+  }
+
   /**
    * robots.txt to show "disallow all" on staging and development
    */
   function force_robots_txt_disallow_non_production($rv, $public) {
     if (WP_ENV === 'production') {
-      return $rv;      
+      return $rv;
     }
 
     $disallow = "User-agent: *" . PHP_EOL . "Disallow: /";
@@ -124,13 +130,8 @@ HTML;
     remove_menu_page('edit-comments.php');
   }
 
-  function move_featured_image_meta_box () {
-    remove_meta_box( 'postimagediv', 'post', 'side' );
-    add_meta_box('postimagediv', __('Featured Image'), 'post_thumbnail_meta_box', 'post', 'normal', 'high');
-  }
-
   function remove_unused_meta_box() {
-    remove_meta_box('postimagediv', 'post', 'side');
+    // remove_meta_box('postimagediv', 'post', 'side');
     remove_meta_box('commentsdiv','post','normal');
     remove_meta_box('commentstatusdiv', 'post', 'normal');
     remove_meta_box('formatdiv','post','side');
