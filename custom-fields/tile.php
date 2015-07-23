@@ -57,7 +57,7 @@ register_field_group(array (
       'label' => 'URL',
       'name' => 'url',
       'prefix' => '',
-      'type' => 'url',
+      'type' => 'text',
       'instructions' => 'Leave blank if you don\'t require a link',
       'required' => 0,
       'conditional_logic' => 0,
