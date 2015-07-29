@@ -1,8 +1,17 @@
 <?php
+$key = 'article_related_group';
+$acf_groups = acf_get_local_field_groups($key);
+foreach($acf_groups as $group){
+  // Aready defined in app theme.
+  if($group['key'] === $key){
+    return false;
+  }
+}
+
 if( function_exists('register_field_group') ):
 
 register_field_group(array (
-  'key' => 'article_related_group',
+  'key' => $key,
   'title' => 'Related Articles',
   'fields' => array (
     array (
