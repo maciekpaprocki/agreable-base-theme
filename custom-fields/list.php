@@ -44,7 +44,7 @@ register_field_group(array (
       'placeholder' => '',
       'prepend' => '',
       'append' => '',
-      'min' => 43,
+      'min' => 1,
       'max' => 100,
       'step' => '',
       'readonly' => 0,
