@@ -7,9 +7,9 @@ div.extra-widget-settings .acf-label {
 
 div.extra-widget-settings .acf-bl > li {
   float: left;
+  left: 10px;
   position: relative;
   top: -4px;
-  left: 10px;
 }
 
 .acf-field-image .acf-image-uploader img {
