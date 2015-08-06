@@ -36,6 +36,8 @@ class AgreableBase extends TimberSite {
 
     add_filter('robots_txt', array($this, 'force_robots_txt_disallow_non_production'), 10, 2);
 
+    if(current_user_can('manage_options')) $this->build_bespoke_admin_settings();
+
     // Admin Customisations with Jigsaw https://wordpress.org/plugins/jigsaw/
     Jigsaw::add_css('admin-customisations/agreable-admin.css');
     parent::__construct();
@@ -188,6 +190,27 @@ HTML;
     $twig->addExtension(new AgreableTwigReusableWidget());
 
     return $twig;
+  }
+
+  function build_bespoke_admin_settings(){
+    add_action( 'admin_init', function(){
+      add_settings_section(
+        'site_customisation',
+        'Custom options',
+        '',
+        'general'
+      );
+      add_settings_field(
+        'enable_sidebar',
+        'Enable sidebar layout',
+        function(){
+          echo '<input name="enable_sidebar" id="enable_sidebar" type="checkbox" value="1" class="code" ' . checked( 1, get_option( 'enable_sidebar' ), false ) . ' />';
+        },
+        'general',
+        'site_customisation'
+      );
+      register_setting( 'general', 'enable_sidebar' );
+    });
   }
 
 }
