@@ -2,6 +2,44 @@
 if( function_exists('register_field_group') ):
 
 register_field_group(array (
+  'key' => 'options_group_sidebar',
+  'title' => 'Site Overides',
+  'fields' => array (
+    array (
+      'key' => 'sidebar_boolean',
+      'label' => '',
+      'name' => 'enable_sidebar',
+      'type' => 'true_false',
+      'instructions' => '',
+      'required' => 0,
+      'conditional_logic' => 0,
+      'wrapper' => array (
+        'width' => '',
+        'class' => '',
+        'id' => '',
+      ),
+      'message' => 'Enable the sidebar',
+      'default_value' => 1,
+    ),
+  ),
+  'location' => array (
+    array (
+      array (
+        'param' => 'options_page',
+        'operator' => '==',
+        'value' => 'acf-options',
+      ),
+    ),
+  ),
+  'menu_order' => 0,
+  'position' => 'normal',
+  'style' => 'default',
+  'label_placement' => 'top',
+  'instruction_placement' => 'label',
+  'hide_on_screen' => '',
+));
+
+register_field_group(array (
   'key' => 'options_group_settings',
   'title' => 'Tracking, Data & Third Party settings',
   'fields' => array (

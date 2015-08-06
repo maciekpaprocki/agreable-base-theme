@@ -9,7 +9,7 @@ include_once "WidgetLoader.php";
 $widget_layouts_main = WidgetLoader::findByUsage("section", "main");
 $widget_layouts_sidebar = WidgetLoader::findByUsage("section", "sidebar");
 
-if(get_option('enable_sidebar')){
+if(get_field('enable_sidebar', 'option')){
   register_field_group(array (
     'key' => 'section_widgets_group',
     'title' => 'Section widgets',
