@@ -10,6 +10,7 @@ $widget_layouts_main = WidgetLoader::findByUsage("section", "main");
 $widget_layouts_sidebar = WidgetLoader::findByUsage("section", "sidebar");
 
 if(get_field('enable_sidebar', 'option')){
+  /* WITH SIDEBAR */
   register_field_group(array (
     'key' => 'section_widgets_group',
     'title' => 'Section widgets',
@@ -139,6 +140,7 @@ if(get_field('enable_sidebar', 'option')){
 
   ));
 }else{
+  /* WITHOUT SIDEBAR */
   register_field_group(array (
     'key' => 'section_widgets_group',
     'title' => 'Section widgets',
