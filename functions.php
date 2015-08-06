@@ -36,9 +36,17 @@ class AgreableBase extends TimberSite {
 
     add_filter('robots_txt', array($this, 'force_robots_txt_disallow_non_production'), 10, 2);
 
+    add_filter('upload_mimes', array($this, 'allowAdditionalUploadMimeTypes'));
+
     // Admin Customisations with Jigsaw https://wordpress.org/plugins/jigsaw/
     Jigsaw::add_css('admin-customisations/agreable-admin.css');
     parent::__construct();
+  }
+
+  function allowAdditionalUploadMimeTypes($mimeTypes) {
+    // Extra mimetypes to whitelist
+    $mimeTypes['svg'] = 'image/svg+xml';
+    return $mimeTypes;
   }
 
   function article_image_set_wp_thumbnail($values, $post_id){
