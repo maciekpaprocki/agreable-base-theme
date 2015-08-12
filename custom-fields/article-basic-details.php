@@ -152,7 +152,7 @@ register_field_group(array (
         'landscape' => 'Landscape',
         'letterbox' => 'Letterbox (default)'
       ),
-      'default_value' => 'letterbox',
+      'default_value' => 'landscape',
       'allow_null' => 0,
       'multiple' => 0,
       'ui' => 0,
