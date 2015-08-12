@@ -1,5 +1,6 @@
 {
   "name": "ShortlistMedia/agreable-base-theme",
+  "version": "1.2",
   "type": "wordpress-theme",
   "description": "Wordpress base theme for Shortlist Media.",
   "license": "MIT",
