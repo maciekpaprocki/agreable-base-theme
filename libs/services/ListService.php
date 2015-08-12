@@ -12,11 +12,12 @@ class AgreableListService {
       $lists = array($lists);
     }
 
+
     // Add manual which are live
     $posts = array();
     if ($manualPosts) {
       if (!is_array($manualPosts)) {
-        $manualPosts = array($manualPosts);
+        $manualPosts = $manualPosts->get_posts();
       }
       foreach($manualPosts as $manualPost) {
         if (AgreableArticleService::isLive($manualPost)) {
