@@ -105,6 +105,62 @@ register_field_group(array (
       'disabled' => 0,
       'readonly' => 0,
     ),
+    array(
+      'key' => 'article_basic_show_default_crop_settings',
+      'label' => 'Show crop settings',
+      'name' => 'show_crop_settings',
+      'type' => 'true_false',
+      'instructions' => '',
+      'required' => 0,
+      'conditional_logic' => 0,
+      'wrapper' => array (
+        'width' => '',
+        'class' => 'extra-widget-settings',
+        'id' => '',
+      ),
+      'choices' => array (
+        '' => '',
+      ),
+      'default_value' => 0,
+      'layout' => 'vertical',
+    ),
+    array (
+      'key' => 'article_basic_hero_default_crop',
+      'label' => 'Default crop',
+      'name' => 'article_basic_hero_default_crop',
+      'prefix' => '',
+      'type' => 'select',
+      'instructions' => '',
+      'required' => 0,
+      'conditional_logic' => array (
+        array (
+          array (
+            'field' => 'article_basic_show_default_crop_settings',
+            'operator' => '==',
+            'value' => '1',
+          ),
+        ),
+      ),
+      'wrapper' => array (
+        'width' => '',
+        'class' => '',
+        'id' => '',
+      ),
+      'choices' => array (
+        'square' => 'Square',
+        'portrait' => 'Portrait',
+        'landscape' => 'Landscape',
+        'letterbox' => 'Letterbox (default)'
+      ),
+      'default_value' => 'letterbox',
+      'allow_null' => 0,
+      'multiple' => 0,
+      'ui' => 0,
+      'ajax' => 0,
+      'placeholder' => '',
+      'disabled' => 0,
+      'readonly' => 0,
+    ),
   ),
   'location' => array (
     array (
