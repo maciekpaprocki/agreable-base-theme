@@ -38,6 +38,9 @@ class AgreableBase extends TimberSite {
 
     add_filter('upload_mimes', array($this, 'allowAdditionalUploadMimeTypes'));
 
+    add_filter('tiny_mce_before_init', array($this, 'mce_mod'));
+    add_filter('mce_buttons', array($this, 'my_mce_buttons'));
+
     // Admin Customisations with Jigsaw https://wordpress.org/plugins/jigsaw/
     Jigsaw::add_css('admin-customisations/agreable-admin.css');
     parent::__construct();
@@ -196,6 +199,19 @@ HTML;
     $twig->addExtension(new AgreableTwigReusableWidget());
 
     return $twig;
+  }
+
+  function mce_mod( $init ) {
+    //hide h1
+    $init['block_formats'] = "Paragraph=p; Heading 2=h2; Heading 3=h3; Heading 4=h4; Heading 5=h5; Heading 6=h6; Preformatted=pre";
+    //make sure kitchen sink is displayed by default
+    $init['wordpress_adv_hidden'] = true;
+    return $init;
+  }
+
+  function my_mce_buttons($buttons) {
+    $buttons = array('formatselect','bold','italic','strikethrough','superscript','subscript','underline','forecolor','blockquote','hr','bullist','numlist','alignjustify','alignleft','aligncenter','alignright','link','unlink','pastetext','removeformat','charmap','undo','redo');
+    return $buttons;
   }
 
 }
