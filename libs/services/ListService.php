@@ -22,7 +22,7 @@ class AgreableListService {
       foreach($manualPosts as $manualPost) {
         if (AgreableArticleService::isLive($manualPost)) {
         // if (true) {
-          if (is_integer($manualPost) || get_class($manualPost) === 'WP_Post') {
+          if (is_numeric($manualPost) || get_class($manualPost) === 'WP_Post') {
             $timberPost = new TimberPost($manualPost);
             if (!$timberPost) {
               throw new Exception('Expected Timber to initialise a post');
