@@ -31,6 +31,8 @@ class AgreableBase extends TimberSite {
     add_action('admin_menu', array($this, 'remove_unused_cms_menus'));
     add_action('login_enqueue_scripts', array($this, 'change_login_logo'));
 
+    add_action('admin_menu', array($this, 'wphidenag'));
+
     add_action('acf/save_post', array($this, 'prevent_show_advanced_settings_save'), 1);
     add_filter('acf/update_value/key=article_basic_hero_images', array($this, 'article_image_set_wp_thumbnail'), 10, 3);
 
@@ -41,9 +43,13 @@ class AgreableBase extends TimberSite {
     add_filter('tiny_mce_before_init', array($this, 'mce_mod'));
     add_filter('mce_buttons', array($this, 'my_mce_buttons'));
 
+
     // Admin Customisations with Jigsaw https://wordpress.org/plugins/jigsaw/
     Jigsaw::add_css('admin-customisations/agreable-admin.css');
     parent::__construct();
+  }
+  function wphidenag() {
+    remove_action( 'admin_notices', 'update_nag', 3 );
   }
 
   function allowAdditionalUploadMimeTypes($mimeTypes) {
