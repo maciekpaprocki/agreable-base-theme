@@ -133,11 +133,11 @@ register_field_group(array (
 ));
 
 register_field_group(array (
-  'key' => 'options_group_brand_images',
-  'title' => 'Brand Images',
+  'key' => 'options_group_branding',
+  'title' => 'Branding',
   'fields' => array (
     array (
-      'key' => 'brand_images_favicon_ico',
+      'key' => 'branding_favicon_ico',
       'label' => 'Favicon (.ico file)',
       'name' => 'favicon_ico',
       'type' => 'image',
@@ -161,7 +161,7 @@ register_field_group(array (
       'mime_types' => 'ico',
     ),
     array (
-      'key' => 'brand_images_favicon_png',
+      'key' => 'branding_favicon_png',
       'label' => 'Favicon (.png file)',
       'name' => 'favicon_png',
       'type' => 'image',
@@ -182,10 +182,25 @@ register_field_group(array (
       'max_width' => 256,
       'max_height' => 256,
       'max_size' => '',
-      'mime_types' => '',
+      'mime_types' => 'png',
+    ),
+    array(
+      'key' => 'branding_primary_colour',
+      'label' => 'Brand Primary Colour',
+      'name' => 'primary_colour',
+      'type' => 'color_picker',
+      'instructions' => '',
+      'required' => 0,
+      'conditional_logic' => 0,
+      'wrapper' => array (
+        'width' => '',
+        'class' => '',
+        'id' => '',
+      ),
+      'default_value' => '',
     ),
     array (
-      'key' => 'brand_images_login_image',
+      'key' => 'branding_login_image',
       'label' => 'Wordpress Login Image',
       'name' => 'login_image',
       'type' => 'image',
@@ -230,6 +245,30 @@ register_field_group(array (
   'key' => 'options_group_social_media',
   'title' => 'Social Media',
   'fields' => array (
+    array (
+      'key' => 'social_media_default_share',
+      'label' => 'Default share image',
+      'name' => 'default_share_image',
+      'type' => 'image',
+      'instructions' => '',
+      'required' => 0,
+      'conditional_logic' => 0,
+      'wrapper' => array (
+        'width' => '',
+        'class' => '',
+        'id' => '',
+      ),
+      'return_format' => 'array',
+      'preview_size' => 'full',
+      'library' => 'all',
+      'min_width' => 1200,
+      'min_height' => 630,
+      'min_size' => '',
+      'max_width' => 3000,
+      'max_height' => 1000,
+      'max_size' => '',
+      'mime_types' => '',
+    ),
     array (
       'key' => 'social_media_facebook_page_url',
       'label' => 'Facebook Page (URL)',
