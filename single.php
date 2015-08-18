@@ -17,7 +17,6 @@ $post = new TimberPost();
 $post->author_url = get_author_posts_url( $post->post_author );
 
 $context['post'] = $post;
-$context['wp_title'] .= ' - ' . $post->title();
 
 if ( post_password_required( $post->ID ) ) {
 	Timber::render( 'single-password.twig', $context );
