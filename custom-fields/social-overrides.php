@@ -89,6 +89,13 @@ register_field_group(array (
         'value' => 'post',
       ),
     ),
+    array (
+      array (
+        'param' => 'post_type',
+        'operator' => '==',
+        'value' => 'page',
+      ),
+    ),
   ),
   'menu_order' => 5,
   'position' => 'normal',
