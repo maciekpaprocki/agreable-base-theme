@@ -43,6 +43,7 @@ class AgreableBase extends TimberSite {
     add_filter('tiny_mce_before_init', array($this, 'mce_mod'));
     add_filter('mce_buttons', array($this, 'my_mce_buttons'));
 
+    add_filter( 'acf/render_field/type=flexible_content', array($this, 'add_collapse_all'), 9, 1 );
 
     // Admin Customisations with Jigsaw https://wordpress.org/plugins/jigsaw/
     Jigsaw::add_css('admin-customisations/agreable-admin.css');
@@ -164,7 +165,8 @@ HTML;
     include_once('custom-fields/article-widgets.php');
     include_once("custom-fields/article-related.php");
     include_once("custom-fields/article-layout.php");
-    include_once("custom-fields/article-social.php");
+    include_once('custom-fields/page-basic-details.php');
+    include_once("custom-fields/social-overrides.php");
     include_once('custom-fields/section-widgets.php');
     include_once('custom-fields/list.php');
     include_once('custom-fields/reusable-widgets.php');
@@ -218,6 +220,11 @@ HTML;
   function my_mce_buttons($buttons) {
     $buttons = array('formatselect','bold','italic','strikethrough','superscript','subscript','underline','forecolor','blockquote','hr','bullist','numlist','alignjustify','alignleft','aligncenter','alignright','link','unlink','pastetext','removeformat','charmap','undo','redo');
     return $buttons;
+  }
+
+  function add_collapse_all(){
+    echo '<a href="#" class="acf-fc-collapse-all" onclick="event.preventDefault();toggle_fc(event);">Collapse all</a>';
+    echo "<script type=\"text/javascript\">function toggle_fc(e) {if(window.jQuery) jQuery(e.target).closest('.acf-field-flexible-content').find('.values > .layout[data-toggle=\"open\"] .acf-fc-layout-handle').trigger('click');}</script>";
   }
 
 }
