@@ -1,59 +1,82 @@
 <?php
-
-if ( ! class_exists( 'Timber' ) ) {
+if (!class_exists('Timber')) {
   add_action( 'admin_notices', function() {
-      echo '<div class="error"><p>Timber not activated. Make sure you activate the plugin in <a href="' . esc_url( admin_url( 'plugins.php#timber' ) ) . '">' . esc_url( admin_url( 'plugins.php' ) ) . '</a></p></div>';
-    } );
+    echo '<div class="error"><p>Timber not activated. Make sure you activate the plugin in <a href="' . esc_url( admin_url( 'plugins.php#timber' ) ) . '">' . esc_url( admin_url( 'plugins.php' ) ) . '</a></p></div>';
+  });
   return;
 }
 
 class AgreableBase extends TimberSite {
 
   function __construct() {
-    remove_action('wp_head', 'print_emoji_detection_script', 7);
-    remove_action('wp_print_styles', 'print_emoji_styles');
-
+    // Basic setup
     add_theme_support('post-formats');
     add_theme_support('post-thumbnails');
     add_theme_support('menus');
 
-    add_filter('timber_context', array($this, 'add_to_context'));
-    add_filter('get_twig', array($this, 'add_to_twig'));
-    add_filter('custom_menu_order', array($this, 'custom_menu_order'));
-    add_filter('menu_order', array($this, 'custom_menu_order'));
+    // Setup WordPress
+    $this->configure_wordpress();
 
-    add_action('init', array($this, 'register_taxonomies'));
-    add_action('init', array($this, 'register_post_types'));
-    add_action('init', array($this, 'register_custom_fields'));
+    // Setup Croissant
+    $this->configure_croissant();
+
+    parent::__construct();
+  }
+
+  function configure_wordpress() {
+    // Remove WP from page source
+    remove_action('wp_head', 'print_emoji_detection_script', 7);
+    remove_action('wp_print_styles', 'print_emoji_styles');
     add_action('after_setup_theme', array($this, 'remove_wordpress_meta_from_head'));
     add_action('do_meta_boxes', array($this, 'remove_unused_meta_box'));
 
+    // Remove WP CMS menus
     add_action('admin_menu', array($this, 'remove_unused_cms_menus'));
+
+    // Change login logo
     add_action('login_enqueue_scripts', array($this, 'change_login_logo'));
 
-    add_action('admin_menu', array($this, 'wphidenag'));
+    // Custom menu order
+    add_filter('custom_menu_order', array($this, 'custom_menu_order'));
+    add_filter('menu_order', array($this, 'custom_menu_order'));
 
+    // Allow extra types of file to upload
+    add_filter('upload_mimes', array($this, 'allow_additional_upload_mime_types'));
+
+    // Text editor configuration (TinyMCE)
+    add_filter('tiny_mce_before_init', array($this, 'text_editor_set_formatting_options'));
+    add_filter('mce_buttons', array($this, 'text_editor_set_allowed_buttons'));
+  }
+
+  function configure_croissant() {
+    
+    // Twig/Timber
+    add_filter('timber_context', array($this, 'add_to_timber_context'));
+    add_filter('get_twig', array($this, 'add_twig_extensions'));
+
+    // Custom post types
+    add_action('init', array($this, 'register_post_types'));
+
+    // Advanced Custom Fields (ACF)
+    add_action('init', array($this, 'register_custom_fields'));
+
+    // Disable "show advanced" tickbox from being saved
     add_action('acf/save_post', array($this, 'prevent_show_advanced_settings_save'), 1);
+
+    // Set article featured image on updated hero images
     add_filter('acf/update_value/key=article_basic_hero_images', array($this, 'article_image_set_wp_thumbnail'), 10, 3);
 
+    // Robots.txt disallow on staging
     add_filter('robots_txt', array($this, 'force_robots_txt_disallow_non_production'), 10, 2);
 
-    add_filter('upload_mimes', array($this, 'allowAdditionalUploadMimeTypes'));
-
-    add_filter('tiny_mce_before_init', array($this, 'mce_mod'));
-    add_filter('mce_buttons', array($this, 'my_mce_buttons'));
-
-    add_filter( 'acf/render_field/type=flexible_content', array($this, 'add_collapse_all'), 9, 1 );
+    // Enable collapse all widgets
+    add_filter('acf/render_field/type=flexible_content', array($this, 'add_collapse_all'), 9, 1);
 
     // Admin Customisations with Jigsaw https://wordpress.org/plugins/jigsaw/
     Jigsaw::add_css('admin-customisations/agreable-admin.css');
-    parent::__construct();
-  }
-  function wphidenag() {
-    remove_action( 'admin_notices', 'update_nag', 3 );
   }
 
-  function allowAdditionalUploadMimeTypes($mimeTypes) {
+  function allow_additional_upload_mime_types($mimeTypes) {
     // Extra mimetypes to whitelist
     $mimeTypes['svg'] = 'image/svg+xml';
     return $mimeTypes;
@@ -182,11 +205,7 @@ HTML;
     include_once __DIR__ . '/custom-post-types/tile.php';
   }
 
-  function register_taxonomies() {
-    //this is where you can register custom taxonomies
-  }
-
-  function add_to_context($context) {
+  function add_to_timber_context($context) {
     $context['user'] = new TimberUser();
     $context['menu'] = new TimberMenu('main');
     $context['menu_footer'] = new TimberMenu('footer');
@@ -196,7 +215,7 @@ HTML;
     return $context;
   }
 
-  function add_to_twig( $twig ) {
+  function add_twig_extensions( $twig ) {
     require_once "libs/twig-extension/TwigArticle.php";
     $twig->addExtension(new AgreableTwigArticle());
 
@@ -209,7 +228,7 @@ HTML;
     return $twig;
   }
 
-  function mce_mod( $init ) {
+  function text_editor_set_formatting_options( $init ) {
     //hide h1
     $init['block_formats'] = "Paragraph=p; Heading 2=h2; Heading 3=h3; Heading 4=h4; Heading 5=h5; Heading 6=h6; Preformatted=pre";
     //make sure kitchen sink is displayed by default
@@ -217,7 +236,7 @@ HTML;
     return $init;
   }
 
-  function my_mce_buttons($buttons) {
+  function text_editor_set_allowed_buttons($buttons) {
     $buttons = array('formatselect','bold','italic','strikethrough','superscript','subscript','underline','forecolor','blockquote','hr','bullist','numlist','alignjustify','alignleft','aligncenter','alignright','link','unlink','pastetext','removeformat','charmap','undo','redo');
     return $buttons;
   }
