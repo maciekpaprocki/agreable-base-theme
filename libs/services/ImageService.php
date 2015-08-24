@@ -15,22 +15,16 @@ class AgreableImageService {
     }
 
     $crop_metadata = $image_metadata['sizes'][$crop_name];
-
     $crop_file = $crop_metadata['file'];
-
     $crop_width = $crop_metadata['width'];
-
     $crop_height = $crop_metadata['height'];
 
     // get the filename without file extension
     $crop_size_string = $crop_width . 'x' . $crop_height;
-
     $crop_fileNoExtension = substr($crop_file, 0, strpos($crop_file, $crop_size_string) + strlen($crop_size_string));
-
     $crop_file_no_extension_hyphen = $crop_fileNoExtension . '-';
 
     $upload_directory = wp_upload_dir();
-
     $upload_path = $upload_directory['path'];
 
     $dh  = opendir($upload_path);
@@ -39,8 +33,20 @@ class AgreableImageService {
       $upload_filename_no_extension_hyphen = substr($upload_filename, 0, strlen($crop_file_no_extension_hyphen));
 
       if ($upload_filename_no_extension_hyphen === $crop_file_no_extension_hyphen) {
-        // Remove Timber resize image
-        unlink($upload_path . '/' . $upload_filename);
+
+        // Now capture the image size thats been resized by Timber
+        // e.g. 800x0-c-default.jpg => 800 width, 0 height (proportionate)
+        $upload_filename_end_part = substr($upload_filename, strlen($upload_filename_no_extension_hyphen));
+
+        $resizeMatches = [];
+        preg_match('/([^x]*)x([^-]*)-/', $upload_filename_end_part, $resizeMatches);
+        if (count($resizeMatches) < 2)  {
+          throw new \Exception('Could not retrieve Timber resize information from image ' . $upload_filename);
+        }
+        $resizeWidth = $resizeMatches[1];
+
+        $filepathToResize = $upload_directory['url'] . '/' . $crop_file;
+        TimberImageHelper::resize($filepathToResize, 800, 0, 'default', true);
       }
     }
     closedir($dh);
