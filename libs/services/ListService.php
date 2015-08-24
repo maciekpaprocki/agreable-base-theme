@@ -20,8 +20,8 @@ class AgreableListService {
         $manualPosts = $manualPosts->get_posts();
       }
       foreach($manualPosts as $manualPost) {
-        if (AgreableArticleService::isLive($manualPost)) {
-        // if (true) {
+        if (get_post_status($manualPost) === 'publish') {
+          // if (true) {
           if (is_numeric($manualPost) || get_class($manualPost) === 'WP_Post') {
             $timberPost = new TimberPost($manualPost);
             if (!$timberPost) {
@@ -35,7 +35,6 @@ class AgreableListService {
             self::$dupes[] = $timberPost->id;
           }
         }
-
       }
     }
 

@@ -1,21 +1,5 @@
 <?php
 class AgreableArticleService {
-  public static function isLive($post) {
-    $liveTimestamp = get_field('live_date', $post);
-    $expiryTimestamp = get_field('expiry_date', $post);
-
-    $nowTimestamp = strtotime(date('Ymd H:i:s'));
-
-    if ($liveTimestamp && $nowTimestamp < $liveTimestamp) {
-      return false;
-    }
-
-    if ($expiryTimestamp && $nowTimestamp > $expiryTimestamp) {
-      return false;
-    }
-
-    return true;
-  }
 
   public static function getGalleryItemCount($post) {
     foreach($post->get_field('article_widgets') as $widget) {
