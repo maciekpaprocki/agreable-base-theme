@@ -9,5 +9,17 @@
  * @since    Timber 0.1
  */
 
+require_once "libs/services/ArticleService.php";
+require_once "libs/services/ReusableWidgetService.php";
+
 $context = Timber::get_context();
-Timber::render( '404.twig', $context );
+
+$post = get_page_by_path('404',OBJECT,'post');
+
+if ($post){
+  $timber_post = new TimberPost($post->ID);
+  $context['post'] = $post;
+  Timber::render('single.twig', $context);
+} else {
+  Timber::render( '404.twig', $context );
+}
