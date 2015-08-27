@@ -47,7 +47,7 @@ class AgreableBase extends TimberSite {
 
     // Recrop images clear out Timber resize() images
     include_once __DIR__ . '/libs/services/ImageService.php';
-    add_action('wp_ajax_yoimg_crop_image', array('AgreableImageService', 'delete_timber_resized_images'), 1, 1);
+    add_action('yoimg_post_crop_image', array('AgreableImageService', 'delete_timber_resized_images'), 1, 1);
 
     // Set JPEG quality to 80
     add_filter( 'jpeg_quality', function() { return 80; });
