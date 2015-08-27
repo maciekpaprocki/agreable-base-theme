@@ -150,7 +150,7 @@ register_field_group(array (
         'square' => 'Square',
         'portrait' => 'Portrait',
         'landscape' => 'Landscape',
-        'letterbox' => 'Letterbox (default)'
+        'letterbox' => 'Letterbox'
       ),
       'default_value' => 'landscape',
       'allow_null' => 0,
