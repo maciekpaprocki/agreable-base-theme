@@ -15,13 +15,22 @@ class AgreableImageService {
     }
 
     $crop_metadata = $image_metadata['sizes'][$crop_name];
+
     $crop_file = $crop_metadata['file'];
     $crop_width = $crop_metadata['width'];
     $crop_height = $crop_metadata['height'];
 
     // get the filename without file extension
-    $crop_size_string = $crop_width . 'x' . $crop_height;
-    $crop_fileNoExtension = substr($crop_file, 0, strpos($crop_file, $crop_size_string) + strlen($crop_size_string));
+    $crop_size_ideal_string = $crop_width . 'x' . $crop_height;
+
+    $matches = [];
+    preg_match('/-([0-9]*)x([0-9]*)\./', $crop_file, $matches);
+    if (count($matches) !== 3) {
+      throw new \Exception('Could not infer the image size from filename: ' . $crop_file);
+    }
+    $crop_size_actual_string = $matches[1] . 'x' . $matches[2];
+
+    $crop_fileNoExtension = substr($crop_file, 0, strpos($crop_file, $crop_size_actual_string) + strlen($crop_size_actual_string));
     $crop_file_no_extension_hyphen = $crop_fileNoExtension . '-';
 
     $upload_directory = wp_upload_dir();
@@ -46,7 +55,7 @@ class AgreableImageService {
         $resizeWidth = $resizeMatches[1];
 
         $filepathToResize = $upload_directory['url'] . '/' . $crop_file;
-        TimberImageHelper::resize($filepathToResize, $resizeWidth, 0, 'default', true);
+        TimberImageHelper::resize($filepathToResize, $filepathToResize, 0, 'default', true);
       }
     }
     closedir($dh);
