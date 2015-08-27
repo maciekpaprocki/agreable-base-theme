@@ -46,7 +46,7 @@ class AgreableImageService {
         $resizeWidth = $resizeMatches[1];
 
         $filepathToResize = $upload_directory['url'] . '/' . $crop_file;
-        TimberImageHelper::resize($filepathToResize, 800, 0, 'default', true);
+        TimberImageHelper::resize($filepathToResize, $resizeWidth, 0, 'default', true);
       }
     }
     closedir($dh);
