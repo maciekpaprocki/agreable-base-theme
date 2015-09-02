@@ -77,34 +77,6 @@ register_field_group(array (
       'preview_size' => 'thumbnail',
       'library' => 'all',
     ),
-    array (
-      'key' => 'article_basic_type',
-      'label' => 'Article Type',
-      'name' => 'article_type',
-      'prefix' => '',
-      'type' => 'select',
-      'instructions' => '',
-      'required' => 0,
-      'conditional_logic' => 0,
-      'wrapper' => array (
-        'width' => '',
-        'class' => '',
-        'id' => '',
-      ),
-      'choices' => array (
-        'article' => 'Standard Article'
-      ),
-      'default_value' => array (
-        '' => '',
-      ),
-      'allow_null' => 0,
-      'multiple' => 0,
-      'ui' => 0,
-      'ajax' => 0,
-      'placeholder' => '',
-      'disabled' => 0,
-      'readonly' => 0,
-    ),
     array(
       'key' => 'article_basic_show_hero_settings',
       'label' => 'Show hero customisations',
@@ -187,6 +159,34 @@ register_field_group(array (
       ),
       'default_value' => 1,
       'layout' => 'vertical',
+    ),
+    array (
+      'key' => 'article_basic_type',
+      'label' => 'Article Type',
+      'name' => 'article_type',
+      'prefix' => '',
+      'type' => 'select',
+      'instructions' => '',
+      'required' => 0,
+      'conditional_logic' => 0,
+      'wrapper' => array (
+        'width' => '',
+        'class' => '',
+        'id' => '',
+      ),
+      'choices' => array (
+        'article' => 'Standard Article'
+      ),
+      'default_value' => array (
+        '' => '',
+      ),
+      'allow_null' => 0,
+      'multiple' => 0,
+      'ui' => 0,
+      'ajax' => 0,
+      'placeholder' => '',
+      'disabled' => 0,
+      'readonly' => 0,
     ),
   ),
   'location' => array (
