@@ -134,7 +134,8 @@ class AgreableBase extends TimberSite {
 
   function change_login_logo() {
 
-    $login_image = get_field('login_image', 'options')['url'];
+    $login_image = (isset(get_field('login_image', 'options')['url'])) ? get_field('login_image', 'options')['url'] : "";
+
     echo <<<HTML
         <style type="text/css">
             .login h1 a {
