@@ -4,7 +4,7 @@ require_once "ArticleService.php";
 class AgreableListService {
   protected static $dupes = array();
 
-  public static function getPosts($lists, $manualPosts = null, $limitOverride = null, $offset = 0, $caresAboutDupes = true) {
+  public static function getPosts($lists, $manualPosts = null, $limitOverride = null, $offset = 0, $caresAboutDupes = true, $excludePosts = null) {
 
     $context = Timber::get_context();
 
@@ -46,6 +46,17 @@ class AgreableListService {
     }
 
     $post_not_in = $caresAboutDupes ? self::$dupes : array();
+
+    if($excludePosts){
+      foreach($excludePosts as $excludePost) {
+        $class = get_class($excludePost);
+        if (is_numeric($excludePost)) {
+          $post_not_in[] = $excludePost;
+        } elseif ($class === 'WP_Post' || $class === 'TimberPost'){
+          $post_not_in[] = $excludePost->ID;
+        }
+      }
+    }
 
     $date = date('Ymd H:i:s');
     $postsFromQuery = [];
