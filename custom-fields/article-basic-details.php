@@ -175,10 +175,11 @@ register_field_group(array (
         'id' => '',
       ),
       'choices' => array (
-        'article' => 'Standard Article'
+        'article' => 'Standard Article',
+        'gallery' => 'Gallery'
       ),
       'default_value' => array (
-        '' => '',
+        'article' => 'article',
       ),
       'allow_null' => 0,
       'multiple' => 0,
