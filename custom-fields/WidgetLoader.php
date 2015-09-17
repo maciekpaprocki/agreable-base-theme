@@ -64,8 +64,16 @@ class WidgetLoader {
     }
     $return_array = array();
     $dir = opendir($path);
-    while(($file = readdir($dir)) !== false) {
-      if($file[0] == '.') continue;
+
+    // Order files aphabetically.
+    $files_ordered = array();
+    foreach (new DirectoryIterator($path) as $fileInfo) {
+      if($fileInfo->isDot()) continue;
+      $files_ordered[] =  $fileInfo->getFilename();
+    }
+    sort($files_ordered);
+
+    foreach ($files_ordered as $file) {
       $fullpath = $path . '/' . $file;
       if(is_dir($fullpath))
         $return_array = array_merge($return_array, self::traverseHierarchy($fullpath));
