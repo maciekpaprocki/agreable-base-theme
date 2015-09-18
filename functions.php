@@ -45,6 +45,8 @@ class AgreableBase extends TimberSite {
 
     add_filter( 'acf/render_field/type=flexible_content', array($this, 'add_collapse_all'), 9, 1 );
 
+    add_action('admin_head', array($this, 'admin_css'));
+
     // Recrop images clear out Timber resize() images
     include_once __DIR__ . '/libs/services/ImageService.php';
     add_action('yoimg_post_crop_image', array('AgreableImageService', 'delete_timber_resized_images'), 1, 1);
@@ -55,6 +57,24 @@ class AgreableBase extends TimberSite {
     // Admin Customisations with Jigsaw https://wordpress.org/plugins/jigsaw/
     // Jigsaw::add_css('admin-customisations/agreable-admin.css');
     parent::__construct();
+  }
+  function admin_css() {
+    echo '<style>
+      #post-body.columns-2 #postbox-container-1 {
+        margin-right: 0;
+        top: 98px;
+        position: fixed;
+        right: 20px;
+      } 
+
+      @media only screen and (max-width: 850px) {
+        #post-body.columns-2 #postbox-container-1 {
+          top: 0;
+          position: relative;
+          right: 0;
+       } 
+      }
+    </style>';
   }
   function wphidenag() {
     remove_action( 'admin_notices', 'update_nag', 3 );
