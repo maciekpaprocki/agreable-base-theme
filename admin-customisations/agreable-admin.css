@@ -59,6 +59,8 @@ div.extra-widget-settings .acf-bl > li {
     top: 98px;
     position: fixed;
     right: 20px;
+    max-height:calc(100vh - 118px);
+    overflow-y:scroll;
   } 
 
   @media only screen and (max-width: 850px) {
