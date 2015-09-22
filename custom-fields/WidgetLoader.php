@@ -39,6 +39,18 @@ class WidgetLoader {
     $acf_files = self::traverseHierarchy($directory);
     $acf_files = array_merge($acf_files, self::traversePlugins());
 
+    // Order files aphabetically.
+    usort($acf_files, function($a, $b){
+
+      include $a;
+      $compareA = strtolower($widget_config['label']);
+
+      include $b;
+      $compareB = strtolower($widget_config['label']);
+
+      return strcmp($compareA, $compareB);
+    });
+
     foreach($acf_files as $file) {
       include $file;
 
@@ -63,9 +75,10 @@ class WidgetLoader {
       throw new RuntimeException("Widgets folder not found in: $path");
     }
     $return_array = array();
-    $dir = opendir($path);
-    while(($file = readdir($dir)) !== false) {
-      if($file[0] == '.') continue;
+
+    foreach (new DirectoryIterator($path) as $fileInfo) {
+      if($fileInfo->isDot()) continue;
+      $file =  $fileInfo->getFilename();
       $fullpath = $path . '/' . $file;
       if(is_dir($fullpath))
         $return_array = array_merge($return_array, self::traverseHierarchy($fullpath));
@@ -84,7 +97,7 @@ class WidgetLoader {
     // The keys in $all_plugins is the file path for plugin.
     foreach($all_plugins as $file => $obj){
       $fullpath = plugin_dir_path(WP_CONTENT_DIR.'/plugins/'.$file).'widget-loader-acf.php';
-      // If plugin directory contains acf.php file and is slm prefixed...
+      // If plugin directory contains acf.php file and is agreable prefixed...
       if(substr($file, 0, 8) === "agreable" && file_exists($fullpath)){
         $return_array[] = $fullpath;
       }

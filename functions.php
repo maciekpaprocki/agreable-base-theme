@@ -44,6 +44,7 @@ class AgreableBase extends TimberSite {
     add_filter('mce_buttons', array($this, 'my_mce_buttons'));
 
     add_filter( 'acf/render_field/type=flexible_content', array($this, 'add_collapse_all'), 9, 1 );
+    add_filter( 'acf/update_value/key=article_related_lists', array($this, 'add_default_list'), 11, 3);
 
     // Recrop images clear out Timber resize() images
     include_once __DIR__ . '/libs/services/ImageService.php';
@@ -233,6 +234,28 @@ HTML;
   function add_collapse_all(){
     echo '<a href="#" class="acf-fc-collapse-all" onclick="event.preventDefault();toggle_fc(event);">Collapse all</a>';
     echo "<script type=\"text/javascript\">function toggle_fc(e) {if(window.jQuery) jQuery(e.target).closest('.acf-field-flexible-content').find('.values > .layout[data-toggle=\"open\"] .acf-fc-layout-handle').trigger('click');}</script>";
+  }
+
+  /*
+   * Ensures there is always a default list with an article
+   */
+  function add_default_list($value, $post_id, $field){
+    global $post;
+
+    if($post->post_type !== 'post'){
+      return $value;
+    }
+
+    if(!empty($value)){
+      return $value;
+    }
+
+    $lists = get_posts(array('post_type'=>'list', 'orderby' => 'ID', 'order' => 'ASC'));
+    if($lists){
+      return array($lists[0]->ID);
+    } else {
+      return $value;
+    }
   }
 
 }

@@ -15,13 +15,38 @@ register_field_group(array (
   'title' => 'Related Articles',
   'fields' => array (
     array (
+      'key' => 'article_show_related_articles',
+      'label' => 'Show Related Articles',
+      'name' => 'show_related_articles',
+      'prefix' => '',
+      'type' => 'true_false',
+      'instructions' => 'Whether related articles are displayed at the end of this article.',
+      'required' => 0,
+      'conditional_logic' => 0,
+      'wrapper' => array (
+        'width' => '',
+        'class' => '',
+        'id' => '',
+      ),
+      'message' => '',
+      'default_value' => 1,
+    ),
+    array (
       'key' => 'article_related_limit',
       'label' => 'Amount of items',
       'name' => 'related_limit',
       'type' => 'number',
       'instructions' => '',
       'required' => 0,
-      'conditional_logic' => 0,
+      'conditional_logic' => array (
+        array (
+          array (
+            'field' => 'article_show_related_articles',
+            'operator' => '==',
+            'value' => '1',
+          ),
+        ),
+      ),
       'wrapper' => array (
         'width' => '',
         'class' => '',
@@ -45,7 +70,15 @@ register_field_group(array (
       'type' => 'post_object',
       'instructions' => 'Add a List of content to add if any of the manual related articles are unavailable. ',
       'required' => 0,
-      'conditional_logic' => 0,
+      'conditional_logic' => array (
+        array (
+          array (
+            'field' => 'article_show_related_articles',
+            'operator' => '==',
+            'value' => '1',
+          ),
+        ),
+      ),
       'wrapper' => array (
         'width' => '',
         'class' => '',
@@ -68,7 +101,15 @@ register_field_group(array (
       'type' => 'post_object',
       'instructions' => '',
       'required' => 0,
-      'conditional_logic' => 0,
+      'conditional_logic' => array (
+        array (
+          array (
+            'field' => 'article_show_related_articles',
+            'operator' => '==',
+            'value' => '1',
+          ),
+        ),
+      ),
       'wrapper' => array (
         'width' => '',
         'class' => '',
