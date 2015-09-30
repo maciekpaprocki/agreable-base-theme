@@ -54,7 +54,7 @@ class AgreableBase extends TimberSite {
     add_filter( 'jpeg_quality', function() { return 80; });
 
     // Admin Customisations with Jigsaw https://wordpress.org/plugins/jigsaw/
-    // Jigsaw::add_css('admin-customisations/agreable-admin.css');
+    Jigsaw::add_css('admin-customisations/agreable-admin.css');
     parent::__construct();
   }
   function wphidenag() {
