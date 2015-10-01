@@ -54,6 +54,10 @@ class AgreableBase extends TimberSite {
     // Set JPEG quality to 80
     add_filter( 'jpeg_quality', function() { return 80; });
 
+    // Force WP to crop images to largest possible size based on thumbnail settings.
+    // Previously attempt at cropping would be abandoned if source was too small.
+    add_filter('image_resize_dimensions', array($this, 'image_crop_dimensions'), 10, 6);
+
     // Admin Customisations with Jigsaw https://wordpress.org/plugins/jigsaw/
     // Jigsaw::add_css('admin-customisations/agreable-admin.css');
     parent::__construct();
@@ -65,6 +69,34 @@ class AgreableBase extends TimberSite {
 
   function wphidenag() {
     remove_action( 'admin_notices', 'update_nag', 3 );
+  }
+
+  /*
+   * Forces Wordpress to crop even if the source image is too small
+   */
+  function image_crop_dimensions($default, $orig_w, $orig_h, $new_w, $new_h, $crop){
+
+    if(!$crop){
+      return null;
+    }
+
+    $aspect_ratio = $orig_w / $orig_h;
+    $size_ratio = max($new_w / $orig_w, $new_h / $orig_h);
+
+    $crop_w = round($new_w / $size_ratio);
+    $crop_h = round($new_h / $size_ratio);
+
+    $s_x = floor( ($orig_w - $crop_w) / 2 );
+    $s_y = floor( ($orig_h - $crop_h) / 2 );
+
+    // If the new crop is larger than source crop then do not upscale.
+    // Remove this conditional if we want to upscale the image.
+    if($crop_w < $new_w || $crop_h < $new_h){
+      $new_w = $crop_w;
+      $new_h = $crop_h;
+    }
+
+    return array( 0, 0, (int) $s_x, (int) $s_y, (int) $new_w, (int) $new_h, (int) $crop_w, (int) $crop_h );
   }
 
   function allowAdditionalUploadMimeTypes($mimeTypes) {
