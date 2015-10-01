@@ -33,6 +33,8 @@ class AgreableBase extends TimberSite {
 
     add_action('admin_menu', array($this, 'wphidenag'));
 
+    add_action('after_setup_theme', array($this, 'remove_post_formats'), 11);
+
     add_action('acf/save_post', array($this, 'prevent_show_advanced_settings_save'), 1);
     add_filter('acf/update_value/key=article_basic_hero_images', array($this, 'article_image_set_wp_thumbnail'), 10, 3);
 
@@ -57,6 +59,11 @@ class AgreableBase extends TimberSite {
     // Jigsaw::add_css('admin-customisations/agreable-admin.css');
     parent::__construct();
   }
+
+  function remove_post_formats() {
+      remove_theme_support('post-formats');
+  }
+
   function wphidenag() {
     remove_action( 'admin_notices', 'update_nag', 3 );
   }
