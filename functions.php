@@ -269,14 +269,14 @@ HTML;
 
     // Make sure image is in the WP filesystem in the first place.
     if (strpos($src, $wp_uploads['baseurl']) !== false && file_exists($file_path)){
-        $img_size = getimagesize($file_path);
-        // If attempt to create image that is larger than the original we
-        // return the original src url.
-        if($w > $img_size[0]){
-          return $src;
-        } else {
-          return call_user_func_array('TimberImageHelper::resize', func_get_args());
-        }
+      $img_size = getimagesize($file_path);
+      // If attempt to create image that is larger than the original we
+      // return the original src url.
+      if($w > $img_size[0]){
+        return $src;
+      } else {
+        return call_user_func_array('TimberImageHelper::resize', func_get_args());
+      }
     } else {
       return call_user_func_array('TimberImageHelper::resize', func_get_args());
     }
