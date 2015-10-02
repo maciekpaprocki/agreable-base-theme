@@ -49,10 +49,9 @@ class AgreableListService {
 
     if($excludePosts){
       foreach($excludePosts as $excludePost) {
-        $class = get_class($excludePost);
         if (is_numeric($excludePost)) {
           $post_not_in[] = $excludePost;
-        } elseif ($class === 'WP_Post' || $class === 'TimberPost'){
+        } elseif (get_class($excludePost) === 'WP_Post' || get_class($excludePost) === 'TimberPost'){
           $post_not_in[] = $excludePost->ID;
         }
       }
