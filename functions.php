@@ -59,7 +59,8 @@ class AgreableBase extends TimberSite {
     add_filter('image_resize_dimensions', array($this, 'image_crop_dimensions'), 10, 6);
 
     // Admin Customisations with Jigsaw https://wordpress.org/plugins/jigsaw/
-    // Jigsaw::add_css('admin-customisations/agreable-admin.css');
+    Jigsaw::add_css('admin-customisations/agreable-admin.css');
+
     parent::__construct();
   }
 
