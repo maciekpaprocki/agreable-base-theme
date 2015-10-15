@@ -254,7 +254,33 @@ HTML;
     require_once "libs/twig-extension/TwigReusableWidget.php";
     $twig->addExtension(new AgreableTwigReusableWidget());
 
+    $twig->addFilter( new Twig_SimpleFilter( 'resize', array( $this, 'resize' ) ) );
+
     return $twig;
+  }
+
+  public function resize( $src, $w, $h = 0, $crop = 'default', $force = false ) {
+
+    // Get the upload directory paths
+    $wp_uploads = wp_upload_dir();
+    $wp_base_dir = $wp_uploads['basedir'];
+    $src_path = parse_url($src)['path'];
+    // Replace src path url slugs with file path.
+    $file_path = str_replace(CONTENT_DIR.'/uploads', $wp_base_dir, $src_path);
+
+    // Make sure image is in the WP filesystem in the first place.
+    if (strpos($src, $wp_uploads['baseurl']) !== false && file_exists($file_path)){
+      $img_size = getimagesize($file_path);
+      // If attempt to create image that is larger than the original we
+      // return the original src url.
+      if($img_size !== false && $w > $img_size[0]){
+        return $src;
+      } else {
+        return call_user_func_array('TimberImageHelper::resize', func_get_args());
+      }
+    } else {
+      return call_user_func_array('TimberImageHelper::resize', func_get_args());
+    }
   }
 
   function mce_mod( $init ) {
