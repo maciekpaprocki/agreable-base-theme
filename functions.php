@@ -60,7 +60,10 @@ class AgreableBase extends TimberSite {
 
     // Admin Customisations with Jigsaw https://wordpress.org/plugins/jigsaw/
     Jigsaw::add_css('admin-customisations/agreable-admin.css');
+<<<<<<< HEAD
 
+=======
+>>>>>>> @{-1}
     parent::__construct();
   }
 
@@ -288,6 +291,8 @@ HTML;
     $init['block_formats'] = "Paragraph=p; Heading 2=h2; Heading 3=h3; Heading 4=h4; Heading 5=h5; Heading 6=h6; Preformatted=pre";
     //make sure kitchen sink is displayed by default
     $init['wordpress_adv_hidden'] = true;
+    //force 'plain text paste' to be on
+    $init['paste_as_text'] = true;
     return $init;
   }
 

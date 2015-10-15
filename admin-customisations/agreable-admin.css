@@ -1,5 +1,4 @@
-.extra-widget-settings {
-}
+.extra-widget-settings {}
 
 div.extra-widget-settings .acf-label {
   float: left;
@@ -12,14 +11,15 @@ div.extra-widget-settings .acf-bl > li {
   top: -4px;
 }
 
-.acf-fc-collapse-all{
+.acf-fc-collapse-all {
   float: right;
   position: relative;
   top: -26px;
   padding: 5px 10px;
   text-decoration: none;
 }
-.acf-fc-collapse-all::before{
+
+.acf-fc-collapse-all::before {
   content: '\f140';
   font: normal 14px/14px 'dashicons';
 }
@@ -28,28 +28,28 @@ div.extra-widget-settings .acf-bl > li {
   max-height: 256px;
 }
 
-.postbox-container .hndle{
+.postbox-container .hndle {
   background: #e2e2e2;
-  background: -moz-linear-gradient(left,  #e2e2e2 0%, #e2e2e2 41%, #cccccc 100%);
-  background: -webkit-gradient(linear, left top, right top, color-stop(0%,#e2e2e2), color-stop(41%,#e2e2e2), color-stop(100%,#cccccc));
-  background: -webkit-linear-gradient(left,  #e2e2e2 0%,#e2e2e2 41%,#cccccc 100%);
-  background: -o-linear-gradient(left,  #e2e2e2 0%,#e2e2e2 41%,#cccccc 100%);
-  background: -ms-linear-gradient(left,  #e2e2e2 0%,#e2e2e2 41%,#cccccc 100%);
-  background: linear-gradient(to right,  #e2e2e2 0%,#e2e2e2 41%,#cccccc 100%);
+  background: -moz-linear-gradient(left, #e2e2e2 0%, #e2e2e2 41%, #cccccc 100%);
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%, #e2e2e2), color-stop(41%, #e2e2e2), color-stop(100%, #cccccc));
+  background: -webkit-linear-gradient(left, #e2e2e2 0%, #e2e2e2 41%, #cccccc 100%);
+  background: -o-linear-gradient(left, #e2e2e2 0%, #e2e2e2 41%, #cccccc 100%);
+  background: -ms-linear-gradient(left, #e2e2e2 0%, #e2e2e2 41%, #cccccc 100%);
+  background: linear-gradient(to right, #e2e2e2 0%, #e2e2e2 41%, #cccccc 100%);
 }
 
-#postbox-container-1.postbox-container .hndle{
-  background: #cccccc;
+#postbox-container-1.postbox-container .hndle {
+    background: #cccccc;
 }
 
-.postbox-container .acf-fc-layout-handle{
+.postbox-container .acf-fc-layout-handle {
   background: #2ea2cc;
-  background: -moz-linear-gradient(left,  #2ea2cc 80%, #0073aa 100%);
-  background: -webkit-gradient(linear, left top, right top, color-stop(80%,#2ea2cc), color-stop(100%,#0073aa));
-  background: -webkit-linear-gradient(left,  #2ea2cc 80%,#0073aa 100%);
-  background: -o-linear-gradient(left,  #2ea2cc 80%,#0073aa 100%);
-  background: -ms-linear-gradient(left,  #2ea2cc 80%,#0073aa 100%);
-  background: linear-gradient(to right,  #2ea2cc 80%,#0073aa 100%);
+  background: -moz-linear-gradient(left, #2ea2cc 80%, #0073aa 100%);
+  background: -webkit-gradient(linear, left top, right top, color-stop(80%, #2ea2cc), color-stop(100%, #0073aa));
+  background: -webkit-linear-gradient(left, #2ea2cc 80%, #0073aa 100%);
+  background: -o-linear-gradient(left, #2ea2cc 80%, #0073aa 100%);
+  background: -ms-linear-gradient(left, #2ea2cc 80%, #0073aa 100%);
+  background: linear-gradient(to right, #2ea2cc 80%, #0073aa 100%);
   color: white !important;
 }
 
@@ -63,12 +63,19 @@ div.extra-widget-settings .acf-bl > li {
     overflow-y:scroll;
   } 
 
-  @media only screen and (max-width: 850px) {
-    #post-body.columns-2 #postbox-container-1 {
+@media only screen and (max-width: 850px) {
+  #post-body.columns-2 #postbox-container-1 {
     top: 0;
     position: relative;
     right: 0;
-    }  
+  }  
+}
+
+@media only screen and (max-width: 850px) {
+  #post-body.columns-2 #postbox-container-1 {
+    top: 0;
+    position: relative;
+    right: 0;
   }
 }
 
