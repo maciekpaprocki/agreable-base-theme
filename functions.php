@@ -272,7 +272,7 @@ HTML;
       $img_size = getimagesize($file_path);
       // If attempt to create image that is larger than the original we
       // return the original src url.
-      if($w > $img_size[0]){
+      if($img_size !== false && $w > $img_size[0]){
         return $src;
       } else {
         return call_user_func_array('TimberImageHelper::resize', func_get_args());
