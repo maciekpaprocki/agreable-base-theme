@@ -60,10 +60,7 @@ class AgreableBase extends TimberSite {
 
     // Admin Customisations with Jigsaw https://wordpress.org/plugins/jigsaw/
     Jigsaw::add_css('admin-customisations/agreable-admin.css');
-<<<<<<< HEAD
 
-=======
->>>>>>> @{-1}
     parent::__construct();
   }
 
