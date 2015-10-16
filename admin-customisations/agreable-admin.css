@@ -88,6 +88,9 @@ div.extra-widget-settings .acf-bl > li {
 }
 .acf-fc-popup li{
   border-left: #2B2F31 solid 1px;
+  -webkit-column-break-inside: avoid;
+            page-break-inside: avoid;
+                 break-inside: avoid;
 }
 .acf-fc-popup ul{
   -webkit-column-count: 4;
