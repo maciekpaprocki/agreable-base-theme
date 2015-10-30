@@ -290,6 +290,17 @@ HTML;
     $init['wordpress_adv_hidden'] = true;
     //force 'plain text paste' to be on
     $init['paste_as_text'] = true;
+    //force use of p to wrap all lines
+    $init['forced_root_block'] = 'p';
+    //do not add nbsp around elements such as hr etc
+    $init['apply_source_formatting'] = false;
+    //preserve spaces and linebreaks
+    $init['preformatted'] = true;
+    //force br new lines and not p nbsps
+    $init['force_br_newlines'] = true;
+    //disable the cleanup function
+    $init['wpautop'] = false;
+    
     return $init;
   }
 
