@@ -14,7 +14,7 @@ require_once "libs/services/ReusableWidgetService.php";
 
 $context = Timber::get_context();
 
-$post = get_page_by_path('404',OBJECT,'post');
+$post = get_page_by_path('not-found',OBJECT, array('post', 'page'));
 
 if ($post){
   $timber_post = new TimberPost($post->ID);
