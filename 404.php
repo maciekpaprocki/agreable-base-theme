@@ -18,7 +18,7 @@ $post = get_page_by_path('not-found',OBJECT, 'page');
 
 if ($post){
   $timber_post = new TimberPost($post->ID);
-  $context['post'] = $post;
+  $context['post'] = $timber_post;
   Timber::render('page.twig', $context);
 } else {
   Timber::render( '404.twig', $context );
