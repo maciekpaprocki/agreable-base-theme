@@ -117,7 +117,14 @@ register_field_group(array (
       array (
         'param' => 'post_type',
         'operator' => '==',
-        'value' => 'page',
+        'value' => 'partnership-post',
+      ),
+    ),
+    array (
+      array (
+        'param' => 'post_type',
+        'operator' => '==',
+        'value' => 'features-post',
       ),
     ),
   ),

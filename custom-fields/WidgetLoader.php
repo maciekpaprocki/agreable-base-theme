@@ -31,7 +31,6 @@ class WidgetLoader {
 
   public static function findByUsage($contextType = null, $contentSizes = array()) {
     self::initialize();
-
     $widget_layouts = array();
 
     // get_stylsheet_directory() returns child theme path.
@@ -60,10 +59,10 @@ class WidgetLoader {
               (count($contentSizes) === 0 || in_array($contentSizes, $widget_config["content-sizes"]))
             )
           ){
-
         include_once "BaseWidget.php";
         $widget_config = BaseWidget::addWidgetDeviceTargetting($widget_config);
         $widget_layouts[] = $widget_config;
+
       }
     }
 
@@ -93,9 +92,9 @@ class WidgetLoader {
     if ( ! function_exists( 'get_plugins' ) ) {
       require_once ABSPATH . 'wp-admin/includes/plugin.php';
     }
-    $all_plugins = get_option('active_plugins');
+    $all_plugins = get_plugins();
     // The keys in $all_plugins is the file path for plugin.
-    foreach($all_plugins as $file){
+    foreach($all_plugins as $file => $obj){
       $fullpath = plugin_dir_path(WP_CONTENT_DIR.'/plugins/'.$file).'widget-loader-acf.php';
       // If plugin directory contains acf.php file and is agreable prefixed...
       if(substr($file, 0, 8) === "agreable" && file_exists($fullpath)){

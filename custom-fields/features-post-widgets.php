@@ -2,16 +2,16 @@
 
 include_once "WidgetLoader.php";
 
-$articleWidgets = WidgetLoader::findByUsage('post');
+$articleWidgets = WidgetLoader::findByUsage('features-post');
 
 register_field_group(array (
-  'key' => 'article_widgets_group',
+  'key' => 'features_widgets_group',
   'title' => 'Body',
   'fields' => array (
     array (
-      'key' => 'article_widgets',
+      'key' => 'features_widgets',
       'label' => 'Article Widgets',
-      'name' => 'article_widgets',
+      'name' => 'feautures_widgets',
       'prefix' => '',
       'type' => 'flexible_content',
       'instructions' => 'The body of the article is built up with widgets',
@@ -28,7 +28,7 @@ register_field_group(array (
       array (
         'param' => 'post_type',
         'operator' => '==',
-        'value' => 'post',
+        'value' => 'features-post',
       ),
     ),
   ),
@@ -43,4 +43,3 @@ register_field_group(array (
     2 => 'comments',
   )
 ));
-

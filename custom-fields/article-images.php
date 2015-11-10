@@ -86,14 +86,28 @@ register_field_group(array (
     ),
   ),
   'location' => array (
+  array (
     array (
-      array (
-        'param' => 'post_type',
-        'operator' => '==',
-        'value' => 'post',
-      ),
+      'param' => 'post_type',
+      'operator' => '==',
+      'value' => 'post',
     ),
   ),
+  array (
+    array (
+      'param' => 'post_type',
+      'operator' => '==',
+      'value' => 'partnership-post',
+    ),
+  ),
+  array (
+    array (
+      'param' => 'post_type',
+      'operator' => '==',
+      'value' => 'features-post',
+    ),
+  ),
+),
   'menu_order' => 1,
   'position' => 'normal',
   'style' => 'default',

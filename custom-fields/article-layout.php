@@ -66,12 +66,26 @@ register_field_group(array (
       'default_value' => 1,
     ),
   ),
-  'location' => array (
+    'location' => array (
     array (
       array (
         'param' => 'post_type',
         'operator' => '==',
         'value' => 'post',
+      ),
+    ),
+    array (
+      array (
+        'param' => 'post_type',
+        'operator' => '==',
+        'value' => 'partnership-post',
+      ),
+    ),
+    array (
+      array (
+        'param' => 'post_type',
+        'operator' => '==',
+        'value' => 'features-post',
       ),
     ),
   ),
