@@ -82,7 +82,7 @@ class AgreableBase extends TimberSite {
   }
 
   function edit_post_columns() {
-    add_filter('manage_posts_columns', function() {
+    add_filter('manage_posts_columns', function($columns) {
       unset($columns['comments']);
       return $columns;
     });
