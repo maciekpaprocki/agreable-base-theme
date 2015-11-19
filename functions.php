@@ -33,6 +33,7 @@ class AgreableBase extends TimberSite {
     add_action('admin_menu', array($this, 'wphidenag'));
     add_action('admin_menu', array($this, 'notify_environment'));
 
+    add_action('admin_init', array($this, 'edit_post_columns'));
 
     add_action('after_setup_theme', array($this, 'remove_post_formats'), 11);
 
@@ -78,6 +79,13 @@ class AgreableBase extends TimberSite {
     if (WP_ENV !== 'production') {
       Jigsaw::show_notice("<b>NOTICE</b>: You are currently on the <b>".strtolower(WP_ENV)."</b> site", 'error');
     }
+  }
+
+  function edit_post_columns() {
+    add_filter('manage_posts_columns', function() {
+      unset($columns['comments']);
+      return $columns;
+    });
   }
 
   /*
