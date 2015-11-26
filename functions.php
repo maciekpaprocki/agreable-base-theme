@@ -219,8 +219,6 @@ HTML;
 
     include_once('custom-fields/article-basic-details.php');
     include_once('custom-fields/article-widgets.php');
-    include_once('custom-fields/features-post-widgets.php');
-    include_once('custom-fields/partnership-post-widgets.php');
     include_once("custom-fields/article-related.php");
     include_once("custom-fields/article-layout.php");
     include_once('custom-fields/page-basic-details.php');
