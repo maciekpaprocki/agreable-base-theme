@@ -50,6 +50,8 @@ class AgreableBase extends TimberSite {
     include_once __DIR__ . '/libs/services/ImageService.php';
     add_action('yoimg_post_crop_image', array('AgreableImageService', 'delete_timber_resized_images'), 1, 1);
 
+    add_filter('admin_footer_text', array($this, 'change_admin_footer_text'));
+
     // Set JPEG quality to 80
     add_filter( 'jpeg_quality', function() { return 80; });
 
@@ -236,6 +238,10 @@ HTML;
   function add_collapse_all(){
     echo '<a href="#" class="acf-fc-collapse-all" onclick="event.preventDefault();toggle_fc(event);">Collapse all</a>';
     echo "<script type=\"text/javascript\">function toggle_fc(e) {if(window.jQuery) jQuery(e.target).closest('.acf-field-flexible-content').find('.values > .layout[data-toggle=\"open\"] .acf-fc-layout-handle').trigger('click');}</script>";
+  }
+
+  function change_admin_footer_text () {
+    echo '<p>Powered by Croissant</p>';
   }
 
   /*
