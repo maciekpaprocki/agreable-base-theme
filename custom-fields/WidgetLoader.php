@@ -93,9 +93,9 @@ class WidgetLoader {
     if ( ! function_exists( 'get_plugins' ) ) {
       require_once ABSPATH . 'wp-admin/includes/plugin.php';
     }
-    $all_plugins = get_plugins();
+    $all_plugins = get_option('active_plugins');
     // The keys in $all_plugins is the file path for plugin.
-    foreach($all_plugins as $file => $obj){
+    foreach($all_plugins as $file){
       $fullpath = plugin_dir_path(WP_CONTENT_DIR.'/plugins/'.$file).'widget-loader-acf.php';
       // If plugin directory contains acf.php file and is agreable prefixed...
       if(substr($file, 0, 8) === "agreable" && file_exists($fullpath)){
