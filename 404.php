@@ -14,12 +14,12 @@ require_once "libs/services/ReusableWidgetService.php";
 
 $context = Timber::get_context();
 
-$post = get_page_by_path('404',OBJECT,'post');
+$post = get_page_by_path('not-found',OBJECT, 'page');
 
 if ($post){
   $timber_post = new TimberPost($post->ID);
-  $context['post'] = $post;
-  Timber::render('single.twig', $context);
+  $context['post'] = $timber_post;
+  Timber::render('page.twig', $context);
 } else {
   Timber::render( '404.twig', $context );
 }

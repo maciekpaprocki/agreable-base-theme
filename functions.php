@@ -13,7 +13,6 @@ class AgreableBase extends TimberSite {
     remove_action('wp_head', 'print_emoji_detection_script', 7);
     remove_action('wp_print_styles', 'print_emoji_styles');
 
-    add_theme_support('post-formats');
     add_theme_support('post-thumbnails');
     add_theme_support('menus');
 
@@ -32,6 +31,11 @@ class AgreableBase extends TimberSite {
     add_action('login_enqueue_scripts', array($this, 'change_login_logo'));
 
     add_action('admin_menu', array($this, 'wphidenag'));
+    add_action('admin_menu', array($this, 'notify_environment'));
+
+    add_action('admin_init', array($this, 'edit_post_columns'));
+
+    add_action('after_setup_theme', array($this, 'remove_post_formats'), 11);
 
     add_action('acf/save_post', array($this, 'prevent_show_advanced_settings_save'), 1);
     add_filter('acf/update_value/key=article_basic_hero_images', array($this, 'article_image_set_wp_thumbnail'), 10, 3);
@@ -55,12 +59,63 @@ class AgreableBase extends TimberSite {
     // Set JPEG quality to 80
     add_filter( 'jpeg_quality', function() { return 80; });
 
+    // Force WP to crop images to largest possible size based on thumbnail settings.
+    // Previously attempt at cropping would be abandoned if source was too small.
+    add_filter('image_resize_dimensions', array($this, 'image_crop_dimensions'), 10, 6);
+
     // Admin Customisations with Jigsaw https://wordpress.org/plugins/jigsaw/
     Jigsaw::add_css('admin-customisations/agreable-admin.css');
+
     parent::__construct();
   }
+
+  function remove_post_formats() {
+      remove_theme_support('post-formats');
+  }
+
   function wphidenag() {
     remove_action( 'admin_notices', 'update_nag', 3 );
+  }
+
+  function notify_environment() {
+    if (WP_ENV !== 'production') {
+      Jigsaw::show_notice("<b>NOTICE</b>: You are currently on the <b>".strtolower(WP_ENV)."</b> site", 'error');
+    }
+  }
+
+  function edit_post_columns() {
+    add_filter('manage_posts_columns', function($columns) {
+      unset($columns['comments']);
+      return $columns;
+    });
+  }
+
+  /*
+   * Forces Wordpress to crop even if the source image is too small
+   */
+  function image_crop_dimensions($default, $orig_w, $orig_h, $new_w, $new_h, $crop){
+
+    if(!$crop){
+      return null;
+    }
+
+    $aspect_ratio = $orig_w / $orig_h;
+    $size_ratio = max($new_w / $orig_w, $new_h / $orig_h);
+
+    $crop_w = round($new_w / $size_ratio);
+    $crop_h = round($new_h / $size_ratio);
+
+    $s_x = floor( ($orig_w - $crop_w) / 2 );
+    $s_y = floor( ($orig_h - $crop_h) / 2 );
+
+    // If the new crop is larger than source crop then do not upscale.
+    // Remove this conditional if we want to upscale the image.
+    if($crop_w < $new_w || $crop_h < $new_h){
+      $new_w = $crop_w;
+      $new_h = $crop_h;
+    }
+
+    return array( 0, 0, (int) $s_x, (int) $s_y, (int) $new_w, (int) $new_h, (int) $crop_w, (int) $crop_h );
   }
 
   function allowAdditionalUploadMimeTypes($mimeTypes) {
@@ -217,7 +272,33 @@ HTML;
     require_once "libs/twig-extension/TwigReusableWidget.php";
     $twig->addExtension(new AgreableTwigReusableWidget());
 
+    $twig->addFilter( new Twig_SimpleFilter( 'resize', array( $this, 'resize' ) ) );
+
     return $twig;
+  }
+
+  public function resize( $src, $w, $h = 0, $crop = 'default', $force = false ) {
+
+    // Get the upload directory paths
+    $wp_uploads = wp_upload_dir();
+    $wp_base_dir = $wp_uploads['basedir'];
+    $src_path = parse_url($src)['path'];
+    // Replace src path url slugs with file path.
+    $file_path = str_replace(CONTENT_DIR.'/uploads', $wp_base_dir, $src_path);
+
+    // Make sure image is in the WP filesystem in the first place.
+    if (strpos($src, $wp_uploads['baseurl']) !== false && file_exists($file_path)){
+      $img_size = getimagesize($file_path);
+      // If attempt to create image that is larger than the original we
+      // return the original src url.
+      if($img_size !== false && $w > $img_size[0]){
+        return $src;
+      } else {
+        return call_user_func_array('TimberImageHelper::resize', func_get_args());
+      }
+    } else {
+      return call_user_func_array('TimberImageHelper::resize', func_get_args());
+    }
   }
 
   function mce_mod( $init ) {
