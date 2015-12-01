@@ -4,6 +4,7 @@ class AgreableTwigArticle extends Twig_Extension {
   public function getFunctions() {
     return array(
       new Twig_SimpleFunction('get_gallery_item_count', array('AgreableArticleService','getGalleryItemCount')),
+      new Twig_SimpleFunction('check_widget_exists', array('AgreableArticleService','getWidgetFromPost'))
     );
   }
   public function getFilters() {
