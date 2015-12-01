@@ -10,6 +10,15 @@ class AgreableArticleService {
     return 0;
   }
 
+  public static function getWidgetFromPost($post, $widget_name) {
+    foreach($post->get_field('article_widgets') as $widget) {
+      if ($widget['acf_fc_layout'] === $widget_name) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   protected static function getWidgetFromSystemPage($systemPostId) {
     $page = new TimberPost($systemPostId); // Load the page which contains the widget
     if ($page->post_title && count($page->widget) === 1) {
