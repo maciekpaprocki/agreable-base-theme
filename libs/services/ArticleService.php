@@ -10,8 +10,11 @@ class AgreableArticleService {
     return 0;
   }
 
-  public static function getWidgetFromPost($post, $widget_name) {
-    foreach($post->get_field('article_widgets') as $widget) {
+  public static function getWidgetFromPost($post, $widget_name, $post_type) {
+    if ($post_type == NULL) {
+      return false;
+    }
+    foreach($post->get_field($post_type) as $widget) {
       if ($widget['acf_fc_layout'] === $widget_name) {
         return true;
       }
