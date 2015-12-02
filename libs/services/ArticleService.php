@@ -11,7 +11,23 @@ class AgreableArticleService {
   }
 
   public static function getWidgetFromPost($post, $widget_name) {
-    foreach($post->get_field('article_widgets') as $widget) {
+    $post_type = get_post_type($post);
+
+    switch ($post_type) {
+      case 'post':
+        $widget_type = 'article_widgets';
+        break;
+      case 'partnership-post':
+        $widget_type = 'partnership_widgets';
+        break;
+      case 'features-post':
+        $widget_type = 'features_widgets';
+        break;
+      default:
+        return false;
+    }
+
+    foreach($post->get_field($widget_type) as $widget) {
       if ($widget['acf_fc_layout'] === $widget_name) {
         return true;
       }
