@@ -88,11 +88,12 @@ class AgreableListService {
         // 'orderby' => 'rand',
         'orderby' => 'date',
         'order' => 'DESC',
-        // Meta query checks for presence of end_time & start_time.
-        // If they don't exist then we assume this post doesn't have
-        // any other expiry rules (i.e. isn't a promo or similar).
-        // If it does have both then we check that time() is within these
-        // bounds. Assumes that meta_value is stored as unix timestamp (seconds).
+        // Meta query checks for presence of override_end_time &
+        // override_start_time. If they don't exist then we assume
+        // this post doesn't have  any other expiry rules (i.e.
+        // isn't a promo or similar). If it does have both then we
+        // check that time() is within these bounds. Assumes that
+        // meta_value is stored as unix timestamp (seconds).
         'meta_query'  => array(
           'relation'    => 'AND',
           array(
@@ -100,12 +101,12 @@ class AgreableListService {
             array(
               'relation'    => 'AND',
               array(
-                'key'   => 'end_time',
+                'key'   => 'override_end_time',
                 'compare' => 'NOT EXISTS',
                 'value'   => '1'
               ),
               array(
-                'key'   => 'start_time',
+                'key'   => 'override_start_time',
                 'compare' => 'NOT EXISTS',
                 'value'   => '1'
               ),
@@ -113,54 +114,37 @@ class AgreableListService {
             array(
               'relation'    => 'AND',
               array(
-                'key'   => 'end_time',
-                'compare' => '>=',
-                'value'   => time()
+                'relation'    => 'OR',
+                array(
+                  'key'   => 'override_end_time',
+                  'compare' => '>=',
+                  'value'   => time()
+                ),
+                array(
+                  'key'   => 'override_end_time',
+                  'compare' => '==',
+                  'value'   => '',
+                ),
               ),
               array(
-                'key'   => 'start_time',
-                'compare' => '<=',
-                'value'   => time()
+                'relation'    => 'OR',
+                array(
+                  'key'   => 'override_start_time',
+                  'compare' => '<=',
+                  'value'   => time()
+                ),
+                array(
+                  'key'   => 'override_start_time',
+                  'compare' => '==',
+                  'value'   => '',
+                )
               ),
             ),
           ),
         )
-        // 'meta_query'  => array(
-        //   'relation'    => 'AND',
-        //   array(
-        //     'relation'    => 'OR',
-        //     array(
-        //       'key'   => 'live_date',
-        //       'compare' => '<=',
-        //       'value'   => strtotime($date),
-        //     ),
-        //     array(
-        //       'key'   => 'live_date',
-        //       'compare' => '==',
-        //       'value'   => '',
-        //     )
-        //   ),
-        //   array(
-        //     'relation'    => 'OR',
-        //     array(
-        //       'key'   => 'expiry_date',
-        //       'compare' => '>=',
-        //       'value'   => strtotime($date),
-        //     ),
-        //     array(
-        //       'key'   => 'expiry_date',
-        //       'compare' => '==',
-        //       'value'   => '',
-        //     )
-        //   )
-        // )
-
       );
 
       $the_query = new WP_Query( $query_args );
-      print "<!--";
-      print_r($the_query);
-      print "-->";
       $postsFromQuery = array_merge($postsFromQuery, $the_query->posts);
     }
 
