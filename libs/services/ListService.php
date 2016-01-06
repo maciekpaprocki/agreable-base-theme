@@ -88,6 +88,43 @@ class AgreableListService {
         // 'orderby' => 'rand',
         'orderby' => 'date',
         'order' => 'DESC',
+        // Meta query checks for presence of end_time & start_time.
+        // If they don't exist then we assume this post doesn't have
+        // any other expiry rules (i.e. isn't a promo or similar).
+        // If it does have both then we check that time() is within these
+        // bounds. Assumes that meta_value is stored as unix timestamp (seconds).
+        'meta_query'  => array(
+          'relation'    => 'AND',
+          array(
+            'relation'    => 'OR',
+            array(
+              'relation'    => 'AND',
+              array(
+                'key'   => 'end_time',
+                'compare' => 'NOT EXISTS',
+                'value'   => '1'
+              ),
+              array(
+                'key'   => 'start_time',
+                'compare' => 'NOT EXISTS',
+                'value'   => '1'
+              ),
+            ),
+            array(
+              'relation'    => 'AND',
+              array(
+                'key'   => 'end_time',
+                'compare' => '>=',
+                'value'   => time()
+              ),
+              array(
+                'key'   => 'start_time',
+                'compare' => '<=',
+                'value'   => time()
+              ),
+            ),
+          ),
+        )
         // 'meta_query'  => array(
         //   'relation'    => 'AND',
         //   array(
@@ -121,6 +158,9 @@ class AgreableListService {
       );
 
       $the_query = new WP_Query( $query_args );
+      print "<!--";
+      print_r($the_query);
+      print "-->";
       $postsFromQuery = array_merge($postsFromQuery, $the_query->posts);
     }
 
