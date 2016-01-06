@@ -61,7 +61,46 @@ class AgreableBase extends TimberSite {
     // Admin Customisations with Jigsaw https://wordpress.org/plugins/jigsaw/
     Jigsaw::add_css('admin-customisations/agreable-admin.css');
 
+    // Add promo start and end time to post.
+    add_filter('acf/update_value/name=article_widgets', array($this, 'update_promo_time'), 200, 3);
+
     parent::__construct();
+  }
+
+  /*
+   * Adds start and end time from promo to
+   * post object. If promo doesn't exist in widgets we delete
+   * postmeta.
+   */
+  function update_promo_time($value, $post_id, $field){
+    global $post;
+
+    $promo_id = null;
+    // Using the POST superglobal because we can't rely on the get_field()
+    // to be up to date. This might be in the middle of updating the value
+    // we are using so shouldn't pull from the DB.
+    foreach($_POST['acf']['article_widgets'] as $w){
+      if($w['acf_fc_layout'] === 'promo_plugin'){
+        $promo_id = $w['widget_promo_promo_post'];
+      }
+    }
+
+    // If there  is a promo on this post update time.
+    if($promo_id){
+      $start_time = get_field('start_time', $promo_id, false);
+      $end_time = get_field('end_time', $promo_id,  false);
+      update_field('end_time', $end_time, $post->ID);
+      update_field('start_time', $start_time, $post->ID);
+    } else {
+      // Meta queries are made based on presence or absence of field
+      // so we have to delete the items from the db.
+      delete_post_meta($post->ID, 'end_time');
+      delete_post_meta($post->ID, 'start_time');
+      delete_post_meta($post->ID, '_end_time');
+      delete_post_meta($post->ID, '_start_time');
+    }
+
+    return $value;
   }
 
   function remove_post_formats() {
