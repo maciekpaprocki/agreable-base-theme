@@ -88,36 +88,60 @@ class AgreableListService {
         // 'orderby' => 'rand',
         'orderby' => 'date',
         'order' => 'DESC',
-        // 'meta_query'  => array(
-        //   'relation'    => 'AND',
-        //   array(
-        //     'relation'    => 'OR',
-        //     array(
-        //       'key'   => 'live_date',
-        //       'compare' => '<=',
-        //       'value'   => strtotime($date),
-        //     ),
-        //     array(
-        //       'key'   => 'live_date',
-        //       'compare' => '==',
-        //       'value'   => '',
-        //     )
-        //   ),
-        //   array(
-        //     'relation'    => 'OR',
-        //     array(
-        //       'key'   => 'expiry_date',
-        //       'compare' => '>=',
-        //       'value'   => strtotime($date),
-        //     ),
-        //     array(
-        //       'key'   => 'expiry_date',
-        //       'compare' => '==',
-        //       'value'   => '',
-        //     )
-        //   )
-        // )
-
+        // Meta query checks for presence of override_end_time &
+        // override_start_time. If they don't exist then we assume
+        // this post doesn't have  any other expiry rules (i.e.
+        // isn't a promo or similar). If it does have both then we
+        // check that time() is within these bounds. Assumes that
+        // meta_value is stored as unix timestamp (seconds).
+        'meta_query'  => array(
+          'relation'    => 'AND',
+          array(
+            'relation'    => 'OR',
+            array(
+              'relation'    => 'AND',
+              array(
+                'key'   => 'override_end_time',
+                'compare' => 'NOT EXISTS',
+                'value'   => '1'
+              ),
+              array(
+                'key'   => 'override_start_time',
+                'compare' => 'NOT EXISTS',
+                'value'   => '1'
+              ),
+            ),
+            array(
+              'relation'    => 'AND',
+              array(
+                'relation'    => 'OR',
+                array(
+                  'key'   => 'override_end_time',
+                  'compare' => '>=',
+                  'value'   => time()
+                ),
+                array(
+                  'key'   => 'override_end_time',
+                  'compare' => '==',
+                  'value'   => '',
+                ),
+              ),
+              array(
+                'relation'    => 'OR',
+                array(
+                  'key'   => 'override_start_time',
+                  'compare' => '<=',
+                  'value'   => time()
+                ),
+                array(
+                  'key'   => 'override_start_time',
+                  'compare' => '==',
+                  'value'   => '',
+                )
+              ),
+            ),
+          ),
+        )
       );
 
       $the_query = new WP_Query( $query_args );

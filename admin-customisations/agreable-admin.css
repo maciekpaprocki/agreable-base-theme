@@ -61,14 +61,14 @@ div.extra-widget-settings .acf-bl > li {
     right: 20px;
     max-height:calc(100vh - 118px);
     overflow-y:scroll;
-  } 
+  }
 
 @media only screen and (max-width: 850px) {
   #post-body.columns-2 #postbox-container-1 {
     top: 0;
     position: relative;
     right: 0;
-  }  
+  }
 }
 
 @media only screen and (max-width: 850px) {
@@ -99,4 +99,8 @@ div.extra-widget-settings .acf-bl > li {
   -webkit-column-gap: 0;
   -moz-column-gap: 0;
   column-gap: 0;
+}
+
+.acf-hide {
+  display: none;
 }
