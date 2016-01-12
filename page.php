@@ -44,6 +44,15 @@ if ($_GET["format"] === 'json') {
   return AgreableApiService::handleRequest("section", $post, $currentPage);
 }
 
+if($post->object_type === 'term'){
+  $has_widgets = count(get_field('rows', 'category_'.$post->ID)) > 0;
+  if(!$has_widgets){
+    $context['manual_posts'] = Timber::get_posts();
+    Timber::render('category-default.twig', $context, false);
+    return;
+  }
+}
+
 if ($_GET['format'] === 'widgets-only') {
   Timber::render('partials/section-widgets.twig', $context, false);
 } else {
