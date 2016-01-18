@@ -44,6 +44,18 @@ if ($_GET["format"] === 'json') {
   return AgreableApiService::handleRequest("section", $post, $currentPage);
 }
 
+// A category archive page with no widgets gets populated
+// with latest posts from this category.
+if($post->object_type === 'term'){
+  $has_widgets = count(get_field('rows', 'category_'.$post->ID)) > 0;
+  if(!$has_widgets){
+    // 'manual_posts' is the variable being accessed by the Grid widget.
+    $context['manual_posts'] = Timber::get_posts();
+    Timber::render('category-default.twig', $context, false);
+    return;
+  }
+}
+
 if ($_GET['format'] === 'widgets-only') {
   Timber::render('partials/section-widgets.twig', $context, false);
 } else {
