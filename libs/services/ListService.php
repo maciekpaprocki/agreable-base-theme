@@ -145,7 +145,19 @@ class AgreableListService {
       );
 
       $the_query = new WP_Query( $query_args );
+      // Merge each lists resulting post IDs into
+      // $post_not_in to avoid dupes.
+      $post_not_in = array_merge($post_not_in, array_map(
+        function($p){ return $p->ID; },
+        $the_query->posts
+      ));
       $postsFromQuery = array_merge($postsFromQuery, $the_query->posts);
+      // Reduce the limit by amout of posts received.
+      $limitOverride -= count($the_query->posts);
+      if($limitOverride <= 0){
+        break;
+      }
+
     }
 
     foreach ($postsFromQuery as $post) {
