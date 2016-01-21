@@ -97,8 +97,9 @@ register_field_group(array (
     9 => 'page_attributes',
     10 => 'featured_image',
     11 => 'categories',
-    12 => 'tags',
-    13 => 'send-trackbacks',
+    10 => 'featured_image',
+    11 => 'tags',
+    12 => 'send-trackbacks'
   ),
 ));
 
