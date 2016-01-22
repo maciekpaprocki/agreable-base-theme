@@ -176,7 +176,8 @@ register_field_group(array (
       ),
       'choices' => array (
         'article' => 'Standard Article',
-        'gallery' => 'Gallery'
+        'gallery' => 'Gallery',
+        'no-hero' => 'Hero Image Hidden'
       ),
       'default_value' => array (
         'article' => 'article',
