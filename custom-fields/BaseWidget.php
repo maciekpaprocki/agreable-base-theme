@@ -57,6 +57,29 @@ class BaseWidget {
       'layout' => 'vertical',
     );
 
+    $widgetConfig["sub_fields"][] = array (
+      'key' => $widgetConfig["key"] . '_background_colour',
+      'label' => 'Background Colour',
+      'name' => 'overall_background_colour',
+      'type' => 'color_picker',
+      'required' => 0,
+      'conditional_logic' => array (
+        array (
+          array (
+            'field' => $widgetConfig["key"] . '_show_advanced_widget_settings',
+            'operator' => '==',
+            'value' => '1',
+          ),
+        ),
+      ),
+      'wrapper' => array (
+        'width' => '',
+        'class' => '',
+        'id' => '',
+      ),
+      'layout' => 'vertical',
+    );
+
     return $widgetConfig;
   }
 }
