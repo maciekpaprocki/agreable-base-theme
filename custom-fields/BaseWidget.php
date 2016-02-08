@@ -57,6 +57,11 @@ class BaseWidget {
       'layout' => 'vertical',
     );
 
-    return $widgetConfig;
+    if(has_filter('add_custom_advanced_settings')) {
+      $widgetConfig = apply_filters('add_custom_advanced_settings', $widgetConfig);
+      return $widgetConfig;
+    }else{
+      return $widgetConfig;
+    }
   }
 }
