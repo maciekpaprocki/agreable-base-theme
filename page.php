@@ -47,8 +47,10 @@ if ($_GET["format"] === 'json') {
 // A category archive page with no widgets gets populated
 // with latest posts from this category.
 if($post->object_type === 'term'){
-  $has_widgets = count(get_field('rows', 'category_'.$post->ID)) > 0;
-  if(!$has_widgets){
+
+  $term = new TimberTerm($post->ID);
+
+  if(!$term->rows || (isset($term->rows[0]['widgets']) && $term->rows[0]['widgets'] === false)) {
     // 'manual_posts' is the variable being accessed by the Grid widget.
     $context['manual_posts'] = Timber::get_posts();
     Timber::render('category-default.twig', $context, false);
