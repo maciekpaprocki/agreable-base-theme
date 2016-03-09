@@ -10,7 +10,7 @@ class AgreableArticleService {
     return 0;
   }
 
-  public static function getWidgetFromPost($post, $widget_name) {
+  public static function getWidgetByNameFromPost($post, $widget_name, $return_multiple_matching = false) {
     $post_type = get_post_type($post);
 
     switch ($post_type) {
@@ -27,10 +27,27 @@ class AgreableArticleService {
         return false;
     }
 
+    $matched_widgets = [];
     foreach($post->get_field($widget_type) as $widget) {
       if ($widget['acf_fc_layout'] === $widget_name) {
-        return true;
+        $matched_widgets[] = $widget;
       }
+    }
+
+    if (count($matched_widgets) === 0) {
+      return null;
+    }
+
+    if ($return_multiple_matching) {
+      return $matched_widgets;
+    } else {
+      return $matched_widgets[0];
+    }
+  }
+
+  public static function checkWidgetExists($post, $widget_name) {
+    if (self::getWidgetByNameFromPost($post, $widget_name)) {
+      return true;
     }
     return false;
   }
