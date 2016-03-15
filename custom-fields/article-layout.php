@@ -10,7 +10,7 @@ foreach($acf_groups as $group){
 
 if( function_exists('register_field_group') ):
 
-register_field_group(array (
+$layout_acf = array (
   'key' => $key,
   'title' => 'Layout',
   'fields' => array (
@@ -81,6 +81,9 @@ register_field_group(array (
   'label_placement' => 'top',
   'instruction_placement' => 'label',
   'hide_on_screen' => '',
-));
+);
+
+$layout_acf = apply_filters('agreable_base_theme_layout_acf', $layout_acf);
+register_field_group($layout_acf);
 
 endif;

@@ -1,7 +1,7 @@
 <?php
 if( function_exists('register_field_group') ):
 
-register_field_group(array (
+$list_acf = array(
   'key' => 'list_group',
   'title' => 'List',
   'fields' => array (
@@ -116,6 +116,9 @@ register_field_group(array (
   'label_placement' => 'top',
   'instruction_placement' => 'label',
   'hide_on_screen' => '',
-));
+);
+
+$list_acf = apply_filters('agreable_base_theme_list_acf', $list_acf);
+register_field_group($list_acf);
 
 endif;

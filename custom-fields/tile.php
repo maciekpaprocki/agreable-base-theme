@@ -1,7 +1,7 @@
 <?php
 if( function_exists('register_field_group') ):
 
-register_field_group(array (
+$tile_acf = array(
   'key' => 'tile_group',
   'title' => 'Tile',
   'fields' => array (
@@ -99,6 +99,10 @@ register_field_group(array (
     11 => 'tags',
     12 => 'send-trackbacks'
   ),
-));
+);
+
+$tile_acf = apply_filters('agreable_base_theme_tile_acf', $tile_acf);
+register_field_group($tile_acf);
+
 
 endif;

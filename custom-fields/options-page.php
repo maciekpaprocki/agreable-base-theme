@@ -1,7 +1,7 @@
 <?php
 if( function_exists('register_field_group') ):
 
-register_field_group(array (
+$options_page_sidebar_acf = array(
   'key' => 'options_group_sidebar',
   'title' => 'Site Overides',
   'fields' => array (
@@ -42,9 +42,12 @@ register_field_group(array (
   'label_placement' => 'top',
   'instruction_placement' => 'label',
   'hide_on_screen' => '',
-));
+);
 
-register_field_group(array (
+$options_page_sidebar_acf = apply_filters('agreable_base_theme_options_page_sidebar_acf', $options_page_sidebar_acf);
+register_field_group($options_page_sidebar_acf);
+
+$options_page_settings_acf = array(
   'key' => 'options_group_settings',
   'title' => 'Tracking, Data & Third Party settings',
   'fields' => array (
@@ -130,9 +133,12 @@ register_field_group(array (
   'label_placement' => 'top',
   'instruction_placement' => 'label',
   'hide_on_screen' => '',
-));
+);
 
-register_field_group(array (
+$options_page_settings_acf = apply_filters('agreable_base_theme_options_page_settings_acf', $options_page_settings_acf);
+register_field_group($options_page_settings_acf);
+
+$options_page_branding_acf = array(
   'key' => 'options_group_branding',
   'title' => 'Branding',
   'fields' => array (
@@ -239,9 +245,11 @@ register_field_group(array (
   'label_placement' => 'top',
   'instruction_placement' => 'label',
   'hide_on_screen' => '',
-));
+);
+$options_page_branding_acf = apply_filters('agreable_base_theme_options_page_branding_acf', $options_page_branding_acf);
+register_field_group($options_page_branding_acf);
 
-register_field_group(array (
+$options_page_social_media_acf = array (
   'key' => 'options_group_social_media',
   'title' => 'Social Media',
   'fields' => array (
@@ -343,6 +351,9 @@ register_field_group(array (
   'label_placement' => 'top',
   'instruction_placement' => 'label',
   'hide_on_screen' => '',
-));
+);
+
+$options_page_social_media_acf = apply_filters('agreable_base_theme_options_page_social_media_acf', $options_page_social_media_acf);
+register_field_group($options_page_social_media_acf);
 
 endif;

@@ -7,7 +7,7 @@ include_once "WidgetLoader.php";
 
 $widgets = WidgetLoader::findByUsage();
 
-register_field_group(array (
+$reusable_widgets_acf = array(
   'key' => 'reusable_widgets_group',
   'title' => 'Reusable widgets',
   'fields' => array (
@@ -49,4 +49,7 @@ register_field_group(array (
     0 => 'the_content',
   )
 
-));
+);
+
+$reusable_widgets_acf = apply_filters('agreable_base_theme_reusable_widgets_acf', $reusable_widgets_acf);
+register_field_group($reusable_widgets_acf);

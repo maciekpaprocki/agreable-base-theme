@@ -4,7 +4,7 @@ include_once "WidgetLoader.php";
 
 $articleWidgets = WidgetLoader::findByUsage("post");
 
-register_field_group(array (
+$widgets_acf = array(
   'key' => 'article_widgets_group',
   'title' => 'Body',
   'fields' => array (
@@ -42,5 +42,8 @@ register_field_group(array (
     1 => 'discussion',
     2 => 'comments',
   )
-));
+);
+
+$widgets_acf = apply_filters('agreable_base_theme_widgets_acf', $widgets_acf);
+register_field_group($widgets_acf);
 

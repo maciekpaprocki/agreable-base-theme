@@ -11,7 +11,7 @@ $widget_layouts_sidebar = WidgetLoader::findByUsage("section", "sidebar");
 
 if(get_field('enable_sidebar', 'option')){
   /* WITH SIDEBAR */
-  register_field_group(array (
+  $section_widgets_acf = array(
     'key' => 'section_widgets_group',
     'title' => 'Section widgets',
     'fields' => array (
@@ -138,10 +138,10 @@ if(get_field('enable_sidebar', 'option')){
       0 => 'the_content',
     )
 
-  ));
+  );
 }else{
   /* WITHOUT SIDEBAR */
-  register_field_group(array (
+  $section_widgets_acf = array(
     'key' => 'section_widgets_group',
     'title' => 'Section widgets',
     'fields' => array (
@@ -211,5 +211,9 @@ if(get_field('enable_sidebar', 'option')){
       0 => 'the_content',
     )
 
-  ));
+  );
+
 }
+
+$section_widgets_acf = apply_filters('agreable_base_theme_section_widgets_acf', $section_widgets_acf);
+register_field_group($section_widgets_acf);

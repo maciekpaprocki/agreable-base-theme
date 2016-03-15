@@ -10,7 +10,7 @@ foreach($acf_groups as $group){
 
 if( function_exists('register_field_group') ):
 
-register_field_group(array (
+$related_acf = array (
   'key' => $key,
   'title' => 'Related Articles',
   'fields' => array (
@@ -141,6 +141,9 @@ register_field_group(array (
   'label_placement' => 'top',
   'instruction_placement' => 'label',
   'hide_on_screen' => '',
-));
+);
+
+$related_acf = apply_filters('agreable_base_theme_related_acf', $related_acf);
+register_field_group($related_acf);
 
 endif;

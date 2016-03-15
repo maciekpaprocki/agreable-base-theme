@@ -10,7 +10,7 @@ foreach($acf_groups as $group){
 
 if( function_exists('register_field_group') ):
 
-register_field_group(array (
+$page_basic_options_acf = array(
   'key' => $key,
   'title' => 'Basic Details',
   'fields' => array (
@@ -76,6 +76,9 @@ register_field_group(array (
   'hide_on_screen' => array (
     0 => 'the_content',
   ),
-));
+);
+
+$page_basic_options_acf = apply_filters('agreable_base_theme_page_basic_options_acf', $page_basic_options_acf);
+register_field_group($page_basic_options_acf);
 
 endif;
