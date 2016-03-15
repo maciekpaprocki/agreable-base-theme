@@ -10,7 +10,7 @@ foreach($acf_groups as $group){
 
 if( function_exists('register_field_group') ):
 
-register_field_group(array (
+$social_overrides_acf = array (
   'key' => $key,
   'title' => 'Social Media',
   'fields' => array (
@@ -127,6 +127,9 @@ register_field_group(array (
   'label_placement' => 'top',
   'instruction_placement' => 'label',
   'hide_on_screen' => '',
-));
+);
+
+$social_overrides_acf = apply_filters('agreable_base_theme_social_media_acf', $social_overrides_acf);
+register_field_group($social_overrides_acf);
 
 endif;
