@@ -266,6 +266,9 @@ HTML;
     require_once "libs/twig-extension/TwigArticle.php";
     $twig->addExtension(new AgreableTwigArticle());
 
+    require_once "libs/twig-extension/TwigCategory.php";
+    $twig->addExtension(new AgreableTwigCategory());
+
     require_once "libs/twig-extension/TwigList.php";
     $twig->addExtension(new AgreableTwigList());
 
