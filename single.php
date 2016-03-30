@@ -10,6 +10,7 @@
  */
 
 require_once "libs/services/ArticleService.php";
+require_once "libs/services/CategoryService.php";
 require_once "libs/services/ReusableWidgetService.php";
 
 $context = Timber::get_context();
@@ -17,6 +18,7 @@ $post = new TimberPost();
 $post->author_url = get_author_posts_url( $post->post_author );
 
 $context['post'] = $post;
+$context['category_hierarchy'] = AgreableCategoryService::get_post_category_hierarchy($post);
 
 if ( post_password_required( $post->ID ) ) {
 	Timber::render( 'single-password.twig', $context );
