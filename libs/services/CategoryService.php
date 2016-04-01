@@ -1,5 +1,4 @@
 <?php
-
 class AgreableCategoryService {
 
   /**
@@ -7,7 +6,7 @@ class AgreableCategoryService {
    */
   public static function get_post_category_hierarchy($post) {
 
-    $post_categories = \wp_get_post_categories($post->id);
+    $post_categories = \wp_get_post_categories($post->ID);
     $hierarchy_categories = new stdClass();
     $hierarchy_categories->child = null;
     $hierarchy_categories->parent = null;
@@ -15,7 +14,6 @@ class AgreableCategoryService {
     foreach($post_categories as $c) {
       $cat = get_category($c);
       $category = new stdClass();
-      $category->id = $cat->id;
       $category->name = $cat->name;
       $category->slug = $cat->slug;
 
