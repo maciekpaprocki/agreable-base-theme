@@ -28,7 +28,6 @@ class AgreableCategoryService {
 
       if ($cat->parent) { // This is a child category
         $hierarchy_categories->child = $category;
-        $hierarchy_categories->parent = new stdClass();
       } else {
         $hierarchy_categories->parent = $category;
       }
