@@ -1,6 +1,8 @@
 <?php
 class AgreableArticleService {
 
+  protected static $widget_occurrences = [];
+
   public static function getGalleryItemCount($post) {
     foreach($post->get_field('article_widgets') as $widget) {
       if ($widget['acf_fc_layout'] === 'gallery') {
@@ -68,5 +70,19 @@ class AgreableArticleService {
       return $matches[1][0];
     }
     return;
+  }
+
+  public static function getWidgetOccurrence($post, $widget) {
+    if (!isset(self::$widget_occurrences[$post->ID])) {
+      self::$widget_occurrences[$post->ID] = [];
+    }
+
+    if (!isset(self::$widget_occurrences[$post->ID][$widget['acf_fc_layout']])) {
+      self::$widget_occurrences[$post->ID][$widget['acf_fc_layout']] = 1;
+    } else {
+      self::$widget_occurrences[$post->ID][$widget['acf_fc_layout']]++;
+    }
+
+    return self::$widget_occurrences[$post->ID][$widget['acf_fc_layout']];
   }
 }
