@@ -321,7 +321,7 @@ HTML;
 
   function add_collapse_all(){
     echo '<a href="#" class="acf-fc-collapse-all" onclick="event.preventDefault();toggle_fc(event);">Collapse all</a>';
-    echo "<script type=\"text/javascript\">function toggle_fc(e) {if(window.jQuery) jQuery(e.target).closest('.acf-field-flexible-content').find('.values > .layout[data-toggle=\"open\"] .acf-fc-layout-handle').trigger('click');}</script>";
+    echo "<script type=\"text/javascript\">function toggle_fc(e) {if(window.jQuery) jQuery('.acf-flexible-content').find('.layout').toggleClass('-collapsed');};</script>";
   }
 
   function change_admin_footer_text () {
