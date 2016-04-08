@@ -13,16 +13,20 @@ class AgreableListService {
     }
 
 
-    // Add manual which are live
+    // Add manual which are live and live/draft if the user is logged in
     $posts = array();
     if ($manualPosts) {
       if (!is_array($manualPosts)) {
         $manualPosts = $manualPosts->get_posts();
       }
       foreach($manualPosts as $manualPost) {
-        if (get_post_status($manualPost) === 'publish') {
-          // if (true) {
-          if (is_numeric($manualPost) || get_class($manualPost) === 'WP_Post') {
+        if(is_user_logged_in()){
+          $postStatus = get_post_status($manualPost) === 'publish' || get_post_status($manualPost) === 'draft';
+        }else{
+          $postStatus = get_post_status($manualPost) === 'publish';
+        }
+        if ($postStatus) {
+           if (is_numeric($manualPost) || get_class($manualPost) === 'WP_Post') {
             $timberPost = new TimberPost($manualPost);
             if (!$timberPost) {
               throw new Exception('Expected Timber to initialise a post');
