@@ -228,6 +228,7 @@ HTML;
   function register_custom_fields() {
 
     include_once('custom-fields/article-basic-details.php');
+    include_once('custom-fields/article-header.php');
     include_once('custom-fields/article-widgets.php');
     include_once("custom-fields/article-related.php");
     include_once("custom-fields/article-layout.php");
