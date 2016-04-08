@@ -28,6 +28,11 @@ class AgreableListService {
         if ($postStatus) {
            if (is_numeric($manualPost) || get_class($manualPost) === 'WP_Post') {
             $timberPost = new TimberPost($manualPost);
+
+            if(get_post_status($timberPost) === 'draft') {
+              $timberPost->short_headline = $timberPost->short_headline . '-draft';
+            }
+
             if (!$timberPost) {
               throw new Exception('Expected Timber to initialise a post');
             }
