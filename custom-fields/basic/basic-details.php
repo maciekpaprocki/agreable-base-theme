@@ -1,21 +1,12 @@
 <?php
-$key = 'article_basic_group';
-$acf_groups = acf_get_local_field_groups($key);
-foreach($acf_groups as $group){
-  // Aready defined in app theme.
-  if($group['key'] === $key){
-    return false;
-  }
-}
-
-if( function_exists('register_field_group') ):
+$key = 'basic';
 
 $article_basic_acf = array (
-  'key' => $key,
+  'key' => $key . '_group',
   'title' => 'Basic Details',
   'fields' => array (
     array (
-      'key' => 'article_basic_short_headline',
+      'key' => $key . '_short_headline',
       'label' => 'Short Headline',
       'name' => 'short_headline',
       'type' => 'text',
@@ -25,7 +16,7 @@ $article_basic_acf = array (
       'maxlength' => '100',
     ),
     array (
-      'key' => 'article_basic_sell',
+      'key' => $key . '_sell',
       'label' => 'Sell',
       'name' => 'sell',
       'type' => 'text',
@@ -34,7 +25,7 @@ $article_basic_acf = array (
       'maxlength' => 160,
     ),
     array (
-      'key' => 'article_basic_hero_images',
+      'key' => $key . '_hero_images',
       'label' => 'Image(s)',
       'name' => 'hero_images',
       'type' => 'gallery',
@@ -67,6 +58,11 @@ $article_basic_acf = array (
         'operator' => '==',
         'value' => 'post',
       ),
+      array (
+        'param' => 'post_type',
+        'operator' => '==',
+        'value' => 'page',
+      ),
     ),
   ),
   'menu_order' => 0,
@@ -81,5 +77,3 @@ $article_basic_acf = array (
 
 $article_basic_acf = apply_filters('agreable_base_theme_article_basic_acf', $article_basic_acf);
 register_field_group($article_basic_acf);
-
-endif;

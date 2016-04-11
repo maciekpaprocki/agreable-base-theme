@@ -21,7 +21,6 @@ class AgreableBase extends TimberSite {
     add_filter('custom_menu_order', array($this, 'custom_menu_order'));
     add_filter('menu_order', array($this, 'custom_menu_order'));
 
-    add_action('init', array($this, 'register_taxonomies'));
     add_action('init', array($this, 'register_post_types'));
     add_action('init', array($this, 'register_custom_fields'));
     add_action('after_setup_theme', array($this, 'remove_wordpress_meta_from_head'));
@@ -37,7 +36,7 @@ class AgreableBase extends TimberSite {
 
     add_action('after_setup_theme', array($this, 'remove_post_formats'), 11);
 
-    add_action('acf/save_post', array($this, 'prevent_show_advanced_settings_save'), 1);
+    add_action('acf/save_post', array($this, 'prevent_acf_options_tickbox_being_saved'), 1);
     add_filter('acf/update_value/key=article_basic_hero_images', array($this, 'article_image_set_wp_thumbnail'), 10, 3);
 
     add_filter('robots_txt', array($this, 'force_robots_txt_disallow_non_production'), 10, 2);
@@ -70,7 +69,7 @@ class AgreableBase extends TimberSite {
   }
 
   function remove_post_formats() {
-      remove_theme_support('post-formats');
+    remove_theme_support('post-formats');
   }
 
   function wphidenag() {
@@ -143,7 +142,9 @@ class AgreableBase extends TimberSite {
     return $disallow;
   }
 
-  function prevent_show_advanced_settings_save() {
+  function prevent_acf_options_tickbox_being_saved() {
+    return; //TODO
+
     // Bail early if no ACF data...
     if(empty($_POST['acf'])){
         return;
@@ -227,30 +228,23 @@ HTML;
 
   function register_custom_fields() {
 
-    include_once('custom-fields/article-basic-details.php');
-    include_once('custom-fields/article-header.php');
-    include_once('custom-fields/article-widgets.php');
-    include_once("custom-fields/article-related.php");
-    include_once("custom-fields/article-layout.php");
-    include_once('custom-fields/page-basic-details.php');
-    include_once("custom-fields/social-overrides.php");
-    include_once('custom-fields/section-widgets.php');
-    include_once('custom-fields/list.php');
-    include_once('custom-fields/reusable-widgets.php');
-    include_once('custom-fields/tile.php');
+    include_once('custom-fields/basic/basic-details.php');
+    include_once('custom-fields/basic/header.php');
+    include_once('custom-fields/basic/widgets.php');
+    include_once("custom-fields/basic/related.php");
+    include_once("custom-fields/basic/social-overrides.php");
+    include_once("custom-fields/basic/html-overrides.php");
+    include_once('custom-fields/category/category-widgets.php');
+    include_once('custom-fields/list/list.php');
+    include_once('custom-fields/tile/tile.php');
 
-    include_once("custom-fields/options-page.php");
+    include_once("custom-fields/options/options-page.php");
     acf_add_options_page();
   }
 
   function register_post_types() {
-    include_once __DIR__ . '/custom-post-types/reusable-widget.php';
     include_once __DIR__ . '/custom-post-types/list.php';
     include_once __DIR__ . '/custom-post-types/tile.php';
-  }
-
-  function register_taxonomies() {
-    //this is where you can register custom taxonomies
   }
 
   function add_to_context($context) {
@@ -263,7 +257,7 @@ HTML;
     return $context;
   }
 
-  function add_to_twig( $twig ) {
+  function add_to_twig($twig) {
     require_once "libs/twig-extension/TwigArticle.php";
     $twig->addExtension(new AgreableTwigArticle());
 

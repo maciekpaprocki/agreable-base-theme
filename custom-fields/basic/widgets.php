@@ -1,6 +1,5 @@
 <?php
-
-include_once "WidgetLoader.php";
+include_once __DIR__ . "/../WidgetLoader.php";
 
 $articleWidgets = WidgetLoader::findByUsage("post");
 
@@ -11,7 +10,7 @@ $widgets_acf = array(
     array (
       'key' => 'article_widgets',
       'label' => 'Article Widgets',
-      'name' => 'article_widgets',
+      'name' => 'widgets',
       'prefix' => '',
       'type' => 'flexible_content',
       'instructions' => 'The body of the article is built up with widgets',
@@ -32,7 +31,7 @@ $widgets_acf = array(
       ),
     )
   ),
-  'menu_order' => 0,
+  'menu_order' => 2,
   'position' => 'normal',
   'style' => 'default',
   'label_placement' => 'top',

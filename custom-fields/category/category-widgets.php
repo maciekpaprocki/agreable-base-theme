@@ -4,7 +4,7 @@ if(!function_exists('register_field_group') ) {
 }
 
 $contextType = "section";
-include_once "WidgetLoader.php";
+include_once __DIR__ . "/../WidgetLoader.php";
 
 $widget_layouts_main = WidgetLoader::findByUsage("section", "main");
 $widget_layouts_sidebar = WidgetLoader::findByUsage("section", "sidebar");
