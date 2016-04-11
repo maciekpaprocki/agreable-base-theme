@@ -69,5 +69,3 @@ $social_overrides_acf = array (
 
 $social_overrides_acf = apply_filters('agreable_base_theme_social_media_acf', $social_overrides_acf);
 register_field_group($social_overrides_acf);
-
-endif;
