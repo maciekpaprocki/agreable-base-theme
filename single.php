@@ -11,7 +11,6 @@
 
 require_once "libs/services/ArticleService.php";
 require_once "libs/services/CategoryService.php";
-require_once "libs/services/ReusableWidgetService.php";
 
 $context = Timber::get_context();
 $post = new TimberPost();

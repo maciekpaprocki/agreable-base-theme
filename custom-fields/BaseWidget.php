@@ -1,67 +1,31 @@
 <?php
 class BaseWidget {
-  public static function addWidgetDeviceTargetting($widgetConfig) {
+  public static function add_extras($widget_config) {
 
-    $widgetConfig["sub_fields"][] = array (
-      'key' => $widgetConfig["key"] . '_options',
+    $widget_config["sub_fields"][] = array (
+      'key' => 'agreable-no-store_' . $widget_config["key"] . '_options',
       'label' => 'Options',
       'name' => 'options',
       'type' => 'true_false',
-      'instructions' => '',
-      'required' => 0,
-      'conditional_logic' => 0,
       'wrapper' => array (
-        'width' => '',
-        'class' => 'extra-widget-settings',
-        'id' => '',
-      ),
-      'choices' => array (
-        '' => '',
+        'class' => 'agreable-options-controller',
       ),
       'default_value' => 0,
       'layout' => 'vertical',
     );
 
-    $widgetConfig["sub_fields"][] = array (
-      'key' => $widgetConfig["key"] . '_device_targetting',
-      'label' => 'Display on devices',
-      'name' => 'display_on_devices',
-      'prefix' => '',
-      'type' => 'checkbox',
-      'instructions' => '',
-      'required' => 0,
-      'conditional_logic' => array (
-        array (
-          array (
-            'field' => $widgetConfig["key"] . '_options',
-            'operator' => '==',
-            'value' => '1',
-          ),
-        ),
-      ),
+    $widget_config["sub_fields"][] = array (
+      'key' => $widget_config["key"] . '_hide_widget_from_page',
+      'label' => 'Hide this widget from display',
+      'name' => 'hide_widget_from_page',
+      'type' => 'true_false',
       'wrapper' => array (
-        'width' => '',
-        'class' => 'display-on-devices',
-        'id' => '',
+        'class' => 'agreable-options',
       ),
-      'choices' => array (
-        'mobile' => 'Mobile',
-        'tablet' => 'Tablet',
-        'desktop' => 'Desktop',
-      ),
-      'default_value' => array (
-        'mobile' => 'mobile',
-        'tablet' => 'tablet',
-        'desktop' => 'desktop',
-      ),
+      'default_value' => 0,
       'layout' => 'vertical',
     );
 
-    if(has_filter('add_custom_advanced_settings')) {
-      $widgetConfig = apply_filters('add_custom_advanced_settings', $widgetConfig);
-      return $widgetConfig;
-    }else{
-      return $widgetConfig;
-    }
+    return apply_filters('add_custom_advanced_settings', $widget_config);
   }
 }

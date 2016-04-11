@@ -62,7 +62,7 @@ class WidgetLoader {
           ){
 
         include_once "BaseWidget.php";
-        $widget_config = BaseWidget::addWidgetDeviceTargetting($widget_config);
+        $widget_config = BaseWidget::add_extras($widget_config);
         $widget_layouts[] = $widget_config;
       }
     }

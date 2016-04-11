@@ -25,6 +25,22 @@ $article_basic_acf = array (
       'maxlength' => 160,
     ),
     array (
+      'key' => $key . '_category',
+      'label' => 'Category',
+      'name' => 'category',
+      'type' => 'taxonomy',
+      'instructions' => 'Select a category for this content to live in.',
+      'required' => 1,
+      'taxonomy' => 'category',
+      'field_type' => 'select',
+      'allow_null' => 0,
+      'add_term' => 0,
+      'save_terms' => 1,
+      'load_terms' => 1,
+      'return_format' => 'object',
+      'multiple' => 0,
+    ),
+    array (
       'key' => $key . '_hero_images',
       'label' => 'Image(s)',
       'name' => 'hero_images',
@@ -33,7 +49,7 @@ $article_basic_acf = array (
       'required' => 1,
     ),
     array (
-      'key' => 'article_override_start_time',
+      'key' => $key . '_override_start_time',
       'label' => 'Override Start Date & Time',
       'name' => 'override_start_time',
       'type' => 'text',
@@ -42,7 +58,7 @@ $article_basic_acf = array (
       ),
     ),
     array (
-      'key' => 'article_override_end_time',
+      'key' => $key . '_override_end_time',
       'label' => 'Override End Date & Time',
       'name' => 'override_end_time',
       'type' => 'text',
@@ -58,12 +74,14 @@ $article_basic_acf = array (
         'operator' => '==',
         'value' => 'post',
       ),
+    ),
+    array(
       array (
         'param' => 'post_type',
         'operator' => '==',
         'value' => 'page',
       ),
-    ),
+    )
   ),
   'menu_order' => 0,
   'position' => 'normal',
@@ -72,6 +90,7 @@ $article_basic_acf = array (
   'instruction_placement' => 'label',
   'hide_on_screen' => array (
     0 => 'the_content',
+    1 => 'categories',
   ),
 );
 

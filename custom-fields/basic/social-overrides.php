@@ -64,7 +64,6 @@ $social_overrides_acf = array (
   'style' => 'default',
   'label_placement' => 'top',
   'instruction_placement' => 'label',
-  'hide_on_screen' => '',
 );
 
 $social_overrides_acf = apply_filters('agreable_base_theme_social_media_acf', $social_overrides_acf);

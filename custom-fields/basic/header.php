@@ -1,22 +1,6 @@
 <?php
 $key = 'article_header';
 
-// Reusable conditional
-$options_conditional = array (
-  array (
-    array (
-      'field' => $key . '_options',
-      'operator' => '==',
-      'value' => '1',
-    ),
-    array (
-      'field' => $key . '_type',
-      'operator' => '==',
-      'value' => 'standard-hero',
-    ),
-  ),
-);
-
 $header_acf = array (
   'key' => $key . '_group',
   'title' => 'Opening Header',
@@ -24,7 +8,7 @@ $header_acf = array (
     array (
       'key' => $key . '_type',
       'label' => 'Type',
-      'name' => 'type',
+      'name' => 'header_type',
       'prefix' => '',
       'type' => 'select',
       'instructions' => 'Select the type of header for this content',
@@ -40,12 +24,12 @@ $header_acf = array (
       ),
     ),
     array (
-      'key' => $key . '_options',
+      'key' => 'agreable-no-store_' . $key . '_options',
       'label' => 'Options',
-      'name' => 'options',
+      'name' => 'header_options',
       'type' => 'true_false',
       'wrapper' => array (
-        'class' => 'extra-widget-settings',
+        'class' => 'agreable-options-controller',
         'width' => '50%'
       ),
       'readonly' => 1
@@ -53,31 +37,49 @@ $header_acf = array (
     array (
       'key' => $key . '_display_headline',
       'label' => 'Display Headline',
-      'name' => 'display_headline',
+      'name' => 'header_display_headline',
       'prefix' => '',
       'type' => 'true_false',
       'instructions' => 'Whether the headline is displayed on the content or not',
-      'conditional_logic' => $options_conditional,
+      'wrapper' => array (
+        'class' => 'agreable-options',
+      ),
+      'default_value' => 1,
+    ),
+    array (
+      'key' => $key . '_display_sell',
+      'label' => 'Display Sell',
+      'name' => 'header_display_sell',
+      'prefix' => '',
+      'type' => 'true_false',
+      'instructions' => 'Whether the sell is displayed on the content or not',
+      'wrapper' => array (
+        'class' => 'agreable-options',
+      ),
       'default_value' => 1,
     ),
     array (
       'key' => $key . '_display_date',
       'label' => 'Display Date',
-      'name' => 'display_date',
+      'name' => 'header_display_date',
       'type' => 'true_false',
       'instructions' => 'Whether the date is displayed on the content or not',
-      'conditional_logic' => $options_conditional,
+      'wrapper' => array (
+        'class' => 'agreable-options',
+      ),
       'default_value' => 1,
     ),
     array (
       'key' => $key . '_display_hero_image',
       'label' => 'Display Hero Image',
-      'name' => 'display_hero_image',
+      'name' => 'header_display_hero_image',
       'type' => 'true_false',
       'instructions' => 'Whether the hero image is displayed on the content or not',
       'required' => 0,
-      'conditional_logic' => $options_conditional,
       'default_value' => 1,
+      'wrapper' => array (
+        'class' => 'agreable-options',
+      ),
     ),
 
   ),
@@ -95,7 +97,6 @@ $header_acf = array (
   'style' => 'default',
   'label_placement' => 'top',
   'instruction_placement' => 'label',
-  'hide_on_screen' => '',
 );
 
 $header_acf = apply_filters('agreable_base_theme_header_acf', $header_acf);

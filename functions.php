@@ -36,8 +36,8 @@ class AgreableBase extends TimberSite {
 
     add_action('after_setup_theme', array($this, 'remove_post_formats'), 11);
 
-    add_action('acf/save_post', array($this, 'prevent_acf_options_tickbox_being_saved'), 1);
-    add_filter('acf/update_value/key=article_basic_hero_images', array($this, 'article_image_set_wp_thumbnail'), 10, 3);
+    add_action('acf/save_post', array($this, 'prevent_acf_options_tickbox_from_saving'), 1);
+    add_filter('acf/update_value/key=basic_hero_images', array($this, 'hero_images_set_featured_image'), 10, 3);
 
     add_filter('robots_txt', array($this, 'force_robots_txt_disallow_non_production'), 10, 2);
 
@@ -64,8 +64,11 @@ class AgreableBase extends TimberSite {
 
     // Admin Customisations with Jigsaw https://wordpress.org/plugins/jigsaw/
     Jigsaw::add_css('admin-customisations/agreable-admin.css');
+    Jigsaw::add_js('admin-customisations/agreable-admin.js');
 
     parent::__construct();
+
+    do_action('agreable_base_theme_init');
   }
 
   function remove_post_formats() {
@@ -123,9 +126,11 @@ class AgreableBase extends TimberSite {
     return $mimeTypes;
   }
 
-  function article_image_set_wp_thumbnail($values, $post_id){
+  function hero_images_set_featured_image($values, $post_id){
     // Use the first image in gallery as the post thumbnail.
-    set_post_thumbnail($post_id, $values[0]);
+    if (isset($values[0])) {
+      set_post_thumbnail($post_id, $values[0]);
+    }
     return $values;
   }
 
@@ -142,32 +147,27 @@ class AgreableBase extends TimberSite {
     return $disallow;
   }
 
-  function prevent_acf_options_tickbox_being_saved() {
-    return; //TODO
+  function prevent_acf_options_tickbox_from_saving() {
 
     // Bail early if no ACF data...
     if(empty($_POST['acf'])){
         return;
     }
 
-    // ...or no widgets.
-    $has_widgets = isset($_POST['acf']['article_widgets']) && ! empty($_POST['acf']['article_widgets']);
-    if($has_widgets === false){
-        return;
-    }
+    $search_key_prefix = 'agreable-no-store_';
 
-    // Ensure that the advanced settings checkbox isn't saved as true so that
-    // it always starts closed.
-    $search_key_suffix = '_show_advanced_widget_settings';
-    $len = isset($_POST['acf']['article_widgets'])
-      ? count($_POST['acf']['article_widgets'])
-      : false;
+    foreach ($_POST['acf'] as $acf_key => $acf_value) {
+      if (substr($acf_key, 0, strlen($search_key_prefix)) === $search_key_prefix) {
+        unset($_POST['acf'][$acf_key]);
+      }
 
-    if ($len) {
-      foreach($_POST['acf']['article_widgets'] as $widget) {
-        foreach($widget as $key=>$val){
-          if(substr($key, 0-strlen($search_key_suffix)) === $search_key_suffix){
-            $widget[$key] = 0;
+      // If the acf_key is the widgets e.g. article_widgets or longform_widgets
+      if (substr($acf_key, -8, 8) === '_widgets' && is_array($acf_value)) {
+        foreach($acf_value as $widget_index => $widget) {
+          foreach($widget as $widget_field_key => $widget_field_value) {
+            if (substr($widget_field_key, 0, strlen($search_key_prefix)) === $search_key_prefix) {
+              unset($_POST['acf'][$acf_key][$widget_index][$widget_field_key]);
+            }
           }
         }
       }
@@ -266,9 +266,6 @@ HTML;
 
     require_once "libs/twig-extension/TwigList.php";
     $twig->addExtension(new AgreableTwigList());
-
-    require_once "libs/twig-extension/TwigReusableWidget.php";
-    $twig->addExtension(new AgreableTwigReusableWidget());
 
     $twig->addFilter( new Twig_SimpleFilter( 'resize', array( $this, 'resize' ) ) );
 

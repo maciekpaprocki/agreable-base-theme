@@ -1,3 +1,11 @@
+.agreable-options {
+  display: none;
+}
+
+.agreable-options-enabled .agreable-options {
+  display: block;
+}
+
 .extra-widget-settings {}
 
 div.extra-widget-settings .acf-label {

@@ -11,15 +11,6 @@ $html_overrides_acf = array (
       'name' => 'allow',
       'type' => 'true_false',
       'instructions' => 'Please ask a developer before making any changes',
-      'required' => 0,
-      'conditional_logic' => 0,
-      'wrapper' => array (
-        'width' => '',
-        'class' => '',
-        'id' => '',
-      ),
-      'message' => '',
-      'default_value' => 0,
     ),
     array (
       'key' => $key . '_html',
@@ -59,8 +50,7 @@ $html_overrides_acf = array (
   'style' => 'default',
   'label_placement' => 'top',
   'instruction_placement' => 'label',
-  'hide_on_screen' => '',
 );
 
-$html_overrides_acf = apply_filters('agreable_base_theme_html_media_acf', $html_overrides_acf);
+$html_overrides_acf = apply_filters('agreable_base_theme_html_overrides_acf', $html_overrides_acf);
 register_field_group($html_overrides_acf);
