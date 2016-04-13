@@ -255,8 +255,8 @@ HTML;
   }
 
   function add_to_twig($twig) {
-    require_once "libs/twig-extension/TwigArticle.php";
-    $twig->addExtension(new AgreableTwigArticle());
+    require_once "libs/twig-extension/TwigWidget.php";
+    $twig->addExtension(new AgreableTwigWidget());
 
     require_once "libs/twig-extension/TwigCategory.php";
     $twig->addExtension(new AgreableTwigCategory());
