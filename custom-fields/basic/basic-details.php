@@ -91,6 +91,7 @@ $article_basic_acf = array (
   'hide_on_screen' => array (
     0 => 'the_content',
     1 => 'categories',
+    2 => 'featured_image',
   ),
 );
 
