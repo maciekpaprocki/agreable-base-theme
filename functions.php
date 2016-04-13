@@ -1,9 +1,8 @@
 <?php
-
-if ( ! class_exists( 'Timber' ) ) {
+if (! class_exists('Timber')) {
   add_action( 'admin_notices', function() {
-      echo '<div class="error"><p>Timber not activated. Make sure you activate the plugin in <a href="' . esc_url( admin_url( 'plugins.php#timber' ) ) . '">' . esc_url( admin_url( 'plugins.php' ) ) . '</a></p></div>';
-    } );
+    echo '<div class="error"><p>Timber not activated. Make sure you activate the plugin in <a href="' . esc_url( admin_url( 'plugins.php#timber' ) ) . '">' . esc_url( admin_url( 'plugins.php' ) ) . '</a></p></div>';
+  });
   return;
 }
 
@@ -227,7 +226,6 @@ HTML;
   }
 
   function register_custom_fields() {
-
     include_once('custom-fields/basic/basic-details.php');
     include_once('custom-fields/basic/header.php');
     include_once('custom-fields/basic/widgets.php');
@@ -237,7 +235,6 @@ HTML;
     include_once('custom-fields/category/category-widgets.php');
     include_once('custom-fields/list/list.php');
     include_once('custom-fields/tile/tile.php');
-
     include_once("custom-fields/options/options-page.php");
     acf_add_options_page();
   }

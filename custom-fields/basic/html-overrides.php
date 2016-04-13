@@ -36,12 +36,22 @@ $html_overrides_acf = array (
         'operator' => '==',
         'value' => 'post',
       ),
+      array (
+        'param' => 'current_user_role',
+        'operator' => '==',
+        'value' => 'administrator',
+      ),
     ),
     array (
       array (
         'param' => 'post_type',
         'operator' => '==',
         'value' => 'page',
+      ),
+      array (
+        'param' => 'current_user_role',
+        'operator' => '==',
+        'value' => 'administrator',
       ),
     ),
   ),
