@@ -9,8 +9,6 @@
  * @since    Timber 0.1
  */
 
-require_once "libs/services/ArticleService.php";
-
 $context = Timber::get_context();
 
 $post = get_page_by_path('not-found',OBJECT, 'page');
