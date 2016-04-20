@@ -18,7 +18,7 @@ $related_acf = array (
     array (
       'key' => $key . '_show_related_content',
       'label' => 'Show Related Content',
-      'name' => 'show_related_content',
+      'name' => $key . '_show',
       'type' => 'true_false',
       'instructions' => 'Whether related content is displayed at the end of this content.',
       'default_value' => 1,
@@ -29,7 +29,7 @@ $related_acf = array (
     array (
       'key' => $key . '_limit',
       'label' => 'Amount of items',
-      'name' => 'limit',
+      'name' => $key . '_limit',
       'type' => 'number',
       'conditional_logic' => array (
         array (
@@ -48,7 +48,7 @@ $related_acf = array (
     array (
       'key' => $key . '_lists',
       'label' => 'Lists',
-      'name' => 'lists',
+      'name' => $key . '_lists',
       'type' => 'post_object',
       'instructions' => 'Add a List to populate the related content',
       'conditional_logic' => $show_related_conditional,
@@ -61,7 +61,7 @@ $related_acf = array (
     array (
       'key' => $key . '_posts_manual',
       'label' => 'Manually insert content (Posts, Tiles, etc.)',
-      'name' => 'manual_posts',
+      'name' => $key . '_manual_posts',
       'type' => 'post_object',
       'required' => 0,
       'conditional_logic' => $show_related_conditional,
