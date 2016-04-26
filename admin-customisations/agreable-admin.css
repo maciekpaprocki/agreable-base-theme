@@ -1,24 +1,3 @@
-.agreable-options {
-  display: none;
-}
-
-.agreable-options-enabled .agreable-options {
-  display: block;
-}
-
-.extra-widget-settings {}
-
-div.extra-widget-settings .acf-label {
-  float: left;
-}
-
-div.extra-widget-settings .acf-bl > li {
-  float: left;
-  left: 10px;
-  position: relative;
-  top: -4px;
-}
-
 .acf-fc-collapse-all {
   float: right;
   position: relative;
