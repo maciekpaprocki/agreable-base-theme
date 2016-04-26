@@ -29,7 +29,6 @@ class AgreableBase extends TimberSite {
     add_action('login_enqueue_scripts', array($this, 'change_login_logo'));
 
     add_action('admin_menu', array($this, 'wphidenag'));
-    add_action('admin_menu', array($this, 'notify_environment'));
 
     add_action('admin_init', array($this, 'edit_post_columns'));
 
@@ -75,12 +74,6 @@ class AgreableBase extends TimberSite {
 
   function wphidenag() {
     remove_action( 'admin_notices', 'update_nag', 3 );
-  }
-
-  function notify_environment() {
-    if (WP_ENV !== 'production') {
-      Jigsaw::show_notice("<b>NOTICE</b>: You are currently on the <b>".strtolower(WP_ENV)."</b> site", 'error');
-    }
   }
 
   function edit_post_columns() {
