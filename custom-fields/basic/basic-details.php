@@ -45,7 +45,7 @@ $article_basic_acf = array (
       'label' => 'Image(s)',
       'name' => 'hero_images',
       'type' => 'gallery',
-      'instructions' => 'One or more images that will be at the top of the article. Multiple images will automaticall create a carousel. The first image will be used as the tease image in grids of articles.',
+      'instructions' => 'One or more images that will be at the top of the article. Multiple images will automatically create a carousel. The first image will be used as the tease image in grids of articles.',
       'required' => 1,
     ),
     array (
