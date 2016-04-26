@@ -1,9 +1,8 @@
 <?php
-
-if ( ! class_exists( 'Timber' ) ) {
+if (! class_exists('Timber')) {
   add_action( 'admin_notices', function() {
-      echo '<div class="error"><p>Timber not activated. Make sure you activate the plugin in <a href="' . esc_url( admin_url( 'plugins.php#timber' ) ) . '">' . esc_url( admin_url( 'plugins.php' ) ) . '</a></p></div>';
-    } );
+    echo '<div class="error"><p>Timber not activated. Make sure you activate the plugin in <a href="' . esc_url( admin_url( 'plugins.php#timber' ) ) . '">' . esc_url( admin_url( 'plugins.php' ) ) . '</a></p></div>';
+  });
   return;
 }
 
@@ -21,7 +20,6 @@ class AgreableBase extends TimberSite {
     add_filter('custom_menu_order', array($this, 'custom_menu_order'));
     add_filter('menu_order', array($this, 'custom_menu_order'));
 
-    add_action('init', array($this, 'register_taxonomies'));
     add_action('init', array($this, 'register_post_types'));
     add_action('init', array($this, 'register_custom_fields'));
     add_action('after_setup_theme', array($this, 'remove_wordpress_meta_from_head'));
@@ -37,8 +35,8 @@ class AgreableBase extends TimberSite {
 
     add_action('after_setup_theme', array($this, 'remove_post_formats'), 11);
 
-    add_action('acf/save_post', array($this, 'prevent_show_advanced_settings_save'), 1);
-    add_filter('acf/update_value/key=article_basic_hero_images', array($this, 'article_image_set_wp_thumbnail'), 10, 3);
+    add_action('acf/save_post', array($this, 'prevent_acf_options_tickbox_from_saving'), 1);
+    add_filter('acf/update_value/key=basic_hero_images', array($this, 'hero_images_set_featured_image'), 10, 3);
 
     add_filter('robots_txt', array($this, 'force_robots_txt_disallow_non_production'), 10, 2);
 
@@ -67,10 +65,12 @@ class AgreableBase extends TimberSite {
     Jigsaw::add_css('admin-customisations/agreable-admin.css');
 
     parent::__construct();
+
+    do_action('agreable_base_theme_init');
   }
 
   function remove_post_formats() {
-      remove_theme_support('post-formats');
+    remove_theme_support('post-formats');
   }
 
   function wphidenag() {
@@ -124,9 +124,11 @@ class AgreableBase extends TimberSite {
     return $mimeTypes;
   }
 
-  function article_image_set_wp_thumbnail($values, $post_id){
+  function hero_images_set_featured_image($values, $post_id){
     // Use the first image in gallery as the post thumbnail.
-    set_post_thumbnail($post_id, $values[0]);
+    if (isset($values[0])) {
+      set_post_thumbnail($post_id, $values[0]);
+    }
     return $values;
   }
 
@@ -143,30 +145,27 @@ class AgreableBase extends TimberSite {
     return $disallow;
   }
 
-  function prevent_show_advanced_settings_save() {
+  function prevent_acf_options_tickbox_from_saving() {
+
     // Bail early if no ACF data...
     if(empty($_POST['acf'])){
         return;
     }
 
-    // ...or no widgets.
-    $has_widgets = isset($_POST['acf']['article_widgets']) && ! empty($_POST['acf']['article_widgets']);
-    if($has_widgets === false){
-        return;
-    }
+    $search_key_prefix = 'agreable-no-store_';
 
-    // Ensure that the advanced settings checkbox isn't saved as true so that
-    // it always starts closed.
-    $search_key_suffix = '_show_advanced_widget_settings';
-    $len = isset($_POST['acf']['article_widgets'])
-      ? count($_POST['acf']['article_widgets'])
-      : false;
+    foreach ($_POST['acf'] as $acf_key => $acf_value) {
+      if (substr($acf_key, 0, strlen($search_key_prefix)) === $search_key_prefix) {
+        unset($_POST['acf'][$acf_key]);
+      }
 
-    if ($len) {
-      foreach($_POST['acf']['article_widgets'] as $widget) {
-        foreach($widget as $key=>$val){
-          if(substr($key, 0-strlen($search_key_suffix)) === $search_key_suffix){
-            $widget[$key] = 0;
+      // If the acf_key is the widgets e.g. article_widgets or longform_widgets
+      if (substr($acf_key, -8, 8) === '_widgets' && is_array($acf_value)) {
+        foreach($acf_value as $widget_index => $widget) {
+          foreach($widget as $widget_field_key => $widget_field_value) {
+            if (substr($widget_field_key, 0, strlen($search_key_prefix)) === $search_key_prefix) {
+              unset($_POST['acf'][$acf_key][$widget_index][$widget_field_key]);
+            }
           }
         }
       }
@@ -226,30 +225,22 @@ HTML;
   }
 
   function register_custom_fields() {
-
-    include_once('custom-fields/article-basic-details.php');
-    include_once('custom-fields/article-widgets.php');
-    include_once("custom-fields/article-related.php");
-    include_once("custom-fields/article-layout.php");
-    include_once('custom-fields/page-basic-details.php');
-    include_once("custom-fields/social-overrides.php");
-    include_once('custom-fields/section-widgets.php');
-    include_once('custom-fields/list.php');
-    include_once('custom-fields/reusable-widgets.php');
-    include_once('custom-fields/tile.php');
-
-    include_once("custom-fields/options-page.php");
+    include_once('custom-fields/basic/basic-details.php');
+    include_once('custom-fields/basic/header.php');
+    include_once('custom-fields/basic/widgets.php');
+    include_once("custom-fields/basic/related.php");
+    include_once("custom-fields/basic/social-overrides.php");
+    include_once("custom-fields/basic/html-overrides.php");
+    include_once('custom-fields/category/category-widgets.php');
+    include_once('custom-fields/list/list.php');
+    include_once('custom-fields/tile/tile.php');
+    include_once("custom-fields/options/options-page.php");
     acf_add_options_page();
   }
 
   function register_post_types() {
-    include_once __DIR__ . '/custom-post-types/reusable-widget.php';
     include_once __DIR__ . '/custom-post-types/list.php';
     include_once __DIR__ . '/custom-post-types/tile.php';
-  }
-
-  function register_taxonomies() {
-    //this is where you can register custom taxonomies
   }
 
   function add_to_context($context) {
@@ -262,18 +253,15 @@ HTML;
     return $context;
   }
 
-  function add_to_twig( $twig ) {
-    require_once "libs/twig-extension/TwigArticle.php";
-    $twig->addExtension(new AgreableTwigArticle());
+  function add_to_twig($twig) {
+    require_once "libs/twig-extension/TwigWidget.php";
+    $twig->addExtension(new AgreableTwigWidget());
 
     require_once "libs/twig-extension/TwigCategory.php";
     $twig->addExtension(new AgreableTwigCategory());
 
     require_once "libs/twig-extension/TwigList.php";
     $twig->addExtension(new AgreableTwigList());
-
-    require_once "libs/twig-extension/TwigReusableWidget.php";
-    $twig->addExtension(new AgreableTwigReusableWidget());
 
     $twig->addFilter( new Twig_SimpleFilter( 'resize', array( $this, 'resize' ) ) );
 

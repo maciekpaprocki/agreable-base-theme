@@ -1,52 +1,6 @@
 <?php
 if( function_exists('register_field_group') ):
 
-$options_page_sidebar_acf = array(
-  'key' => 'options_group_sidebar',
-  'title' => 'Site Overides',
-  'fields' => array (
-    array (
-      'key' => 'sidebar_boolean',
-      'label' => '',
-      'name' => 'enable_sidebar',
-      'type' => 'true_false',
-      'instructions' => '',
-      'required' => 0,
-      'conditional_logic' => 0,
-      'wrapper' => array (
-        'width' => '',
-        'class' => '',
-        'id' => '',
-      ),
-      'message' => 'Enable the sidebar',
-      'default_value' => 1,
-    ),
-  ),
-  'location' => array (
-    array (
-      array (
-        'param' => 'options_page',
-        'operator' => '==',
-        'value' => 'acf-options',
-      ),
-      array (
-        'param' => 'current_user_role',
-        'operator' => '==',
-        'value' => 'administrator',
-      ),
-    ),
-  ),
-  'menu_order' => 0,
-  'position' => 'normal',
-  'style' => 'default',
-  'label_placement' => 'top',
-  'instruction_placement' => 'label',
-  'hide_on_screen' => '',
-);
-
-$options_page_sidebar_acf = apply_filters('agreable_base_theme_options_page_sidebar_acf', $options_page_sidebar_acf);
-register_field_group($options_page_sidebar_acf);
-
 $options_page_settings_acf = array(
   'key' => 'options_group_settings',
   'title' => 'Tracking, Data & Third Party settings',
@@ -297,6 +251,27 @@ $options_page_social_media_acf = array (
       'key' => 'social_media_twitter_id',
       'label' => 'Twitter Handle / ID',
       'name' => 'twitter_id',
+      'type' => 'text',
+      'instructions' => 'Do not include the @ symbol',
+      'required' => 0,
+      'conditional_logic' => 0,
+      'wrapper' => array (
+        'width' => '',
+        'class' => '',
+        'id' => '',
+      ),
+      'default_value' => '',
+      'placeholder' => '',
+      'prepend' => '',
+      'append' => '',
+      'maxlength' => '',
+      'readonly' => 0,
+      'disabled' => 0,
+    ),
+    array (
+      'key' => 'social_media_instagram_id',
+      'label' => 'Instagram Handle / ID',
+      'name' => 'instagram_id',
       'type' => 'text',
       'instructions' => 'Do not include the @ symbol',
       'required' => 0,
