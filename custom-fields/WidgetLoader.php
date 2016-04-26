@@ -8,7 +8,8 @@ class WidgetLoader {
         'square' => 'Square',
         'landscape' => 'Landscape',
         'portrait' => 'Portrait'
-      )
+      ),
+    'tab_placement' => 'left'
   );
 
   private static function initialize(){
