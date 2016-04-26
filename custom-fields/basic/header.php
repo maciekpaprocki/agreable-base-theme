@@ -1,17 +1,33 @@
 <?php
 $key = 'article_header';
 
+
 $header_acf = array (
   'key' => $key . '_group',
   'title' => 'Opening Header',
   'fields' => array (
     array (
+      'key' => 'header_basic_details_tab',
+      'label' => 'Basic Details',
+      'name' => '',
+      'type' => 'tab',
+      'instructions' => '',
+      'required' => 0,
+      'conditional_logic' => 0,
+      'wrapper' => array (
+        'width' => '',
+        'class' => '',
+        'id' => '',
+      ),
+      'placement' => 'left',
+    ),
+    array (
       'key' => $key . '_type',
-      'label' => 'Type',
+      'label' => 'Header Type',
       'name' => 'header_type',
       'prefix' => '',
       'type' => 'select',
-      'instructions' => 'Select the type of header for this content',
+      'instructions' => '',
       'required' => 0,
       'choices' => array (
         'standard-hero' => 'Standard Hero',
@@ -20,19 +36,23 @@ $header_acf = array (
         'standard-hero' => 'standard-hero',
       ),
       'wrapper' => array (
-        'width' => '50%'
+        'width' => '100%'
       ),
     ),
     array (
-      'key' => 'agreable-no-store_' . $key . '_options',
-      'label' => 'Options',
-      'name' => 'header_options',
-      'type' => 'true_false',
+      'key' => 'header_advanced_details_tab',
+      'label' => 'Advanced Details',
+      'name' => '',
+      'type' => 'tab',
+      'instructions' => '',
+      'required' => 0,
+      'conditional_logic' => 0,
       'wrapper' => array (
-        'class' => 'agreable-options-controller',
-        'width' => '50%'
+        'width' => '',
+        'class' => '',
+        'id' => '',
       ),
-      'readonly' => 1
+      'placement' => 'left',
     ),
     array (
       'key' => $key . '_display_headline',
@@ -40,9 +60,10 @@ $header_acf = array (
       'name' => 'header_display_headline',
       'prefix' => '',
       'type' => 'true_false',
-      'instructions' => 'Whether the headline is displayed on the content or not',
+      'instructions' => 'Whether the headline is displayed in the content or not',
       'wrapper' => array (
-        'class' => 'agreable-options',
+        'width' => '50%',
+        'class' => '',
       ),
       'default_value' => 1,
     ),
@@ -52,9 +73,10 @@ $header_acf = array (
       'name' => 'header_display_sell',
       'prefix' => '',
       'type' => 'true_false',
-      'instructions' => 'Whether the sell is displayed on the content or not',
+      'instructions' => 'Whether the sell is displayed in the content or not',
       'wrapper' => array (
-        'class' => 'agreable-options',
+        'width' => '50%',
+        'class' => '',
       ),
       'default_value' => 1,
     ),
@@ -63,9 +85,10 @@ $header_acf = array (
       'label' => 'Display Date',
       'name' => 'header_display_date',
       'type' => 'true_false',
-      'instructions' => 'Whether the date is displayed on the content or not',
+      'instructions' => 'Whether the date is displayed in the content or not',
       'wrapper' => array (
-        'class' => 'agreable-options',
+        'width' => '50%',
+        'class' => '',
       ),
       'default_value' => 1,
     ),
@@ -74,11 +97,12 @@ $header_acf = array (
       'label' => 'Display Hero Image',
       'name' => 'header_display_hero_image',
       'type' => 'true_false',
-      'instructions' => 'Whether the hero image is displayed on the content or not',
+      'instructions' => 'Whether the hero image is displayed in the content or not',
       'required' => 0,
       'default_value' => 1,
       'wrapper' => array (
-        'class' => 'agreable-options',
+        'width' => '50%',
+        'class' => '',
       ),
     ),
 
