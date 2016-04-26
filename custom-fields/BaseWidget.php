@@ -3,25 +3,10 @@ class BaseWidget {
   public static function add_extras($widget_config) {
 
     $widget_config["sub_fields"][] = array (
-      'key' => 'agreable-no-store_' . $widget_config["key"] . '_options',
-      'label' => 'Options',
-      'name' => 'options',
-      'type' => 'true_false',
-      'wrapper' => array (
-        'class' => 'agreable-options-controller',
-      ),
-      'default_value' => 0,
-      'layout' => 'vertical',
-    );
-
-    $widget_config["sub_fields"][] = array (
       'key' => $widget_config["key"] . '_hide_widget_from_page',
       'label' => 'Hide this widget from display',
       'name' => 'hide_widget_from_page',
       'type' => 'true_false',
-      'wrapper' => array (
-        'class' => 'agreable-options',
-      ),
       'default_value' => 0,
       'layout' => 'vertical',
     );
