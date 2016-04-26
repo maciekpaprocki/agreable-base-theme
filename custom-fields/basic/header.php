@@ -9,25 +9,16 @@ $header_acf = array (
     array (
       'key' => 'header_basic_details_tab',
       'label' => 'Basic Details',
-      'name' => '',
       'type' => 'tab',
-      'instructions' => '',
       'required' => 0,
       'conditional_logic' => 0,
-      'wrapper' => array (
-        'width' => '',
-        'class' => '',
-        'id' => '',
-      ),
       'placement' => 'left',
     ),
     array (
       'key' => $key . '_type',
       'label' => 'Header Type',
       'name' => 'header_type',
-      'prefix' => '',
       'type' => 'select',
-      'instructions' => '',
       'required' => 0,
       'choices' => array (
         'standard-hero' => 'Standard Hero',
@@ -42,28 +33,19 @@ $header_acf = array (
     array (
       'key' => 'header_advanced_details_tab',
       'label' => 'Advanced Details',
-      'name' => '',
       'type' => 'tab',
-      'instructions' => '',
       'required' => 0,
       'conditional_logic' => 0,
-      'wrapper' => array (
-        'width' => '',
-        'class' => '',
-        'id' => '',
-      ),
       'placement' => 'left',
     ),
     array (
       'key' => $key . '_display_headline',
       'label' => 'Display Headline',
       'name' => 'header_display_headline',
-      'prefix' => '',
       'type' => 'true_false',
       'instructions' => 'Whether the headline is displayed in the content or not',
       'wrapper' => array (
         'width' => '50%',
-        'class' => '',
       ),
       'default_value' => 1,
     ),
@@ -71,12 +53,10 @@ $header_acf = array (
       'key' => $key . '_display_sell',
       'label' => 'Display Sell',
       'name' => 'header_display_sell',
-      'prefix' => '',
       'type' => 'true_false',
       'instructions' => 'Whether the sell is displayed in the content or not',
       'wrapper' => array (
         'width' => '50%',
-        'class' => '',
       ),
       'default_value' => 1,
     ),
@@ -88,7 +68,6 @@ $header_acf = array (
       'instructions' => 'Whether the date is displayed in the content or not',
       'wrapper' => array (
         'width' => '50%',
-        'class' => '',
       ),
       'default_value' => 1,
     ),
@@ -102,7 +81,6 @@ $header_acf = array (
       'default_value' => 1,
       'wrapper' => array (
         'width' => '50%',
-        'class' => '',
       ),
     ),
 
