@@ -41,6 +41,22 @@ $article_basic_acf = array (
       'multiple' => 0,
     ),
     array (
+      'key' => $key . '_tags',
+      'label' => 'Tags',
+      'name' => 'tags',
+      'type' => 'taxonomy',
+      'instructions' => 'Add tags to this post, use uppercase first letter on each word: "Football, Supercars, Premier League"',
+      'required' => 1,
+      'taxonomy' => 'post_tag',
+      'field_type' => 'multi_select',
+      'allow_null' => 0,
+      'add_term' => 1,
+      'save_terms' => 1,
+      'load_terms' => 1,
+      'return_format' => 'object',
+      'multiple' => 0,
+    ),
+    array (
       'key' => $key . '_hero_images',
       'label' => 'Image(s)',
       'name' => 'hero_images',
@@ -92,6 +108,7 @@ $article_basic_acf = array (
     0 => 'the_content',
     1 => 'categories',
     2 => 'featured_image',
+    3 => 'tags'
   ),
 );
 
