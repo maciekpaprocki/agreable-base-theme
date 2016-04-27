@@ -5,11 +5,17 @@ class WidgetLoader {
   private static $initialized = false;
   protected static $config = array(
     'image_choices' => array(
-        'square' => 'Square',
-        'landscape' => 'Landscape',
-        'portrait' => 'Portrait'
+      'square' => 'Square',
+      'landscape' => 'Landscape',
+      'portrait' => 'Portrait'
     ),
-    'tab_placement' => 'left' 
+    'media_widths' => array (
+      'full' => 'Full Width',
+      'large' => 'Large',
+      'medium' => 'Medium',
+      'small' => 'Small',
+    ),
+    'tab_placement' => 'left'
   );
 
   private static function initialize(){
