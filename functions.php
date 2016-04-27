@@ -26,7 +26,6 @@ class AgreableBase extends TimberSite {
     add_action('do_meta_boxes', array($this, 'remove_unused_meta_box'));
 
     add_action('admin_menu', array($this, 'remove_unused_cms_menus'));
-    add_action('login_enqueue_scripts', array($this, 'change_login_logo'));
 
     add_action('admin_menu', array($this, 'wphidenag'));
 
@@ -60,8 +59,6 @@ class AgreableBase extends TimberSite {
     // Previously attempt at cropping would be abandoned if source was too small.
     add_filter('image_resize_dimensions', array($this, 'image_crop_dimensions'), 10, 6);
 
-    // Admin Customisations with Jigsaw https://wordpress.org/plugins/jigsaw/
-    Jigsaw::add_css('admin-customisations/agreable-admin.css');
 
     parent::__construct();
 
@@ -182,20 +179,6 @@ class AgreableBase extends TimberSite {
     return $menu_order;
   }
 
-  function change_login_logo() {
-
-    $login_image = (isset(get_field('login_image', 'options')['url'])) ? get_field('login_image', 'options')['url'] : "";
-
-    echo <<<HTML
-        <style type="text/css">
-            .login h1 a {
-                background-image: url($login_image);
-            }
-        </style>
-HTML;
-
-  }
-
   function remove_unused_cms_menus(){
     remove_menu_page('edit-comments.php');
   }
@@ -205,7 +188,6 @@ HTML;
     remove_meta_box('commentsdiv','post','normal');
     remove_meta_box('commentstatusdiv', 'post', 'normal');
     remove_meta_box('formatdiv','post','side');
-    remove_meta_box('tagsdiv-post_tag','post','side');
   }
 
   function remove_wordpress_meta_from_head() {
