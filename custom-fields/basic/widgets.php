@@ -8,7 +8,7 @@ $widgets_acf = array(
   'title' => 'Body',
   'fields' => array (
     array (
-      'key' => 'article_widgets',
+      'key' => 'post_widgets',
       'label' => 'Content Widgets',
       'name' => 'widgets',
       'prefix' => '',

@@ -43,8 +43,7 @@ $header_acf = array (
       'instructions' => 'Whether the headline is displayed on the content or not',
       'wrapper' => array (
         'class' => 'agreable-options',
-      ),
-      'default_value' => 1,
+      )
     ),
     array (
       'key' => $key . '_display_sell',
