@@ -82,6 +82,8 @@ $header_acf = array (
       'wrapper' => array (
         'width' => '50%',
       ),
+      'min_width' => 800,
+      'min_height' => 600,
     ),
 
   ),
