@@ -59,6 +59,8 @@ class AgreableBase extends TimberSite {
     // Previously attempt at cropping would be abandoned if source was too small.
     add_filter('image_resize_dimensions', array($this, 'image_crop_dimensions'), 10, 6);
 
+    // Prevent empty ACF text fields returning an ugly array instead of null
+    add_filter('timber_post_get_meta', array($this, 'post_meta_custom_map' ), 10, 2);
 
     parent::__construct();
 
@@ -311,6 +313,21 @@ class AgreableBase extends TimberSite {
     } else {
       return $value;
     }
+  }
+
+  /**
+   * When an ACF text field which has no value is returned from the DB
+   * it is an ugly array with a null value instead of being simply null.
+   * This function re-maps this expected behaviour.
+   */
+  function post_meta_custom_map($post_metadata, $post_id) {
+    foreach($post_metadata as $key => &$value) {
+      if (is_array($value) && count($value) === 1 && $value[0] === null) {
+        $value = null;
+      }
+    }
+
+    return $post_metadata;
   }
 
 }
