@@ -32,8 +32,6 @@ $social_overrides_acf = array (
       'min_width' => 800,
       'min_height' => 400,
       'min_size' => '',
-      'max_width' => 3000,
-      'max_height' => 1000,
     ),
     array (
       'key' => $key . '_twitter_text',
