@@ -62,9 +62,16 @@ class AgreableBase extends TimberSite {
     // Prevent empty ACF text fields returning an ugly array instead of null
     add_filter('timber_post_get_meta', array($this, 'post_meta_custom_map' ), 10, 2);
 
+    // Set posts inthe post preview plugin to never expire
+    add_filter('ppp_nonce_life', array($this, 'custom_post_preview_lifespan'));
+
     parent::__construct();
 
     do_action('agreable_base_theme_init');
+  }
+
+  function custom_post_preview_lifespan() {
+    return 60 * 60 * 24 * 10000;
   }
 
   function remove_post_formats() {
