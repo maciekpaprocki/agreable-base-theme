@@ -3,217 +3,55 @@ if(!function_exists('register_field_group') ) {
   return;
 }
 
-$contextType = "section";
+$contextType = "category";
 include_once __DIR__ . "/../WidgetLoader.php";
 
-$widget_layouts_main = WidgetLoader::findByUsage("section", "main");
-$widget_layouts_sidebar = WidgetLoader::findByUsage("section", "sidebar");
+$widget_layouts_main = WidgetLoader::findByUsage("category", "main");
+$widget_layouts_sidebar = WidgetLoader::findByUsage("category", "sidebar");
 
-if(get_field('enable_sidebar', 'option')){
-  /* WITH SIDEBAR */
-  $section_widgets_acf = array(
-    'key' => 'section_widgets_group',
-    'title' => 'Section widgets',
-    'fields' => array (
+$category_widgets_acf = array(
+  'key' => 'category_widgets_group',
+  'title' => 'Category widgets',
+  'fields' => array (
+    array (
+      'key' => 'category_widgets',
+      'label' => 'Category Widgets',
+      'name' => 'widgets',
+      'prefix' => '',
+      'type' => 'flexible_content',
+      'instructions' => 'The widgets that make up this category',
+      'required' => 1,
+      'button_label' => 'Add Widget',
+      'min' => 1,
+      'layouts' => $widget_layouts_main,
+    ),
+  ),
+  'location' => array (
+    array (
       array (
-        'key' => 'section_widgets_rows',
-        'label' => 'Rows',
-        'name' => 'rows',
-        'prefix' => '',
-        'type' => 'flexible_content',
-        'instructions' => '',
-        'required' => 0,
-        'conditional_logic' => 0,
-        'wrapper' => array (
-          'width' => '',
-          'class' => '',
-          'id' => '',
-        ),
-        'button_label' => 'Add row',
-        'min' => 1,
-        'max' => '',
-        'layouts' => array (
-          array (
-            'key' => 'section_widgets_rows_main',
-            'name' => 'section_widgets_rows_main',
-            'label' => 'Widgets row (main)',
-            'display' => 'block',
-            'sub_fields' => array (
-              array (
-                'key' => 'section_widgets_rows_main_widget',
-                'label' => 'Widget',
-                'name' => 'widgets',
-                'prefix' => '',
-                'type' => 'flexible_content',
-                'instructions' => '',
-                'required' => 0,
-                'conditional_logic' => 0,
-                'wrapper' => array (
-                  'width' => '',
-                  'class' => '',
-                  'id' => '',
-                ),
-                'button_label' => 'Add widget',
-                'min' => 1,
-                'max' => 100,
-                'layouts' => $widget_layouts_main
-              ),
-            ),
-            'min' => '',
-            'max' => '',
-          ),
-          array (
-            'key' => 'section_widgets_rows_sidebar',
-            'name' => 'section_widgets_rows_sidebar',
-            'label' => 'Widget row (with sidebar)',
-            'display' => 'block',
-            'sub_fields' => array (
-              array (
-                'key' => 'section_widgets_rows_sidebar_2col_widget',
-                'label' => 'Widget (2 column)',
-                'name' => 'widget_main',
-                'prefix' => '',
-                'type' => 'flexible_content',
-                'instructions' => '',
-                'required' => 0,
-                'conditional_logic' => 0,
-                'wrapper' => array (
-                  'width' => '60%',
-                  'class' => '',
-                  'id' => '',
-                ),
-                'button_label' => 'Add widget (2 column)',
-                'min' => 1,
-                'max' => 100,
-                'layouts' => $widget_layouts_main
-              ),
-              array (
-                'key' => 'section_widgets_rows_sidebar_1col_widget',
-                'name' => 'widget_sidebar',
-                'label' => 'Widget (1 column)',
-                'prefix' => '',
-                'type' => 'flexible_content',
-                'instructions' => '',
-                'required' => 1,
-                'conditional_logic' => 0,
-                'wrapper' => array (
-                  'width' => 40,
-                  'class' => '',
-                  'id' => '',
-                ),
-                'button_label' => 'Add widget (1 column)',
-                'min' => 1,
-                'max' => 100,
-                'layouts' => $widget_layouts_sidebar
-              ),
-            ),
-            'min' => '',
-            'max' => '',
-          ),
-        ),
+        'param' => 'taxonomy',
+        'operator' => '==',
+        'value' => 'category',
       ),
     ),
-    'location' => array (
+    array (
       array (
-        array (
-          'param' => 'taxonomy',
-          'operator' => '==',
-          'value' => 'category',
-        ),
-      ),
-      array (
-        array (
-          'param' => 'post_type',
-          'operator' => '==',
-          'value' => 'page',
-        ),
+        'param' => 'post_type',
+        'operator' => '==',
+        'value' => 'page',
       ),
     ),
-    'menu_order' => 0,
-    'position' => 'normal',
-    'style' => 'default',
-    'label_placement' => 'top',
-    'instruction_placement' => 'label',
-    'hide_on_screen' => array (
-      0 => 'the_content',
-    )
+  ),
+  'menu_order' => 0,
+  'position' => 'normal',
+  'style' => 'default',
+  'label_placement' => 'top',
+  'instruction_placement' => 'label',
+  'hide_on_screen' => array (
+    0 => 'the_content',
+  )
 
-  );
-}else{
-  /* WITHOUT SIDEBAR */
-  $section_widgets_acf = array(
-    'key' => 'section_widgets_group',
-    'title' => 'Section widgets',
-    'fields' => array (
-      array (
-        'key' => 'section_widgets_rows',
-        'label' => 'Rows',
-        'name' => 'rows',
-        'prefix' => '',
-        'type' => 'repeater',
-        'instructions' => '',
-        'required' => 0,
-        'conditional_logic' => 0,
-        'wrapper' => array (
-          'width' => '',
-          'class' => '',
-          'id' => '',
-        ),
-        'button_label' => 'Add row',
-        'min' => 1,
-        'max' => '',
-        'sub_fields' => array (
-              array (
-                'key' => 'section_widgets_rows_main_widget',
-                'label' => '',
-                'name' => 'widgets',
-                'prefix' => '',
-                'type' => 'flexible_content',
-                'instructions' => '',
-                'required' => 0,
-                'conditional_logic' => 0,
-                'wrapper' => array (
-                  'width' => '',
-                  'class' => '',
-                  'id' => '',
-                ),
-                'button_label' => 'Add widget',
-                'min' => 1,
-                'max' => 100,
-                'layouts' => $widget_layouts_main
-              ),
-            ),
-        'layout' => 'block',
-      ),
-    ),
-    'location' => array (
-      array (
-        array (
-          'param' => 'taxonomy',
-          'operator' => '==',
-          'value' => 'category',
-        ),
-      ),
-      array (
-        array (
-          'param' => 'post_type',
-          'operator' => '==',
-          'value' => 'page',
-        ),
-      ),
-    ),
-    'menu_order' => 0,
-    'position' => 'normal',
-    'style' => 'default',
-    'label_placement' => 'top',
-    'instruction_placement' => 'label',
-    'hide_on_screen' => array (
-      0 => 'the_content',
-    )
+);
 
-  );
-
-}
-
-$section_widgets_acf = apply_filters('agreable_base_theme_section_widgets_acf', $section_widgets_acf);
-register_field_group($section_widgets_acf);
+$category_widgets_acf = apply_filters('agreable_base_theme_category_widgets_acf', $category_widgets_acf);
+register_field_group($category_widgets_acf);

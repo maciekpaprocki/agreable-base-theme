@@ -64,16 +64,16 @@ class AgreableListService {
       }
 
       $list_id = is_numeric($list) ? $list : $list->ID;
-      $sections = get_field("sections", $list_id) ?: [];
+      $categories = get_field("categories", $list_id) ?: [];
 
-      foreach($sections as $sectionId) {
+      foreach($categories as $sectionId) {
         if (get_the_category_by_ID($sectionId) === 'CURRENT') {
-          $sections[] = self::getCurrentSectionFromUrl();
+          $categories[] = self::getCurrentSectionFromUrl();
         }
       }
 
       $query_args = array(
-        'cat' => implode(',' , $sections),
+        'cat' => implode(',' , $categories),
         'post_type' => 'post',
         'posts_per_page' => $limitOverride ? $limitOverride : get_field("limit", $list->ID),
         // 'posts_per_page' => 100,

@@ -6,9 +6,9 @@ $list_acf = array(
   'title' => 'List',
   'fields' => array (
     array (
-      'key' => 'list_sections',
-      'label' => 'Sections',
-      'name' => 'sections',
+      'key' => 'list_categories',
+      'label' => 'Categories',
+      'name' => 'categories',
       'prefix' => '',
       'type' => 'taxonomy',
       'instructions' => '',
