@@ -2,7 +2,7 @@
 class AgreableListService {
   protected static $dupes = array();
 
-  public static function getPosts($lists, $manualPosts = null, $limitOverride = null, $offset = 0, $caresAboutDupes = true, $excludePosts = null) {
+  public static function get_posts($lists, $manualPosts = null, $limitOverride = null, $offset = 0, $caresAboutDupes = true, $excludePosts = null) {
 
     $context = Timber::get_context();
 
@@ -68,7 +68,7 @@ class AgreableListService {
 
       foreach($categories as $sectionId) {
         if (get_the_category_by_ID($sectionId) === 'CURRENT') {
-          $categories[] = self::getCurrentSectionFromUrl();
+          $categories[] = self::get_current_category_from_url();
         }
       }
 
@@ -176,26 +176,12 @@ class AgreableListService {
     return $posts;
   }
 
-  public static function getPostsByAuthor($authorId, $limit = 100) {
-    $query_args = array(
-      'post_type' => 'post',
-      'author' => $authorId,
-      'posts_per_page' => $limit,
-      'no_found_rows' => 1,
-      'post_status' => 'publish',
-      'orderby' => 'date',
-      'order' => 'DESC',
-    );
-
-    $the_query = new WP_Query( $query_args );
-    if ($the_query && isset($the_query->posts)) {
-      return $the_query->posts;
-    }
-
-    return [];
+  public static function get_default_related_list() {
+    $list = get_page_by_path('most-recent-current-content-type-and-category', OBJECT, 'list');
+    var_dump($list); exit;
   }
 
-  public static function getCurrentSectionFromUrl() {
+  public static function get_current_category_from_url() {
     $path = substr($_SERVER['REQUEST_URI'], 1);
     if (strpos($path, '?') !== false) {
       $path = substr($path, 0, strpos($path, '?'));
