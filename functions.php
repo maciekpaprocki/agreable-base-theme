@@ -68,6 +68,27 @@ class AgreableBase extends TimberSite {
     parent::__construct();
 
     do_action('agreable_base_theme_init');
+
+    $this->category_setup();
+
+  }
+
+  function category_setup() {
+    \add_filter('agreable_base_theme_article_basic_acf', 'category_acf', 10);
+    \add_filter('agreable_base_theme_html_overrides_acf', 'category_acf', 10);
+    \add_filter('agreable_base_theme_social_media_acf', 'category_acf', 10);
+
+    function category_acf($acf_definition) {
+      $acf_definition['location'][] = [
+        [
+          'param' => 'taxonomy',
+          'operator' => '==',
+          'value' => 'category',
+        ]
+      ];
+
+      return $acf_definition;
+    }
   }
 
   function custom_post_preview_lifespan() {
