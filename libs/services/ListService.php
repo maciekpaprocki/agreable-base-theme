@@ -2,7 +2,8 @@
 class AgreableListService {
   protected static $dupes = array();
 
-  public static function getPosts($lists, $manualPosts = null, $limitOverride = null, $offset = 0, $caresAboutDupes = true, $excludePosts = null) {
+  public static function get_posts($lists, $manualPosts = null, $limitOverride = null, $offset = 0, $caresAboutDupes = true, $excludePosts = null) {
+    global $post;
 
     $context = Timber::get_context();
 
@@ -64,17 +65,23 @@ class AgreableListService {
       }
 
       $list_id = is_numeric($list) ? $list : $list->ID;
-      $categories = get_field("categories", $list_id) ?: [];
 
-      foreach($categories as $sectionId) {
-        if (get_the_category_by_ID($sectionId) === 'CURRENT') {
-          $categories[] = self::getCurrentSectionFromUrl();
+      $categories = [];
+      if ($list->get_field('categories_configuration') === 'current-category-and-children') {
+        $categories[] = self::get_current_category_from_url();
+      } else {
+        $categories = get_field("categories", $list_id) ?: [];
+      }
+
+      $post_type = null;
+      if ($list->get_field('post_type_configuration') === 'current') {
+        if ($post && isset($post->post_type)) {
+          $post_type = $post->post_type;
         }
       }
 
       $query_args = array(
         'cat' => implode(',' , $categories),
-        'post_type' => 'post',
         'posts_per_page' => $limitOverride ? $limitOverride : get_field("limit", $list->ID),
         // 'posts_per_page' => 100,
         'post__not_in' => $post_not_in,
@@ -142,6 +149,10 @@ class AgreableListService {
         )
       );
 
+      if ($post_type) {
+        $query_args['post_type'] = $post_type;
+      }
+
       $the_query = new WP_Query( $query_args );
       // Merge each lists resulting post IDs into
       // $post_not_in to avoid dupes.
@@ -176,26 +187,37 @@ class AgreableListService {
     return $posts;
   }
 
-  public static function getPostsByAuthor($authorId, $limit = 100) {
-    $query_args = array(
-      'post_type' => 'post',
-      'author' => $authorId,
-      'posts_per_page' => $limit,
-      'no_found_rows' => 1,
-      'post_status' => 'publish',
-      'orderby' => 'date',
-      'order' => 'DESC',
-    );
+  public static function get_default_related_list() {
+    $slug = 'most-recent-current-content-type-and-category';
+    if (!$list = get_page_by_path($slug, OBJECT, 'list')) {
+      $list_data = array(
+        'post_title'    => 'Most recent (system default)',
+        'post_name'    => $slug,
+        'post_content'  => '',
+        'post_status'   => 'publish',
+        'post_author'   => 1,
+        'post_type'     => 'list'
+      );
+      $id = wp_insert_post($list_data);
+      update_post_meta($id, 'limit', 1000);
+      update_post_meta($id, '_limit', 'list_limit');
 
-    $the_query = new WP_Query( $query_args );
-    if ($the_query && isset($the_query->posts)) {
-      return $the_query->posts;
+      update_post_meta($id, 'categories_configuration', 'current-category-and-children');
+      update_post_meta($id, '_categories_configuration', 'list_categories_configuration');
+
+      update_post_meta($id, 'post_type_configuration', 'current');
+      update_post_meta($id, '_post_type_configuration', 'list_post_type_configuration');
+
+      update_post_meta($id, 'order', 'newest');
+      update_post_meta($id, '_order', 'list_order');
+      $list = new TimberPost($id);
+    } else {
+      $list = new TimberPost($list);
     }
-
-    return [];
+    return $list;
   }
 
-  public static function getCurrentSectionFromUrl() {
+  public static function get_current_category_from_url() {
     $path = substr($_SERVER['REQUEST_URI'], 1);
     if (strpos($path, '?') !== false) {
       $path = substr($path, 0, strpos($path, '?'));
