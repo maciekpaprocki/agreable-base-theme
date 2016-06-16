@@ -6,7 +6,11 @@ class AgreableCategoryService {
    */
   public static function get_post_category_hierarchy($post) {
 
-    $post_categories = \wp_get_post_categories($post->ID);
+    if (isset($post->taxonomy) && $post->taxonomy === 'category') {
+      $post_categories = [$post->ID];
+    } else {
+      $post_categories = \wp_get_post_categories($post->ID);
+    }
 
     // If just the one category, but it has a parent, add it to the array
     if(count($post_categories) === 1) {
