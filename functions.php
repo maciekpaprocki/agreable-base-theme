@@ -65,6 +65,13 @@ class AgreableBase extends TimberSite {
     // Set posts inthe post preview plugin to never expire
     add_filter('ppp_nonce_life', array($this, 'custom_post_preview_lifespan'));
 
+    // If original-url is passed, override the canonical UR
+    // Allows embedding e.g. Via Catfish CMS Full Page Embed
+    if (isset($_GET['original-url'])) {
+      remove_action('wp_head', 'rel_canonical');
+      add_action('wp_head', array($this, 'canonical_url_override'));
+    }
+
     parent::__construct();
 
     do_action('agreable_base_theme_init');
@@ -89,6 +96,10 @@ class AgreableBase extends TimberSite {
 
       return $acf_definition;
     }
+  }
+
+  function canonical_url_override() {
+    echo "<link rel='canonical' href='{$_GET['original-url']}' />" . PHP_EOL;
   }
 
   function custom_post_preview_lifespan() {
