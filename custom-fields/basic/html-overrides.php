@@ -16,7 +16,8 @@ $html_overrides_acf = array (
       'key' => $key . '_html',
       'label' => 'Custom HTML',
       'name' => 'html',
-      'type' => 'textarea',
+      'type' => 'acf_code_editor',
+      'placeholder' => 'Enter overrides',
       'instructions' => 'Add HTML/CSS/JS',
       'conditional_logic' => array (
         array (
