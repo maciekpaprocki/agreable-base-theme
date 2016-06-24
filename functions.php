@@ -67,7 +67,7 @@ class AgreableBase extends TimberSite {
 
     // If original-url is passed, override the canonical UR
     // Allows embedding e.g. Via Catfish CMS Full Page Embed
-    if (isset($_GET['original-url'])) {
+    if (isset($_GET['original-url']) && getenv('CANONICAL_DOMAIN')) {
       remove_action('wp_head', 'rel_canonical');
       add_action('wp_head', array($this, 'canonical_url_override'));
     }
@@ -99,7 +99,12 @@ class AgreableBase extends TimberSite {
   }
 
   function canonical_url_override() {
-    echo "<link rel='canonical' href='{$_GET['original-url']}' />" . PHP_EOL;
+    global $post;
+    // var_dump(str_replace(getenv('WP_HOME'), 'http://' . getenv('CANONICAL_DOMAIN'), get_permalink($post)));
+    // exit;
+    $canonical_override = str_replace(getenv('WP_HOME'), 'http://' . getenv('CANONICAL_DOMAIN'), get_permalink($post));
+
+    echo "<link rel='canonical' href='{$canonical_override}' />" . PHP_EOL;
   }
 
   function custom_post_preview_lifespan() {
