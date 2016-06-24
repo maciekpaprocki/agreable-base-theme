@@ -100,8 +100,6 @@ class AgreableBase extends TimberSite {
 
   function canonical_url_override() {
     global $post;
-    // var_dump(str_replace(getenv('WP_HOME'), 'http://' . getenv('CANONICAL_DOMAIN'), get_permalink($post)));
-    // exit;
     $canonical_override = str_replace(getenv('WP_HOME'), 'http://' . getenv('CANONICAL_DOMAIN'), get_permalink($post));
 
     echo "<link rel='canonical' href='{$canonical_override}' />" . PHP_EOL;
