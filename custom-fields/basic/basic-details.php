@@ -63,6 +63,7 @@ $article_basic_acf = array (
       'type' => 'gallery',
       'instructions' => 'One or more images that will be at the top of the article. Multiple images will automatically create a carousel. The first image will be used as the tease image in grids of articles.',
       'required' => 1,
+      'preview_size' => 'landscape'
     ),
     array (
       'key' => $key . '_override_start_time',
