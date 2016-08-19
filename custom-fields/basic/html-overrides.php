@@ -63,5 +63,5 @@ $html_overrides_acf = array (
   'instruction_placement' => 'label',
 );
 
-$html_overrides_acf = apply_filters('agreable_base_theme_html_overrides_acf', $html_overrides_acf);
+$html_overrides_acf = apply_filters('agreable_base_theme_html_overrides_acf', $html_overrides_acf, $key);
 register_field_group($html_overrides_acf);

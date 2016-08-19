@@ -87,5 +87,5 @@ $related_acf = array (
   'instruction_placement' => 'label',
 );
 
-$related_acf = apply_filters('agreable_base_theme_related_acf', $related_acf);
+$related_acf = apply_filters('agreable_base_theme_related_acf', $related_acf, $key);
 register_field_group($related_acf);

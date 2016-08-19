@@ -103,5 +103,5 @@ $header_acf = array (
   'instruction_placement' => 'label',
 );
 
-$header_acf = apply_filters('agreable_base_theme_header_acf', $header_acf);
+$header_acf = apply_filters('agreable_base_theme_header_acf', $header_acf, $key);
 register_field_group($header_acf);

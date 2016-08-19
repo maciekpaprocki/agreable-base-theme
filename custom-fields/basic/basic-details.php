@@ -113,5 +113,5 @@ $article_basic_acf = array (
   ),
 );
 
-$article_basic_acf = apply_filters('agreable_base_theme_article_basic_acf', $article_basic_acf);
+$article_basic_acf = apply_filters('agreable_base_theme_article_basic_acf', $article_basic_acf, $key);
 register_field_group($article_basic_acf);
