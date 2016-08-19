@@ -64,5 +64,5 @@ $social_overrides_acf = array (
   'instruction_placement' => 'label',
 );
 
-$social_overrides_acf = apply_filters('agreable_base_theme_social_media_acf', $social_overrides_acf);
+$social_overrides_acf = apply_filters('agreable_base_theme_social_media_acf', $social_overrides_acf, $key);
 register_field_group($social_overrides_acf);
