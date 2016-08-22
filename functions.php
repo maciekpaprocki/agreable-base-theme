@@ -65,6 +65,9 @@ class AgreableBase extends TimberSite {
     // Set posts inthe post preview plugin to never expire
     add_filter('ppp_nonce_life', array($this, 'custom_post_preview_lifespan'));
 
+    // Remove wp-embed.js from document
+    add_filter('wp_footer', array($this, 'deregister_wp_scripts'));
+
     // If original-url is passed, override the canonical UR
     // Allows embedding e.g. Via Catfish CMS Full Page Embed
     if (isset($_GET['original-url']) && getenv('CANONICAL_DOMAIN')) {
@@ -260,6 +263,10 @@ class AgreableBase extends TimberSite {
   function register_post_types() {
     include_once __DIR__ . '/custom-post-types/list.php';
     include_once __DIR__ . '/custom-post-types/tile.php';
+  }
+
+  function deregister_wp_scripts() {
+    wp_deregister_script('wp-embed');
   }
 
   function add_to_context($context) {
