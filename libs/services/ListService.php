@@ -4,7 +4,6 @@ class AgreableListService {
 
   public static function get_posts($lists, $manualPosts = null, $limitOverride = null, $offset = 0, $caresAboutDupes = true, $excludePosts = null) {
     global $post;
-
     $context = Timber::get_context();
 
     if (!is_array($lists)) {
@@ -64,6 +63,8 @@ class AgreableListService {
         continue;
       }
 
+      $list = new TimberPost($list);
+
       $list_id = is_numeric($list) ? $list : $list->ID;
 
       $categories = [];
@@ -78,6 +79,8 @@ class AgreableListService {
         if ($post && isset($post->post_type)) {
           $post_type = $post->post_type;
         }
+      } else if ($list->get_field('post_type_configuration') === 'manual') {
+        $post_type = $list->get_field('post_types');
       }
 
       $query_args = array(
@@ -99,61 +102,62 @@ class AgreableListService {
         // isn't a promo or similar). If it does have both then we
         // check that time() is within these bounds. Assumes that
         // meta_value is stored as unix timestamp (seconds).
-        'meta_query'  => array(
-          'relation'    => 'AND',
-          array(
-            'relation'    => 'OR',
-            array(
-              'relation'    => 'AND',
-              array(
-                'key'   => 'override_end_time',
-                'compare' => 'NOT EXISTS',
-                'value'   => '1'
-              ),
-              array(
-                'key'   => 'override_start_time',
-                'compare' => 'NOT EXISTS',
-                'value'   => '1'
-              ),
-            ),
-            array(
-              'relation'    => 'AND',
-              array(
-                'relation'    => 'OR',
-                array(
-                  'key'   => 'override_end_time',
-                  'compare' => '>=',
-                  'value'   => time()
-                ),
-                array(
-                  'key'   => 'override_end_time',
-                  'compare' => '==',
-                  'value'   => '',
-                ),
-              ),
-              array(
-                'relation'    => 'OR',
-                array(
-                  'key'   => 'override_start_time',
-                  'compare' => '<=',
-                  'value'   => time()
-                ),
-                array(
-                  'key'   => 'override_start_time',
-                  'compare' => '==',
-                  'value'   => '',
-                )
-              ),
-            ),
-          ),
-        )
-      );
+        // 'meta_query'  => array(
+        //   'relation'    => 'AND',
+        //   array(
+        //     'relation'    => 'OR',
+        //     array(
+        //       'relation'    => 'AND',
+        //       array(
+        //         'key'   => 'override_end_time',
+        //         'compare' => 'NOT EXISTS',
+        //         'value'   => '1'
+        //       ),
+        //       array(
+        //         'key'   => 'override_start_time',
+        //         'compare' => 'NOT EXISTS',
+        //         'value'   => '1'
+        //       ),
+        //     ),
+        //     array(
+        //       'relation'    => 'AND',
+        //       array(
+        //         'relation'    => 'OR',
+        //         array(
+        //           'key'   => 'override_end_time',
+        //           'compare' => '>=',
+        //           'value'   => time()
+        //         ),
+        //         array(
+        //           'key'   => 'override_end_time',
+        //           'compare' => '==',
+        //           'value'   => '',
+        //         ),
+        //       ),
+        //       array(
+        //         'relation'    => 'OR',
+        //         array(
+        //           'key'   => 'override_start_time',
+        //           'compare' => '<=',
+        //           'value'   => time()
+        //         ),
+        //         array(
+        //           'key'   => 'override_start_time',
+        //           'compare' => '==',
+        //           'value'   => '',
+        //         )
+        //       ),
+        //     ),
+        //   ),
+        // )
+        );
 
       if ($post_type) {
         $query_args['post_type'] = $post_type;
       }
 
       $the_query = new WP_Query( $query_args );
+
       // Merge each lists resulting post IDs into
       // $post_not_in to avoid dupes.
       $post_not_in = array_merge($post_not_in, array_map(
