@@ -1,87 +1,93 @@
 <?php
-class AgreableListService {
-  protected static $dupes = array();
+class AgreableListService
+{
+    protected static $dupes = array();
 
-  public static function get_posts($lists, $manualPosts = null, $limitOverride = null, $offset = 0, $caresAboutDupes = true, $excludePosts = null) {
-    global $post;
+    public static function get_posts($lists, $manualPosts = null, $limitOverride = null, $offset = 0, $caresAboutDupes = true, $excludePosts = null)
+    {
+        global $post;
 
-    $context = Timber::get_context();
+        $context = Timber::get_context();
 
-    if (!is_array($lists)) {
-      $lists = array($lists);
-    }
+        if (!is_array($lists)) {
+            $lists = array($lists);
+        }
 
 
     // Add manual which are live
     $posts = array();
-    if ($manualPosts) {
-      if (!is_array($manualPosts)) {
-        $manualPosts = $manualPosts->get_posts();
-      }
-      foreach($manualPosts as $manualPost) {
-        if (get_post_status($manualPost) === 'publish') {
-          // if (true) {
-          if (is_numeric($manualPost) || get_class($manualPost) === 'WP_Post') {
-            $timberPost = new TimberPost($manualPost);
-            if (!$timberPost) {
-              throw new Exception('Expected Timber to initialise a post');
+        if ($manualPosts) {
+            if (!is_array($manualPosts)) {
+                $manualPosts = $manualPosts->get_posts();
             }
+            foreach ($manualPosts as $manualPost) {
+                if (get_post_status($manualPost) === 'publish') {
+                    // if (true) {
+          if (is_numeric($manualPost) || get_class($manualPost) === 'WP_Post') {
+              $timberPost = new TimberPost($manualPost);
+              if (!$timberPost) {
+                  throw new Exception('Expected Timber to initialise a post');
+              }
           } else {
-            $timberPost = $manualPost;
+              $timberPost = $manualPost;
           }
-          $posts[] = $timberPost;
-          if ($caresAboutDupes) {
-            self::$dupes[] = $timberPost->id;
-          }
+                    $posts[] = $timberPost;
+                    if ($caresAboutDupes) {
+                        self::$dupes[] = $timberPost->id;
+                    }
+                }
+            }
         }
-      }
-    }
 
-    $limitOverride = $limitOverride - count($posts);
+        $limitOverride = $limitOverride - count($posts);
 
     // If manual lists already has enough content do not fetch from query
     if ($limitOverride <= 0) {
-      return $posts;
+        return $posts;
     }
 
-    $post_not_in = $caresAboutDupes ? self::$dupes : array();
+        $post_not_in = $caresAboutDupes ? self::$dupes : array();
 
-    if($excludePosts){
-      foreach($excludePosts as $excludePost) {
-        if (is_numeric($excludePost)) {
-          $post_not_in[] = $excludePost;
-        } elseif (get_class($excludePost) === 'WP_Post' || get_class($excludePost) === 'TimberPost'){
-          $post_not_in[] = $excludePost->ID;
+        if ($excludePosts) {
+            foreach ($excludePosts as $excludePost) {
+                if (is_numeric($excludePost)) {
+                    $post_not_in[] = $excludePost;
+                } elseif (get_class($excludePost) === 'WP_Post' || get_class($excludePost) === 'TimberPost') {
+                    $post_not_in[] = $excludePost->ID;
+                }
+            }
         }
-      }
-    }
 
-    $date = date('Ymd H:i:s');
-    $postsFromQuery = [];
+        $date = date('Ymd H:i:s');
+        $postsFromQuery = [];
 
-    foreach($lists as $list) {
-      if (!$list) {
-        continue;
-      }
+        foreach ($lists as $list) {
+            if (!$list) {
+                continue;
+            }
 
-      $list_id = is_numeric($list) ? $list : $list->ID;
+            $list_id = is_numeric($list) ? $list : $list->ID;
 
-      $categories = [];
-      if ($list->get_field('categories_configuration') === 'current-category-and-children') {
-        $categories[] = self::get_current_category_from_url();
-      } else {
-        $categories = get_field("categories", $list_id) ?: [];
-      }
+            if (!method_exists($list, 'get_field')) {
+                $list = new TimberPost($list->ID);
+            }
 
-      $post_type = null;
-      if ($list->get_field('post_type_configuration') === 'current') {
-        if ($post && isset($post->post_type)) {
-          $post_type = $post->post_type;
-        }
-      }
+            $categories = [];
+            if ($list->get_field('categories_configuration') === 'current-category-and-children') {
+                $categories[] = self::get_current_category_from_url();
+            } else {
+                $categories = get_field("categories", $list_id) ?: [];
+            }
 
-      $query_args = array(
-        'cat' => implode(',' , $categories),
+            $post_type = null;
+            if ($list->get_field('post_type_configuration') === 'current') {
+                if ($post && isset($post->post_type)) {
+                    $post_type = $post->post_type;
+                }
+            }
+
+            $query_args = array(
+        'cat' => implode(',', $categories),
         'posts_per_page' => $limitOverride ? $limitOverride : get_field("limit", $list->ID),
         // 'posts_per_page' => 100,
         'post__not_in' => $post_not_in,
@@ -149,48 +155,50 @@ class AgreableListService {
         )
       );
 
-      if ($post_type) {
-        $query_args['post_type'] = $post_type;
-      }
+            if ($post_type) {
+                $query_args['post_type'] = $post_type;
+            }
 
-      $the_query = new WP_Query( $query_args );
+            $the_query = new WP_Query($query_args);
       // Merge each lists resulting post IDs into
       // $post_not_in to avoid dupes.
       $post_not_in = array_merge($post_not_in, array_map(
-        function($p){ return $p->ID; },
+        function ($p) {
+            return $p->ID;
+        },
         $the_query->posts
       ));
-      $postsFromQuery = array_merge($postsFromQuery, $the_query->posts);
+            $postsFromQuery = array_merge($postsFromQuery, $the_query->posts);
       // Reduce the limit by amout of posts received.
       $limitOverride -= count($the_query->posts);
-      if($limitOverride <= 0){
-        break;
-      }
+            if ($limitOverride <= 0) {
+                break;
+            }
+        }
 
+        foreach ($postsFromQuery as $post) {
+            if (get_class($post) === 'WP_Post') {
+                $timberPost = new TimberPost($post);
+            } else {
+                $timberPost = new $post;
+            }
+            $posts[] = $timberPost;
+            if ($caresAboutDupes) {
+                self::$dupes[] = $post->ID;
+            }
+            if (!$timberPost) {
+                var_dump($timberPost);
+                exit;
+            }
+        }
+        return $posts;
     }
 
-    foreach ($postsFromQuery as $post) {
-      if (get_class($post) === 'WP_Post') {
-        $timberPost = new TimberPost($post);
-      } else {
-        $timberPost = new $post;
-      }
-      $posts[] = $timberPost;
-      if ($caresAboutDupes) {
-        self::$dupes[] = $post->ID;
-      }
-      if (!$timberPost) {
-        var_dump($timberPost);
-        exit;
-      }
-    }
-    return $posts;
-  }
-
-  public static function get_default_related_list() {
-    $slug = 'most-recent-current-content-type-and-category';
-    if (!$list = get_page_by_path($slug, OBJECT, 'list')) {
-      $list_data = array(
+    public static function get_default_related_list()
+    {
+        $slug = 'most-recent-current-content-type-and-category';
+        if (!$list = get_page_by_path($slug, OBJECT, 'list')) {
+            $list_data = array(
         'post_title'    => 'Most recent (system default)',
         'post_name'    => $slug,
         'post_content'  => '',
@@ -198,42 +206,43 @@ class AgreableListService {
         'post_author'   => 1,
         'post_type'     => 'list'
       );
-      $id = wp_insert_post($list_data);
-      update_post_meta($id, 'limit', 1000);
-      update_post_meta($id, '_limit', 'list_limit');
+            $id = wp_insert_post($list_data);
+            update_post_meta($id, 'limit', 1000);
+            update_post_meta($id, '_limit', 'list_limit');
 
-      update_post_meta($id, 'categories_configuration', 'current-category-and-children');
-      update_post_meta($id, '_categories_configuration', 'list_categories_configuration');
+            update_post_meta($id, 'categories_configuration', 'current-category-and-children');
+            update_post_meta($id, '_categories_configuration', 'list_categories_configuration');
 
-      update_post_meta($id, 'post_type_configuration', 'current');
-      update_post_meta($id, '_post_type_configuration', 'list_post_type_configuration');
+            update_post_meta($id, 'post_type_configuration', 'current');
+            update_post_meta($id, '_post_type_configuration', 'list_post_type_configuration');
 
-      update_post_meta($id, 'order', 'newest');
-      update_post_meta($id, '_order', 'list_order');
-      $list = new TimberPost($id);
-    } else {
-      $list = new TimberPost($list);
-    }
-    return $list;
-  }
-
-  public static function get_current_category_from_url() {
-    $path = substr($_SERVER['REQUEST_URI'], 1);
-    if (strpos($path, '?') !== false) {
-      $path = substr($path, 0, strpos($path, '?'));
-    }
-    $urlPieces = explode('/', $path);
-    if (count($urlPieces) === 1) {
-      $categorySlug = $urlPieces[0];
-    } else {
-      $categorySlug = $urlPieces[count($urlPieces) -2];
+            update_post_meta($id, 'order', 'newest');
+            update_post_meta($id, '_order', 'list_order');
+            $list = new TimberPost($id);
+        } else {
+            $list = new TimberPost($list);
+        }
+        return $list;
     }
 
-    $category = get_category_by_slug($categorySlug);
-    if ($category && isset($category->term_id)) {
-      return $category->term_id;
-    }
+    public static function get_current_category_from_url()
+    {
+        $path = substr($_SERVER['REQUEST_URI'], 1);
+        if (strpos($path, '?') !== false) {
+            $path = substr($path, 0, strpos($path, '?'));
+        }
+        $urlPieces = explode('/', $path);
+        if (count($urlPieces) === 1) {
+            $categorySlug = $urlPieces[0];
+        } else {
+            $categorySlug = $urlPieces[count($urlPieces) -2];
+        }
 
-    return null;
-  }
+        $category = get_category_by_slug($categorySlug);
+        if ($category && isset($category->term_id)) {
+            return $category->term_id;
+        }
+
+        return null;
+    }
 }
