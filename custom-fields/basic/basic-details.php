@@ -30,7 +30,7 @@ $article_basic_acf = array (
       'name' => 'category',
       'type' => 'taxonomy',
       'instructions' => 'Select a category for this content to live in.',
-      'required' => 1,
+      'required' => 0,
       'taxonomy' => 'category',
       'field_type' => 'select',
       'allow_null' => 0,
@@ -39,6 +39,11 @@ $article_basic_acf = array (
       'load_terms' => 1,
       'return_format' => 'object',
       'multiple' => 0,
+      'wrapper' => array (
+        'width' => '50%',
+        'class' => '',
+        'id' => '',
+      ),
     ),
     array (
       'key' => $key . '_tags',
@@ -55,6 +60,11 @@ $article_basic_acf = array (
       'load_terms' => 1,
       'return_format' => 'object',
       'multiple' => 0,
+      'wrapper' => array (
+        'width' => '50%',
+        'class' => '',
+        'id' => '',
+      ),
     ),
     array (
       'key' => $key . '_hero_images',
