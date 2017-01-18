@@ -254,10 +254,11 @@ class AgreableBase extends TimberSite {
     include_once('custom-fields/list/list.php');
     include_once('custom-fields/tile/tile.php');
     include_once("custom-fields/options/options-page.php");
-    $user = wp_get_current_user();
-    $user_roles = $user->roles;
-    if (in_array('administrator', $user_roles)) {
-      acf_add_options_page();
+    if ($user = wp_get_current_user()) {
+      $user_roles = $user->roles;
+      if (in_array('administrator', $user_roles)) {
+        acf_add_options_page();
+      }
     }
   }
 
