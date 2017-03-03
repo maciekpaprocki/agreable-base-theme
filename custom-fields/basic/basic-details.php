@@ -75,24 +75,6 @@ $article_basic_acf = array (
       'required' => 1,
       'preview_size' => 'landscape'
     ),
-    array (
-      'key' => $key . '_override_start_time',
-      'label' => 'Override Start Date & Time',
-      'name' => 'override_start_time',
-      'type' => 'text',
-      'wrapper' => array (
-        'class' => 'acf-hide',
-      ),
-    ),
-    array (
-      'key' => $key . '_override_end_time',
-      'label' => 'Override End Date & Time',
-      'name' => 'override_end_time',
-      'type' => 'text',
-      'wrapper' => array (
-        'class' => 'acf-hide',
-      ),
-    ),
   ),
   'location' => array (
     array (
