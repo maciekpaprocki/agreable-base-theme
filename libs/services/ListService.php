@@ -14,8 +14,8 @@ class AgreableListService
         }
 
 
-    // Add manual which are live
-    $posts = array();
+        // Add manual which are live
+        $posts = array();
         if ($manualPosts) {
             if (!is_array($manualPosts)) {
                 $manualPosts = $manualPosts->get_posts();
@@ -41,10 +41,10 @@ class AgreableListService
 
         $limitOverride = $limitOverride - count($posts);
 
-    // If manual lists already has enough content do not fetch from query
-    if ($limitOverride <= 0) {
-        return $posts;
-    }
+        // If manual lists already has enough content do not fetch from query
+        if ($limitOverride <= 0) {
+            return $posts;
+        }
 
         $post_not_in = $caresAboutDupes ? self::$dupes : array();
 
@@ -79,11 +79,14 @@ class AgreableListService
                 $categories = get_field("categories", $list_id) ?: [];
             }
 
+
             $post_type = null;
-            if ($list->get_field('post_type_configuration') === 'current') {
+            if ($list->post_type_configuration === 'current') {
                 if ($post && isset($post->post_type)) {
-                    $post_type = $post->post_type;
+                    $post_types = [$post->post_type];
                 }
+            } else if ($list->post_type_configuration === 'manual') {
+                $post_types = $list->post_types;
             }
 
             $query_args = array(
@@ -101,8 +104,8 @@ class AgreableListService
         'order' => 'DESC',
       );
 
-            if ($post_type) {
-                $query_args['post_type'] = $post_type;
+            if ($post_types) {
+                $query_args['post_type'] = $post_types;
             }
 
             $the_query = new WP_Query($query_args);
