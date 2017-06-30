@@ -47,22 +47,13 @@ class WidgetLoader {
     $acf_files = array_merge($acf_files, self::traversePlugins());
 
     // Order files aphabetically.
-    usort($acf_files, function($a, $b){
-
-      include $a;
-      $compareA = strtolower($widget_config['label']);
-
-      include $b;
-      $compareB = strtolower($widget_config['label']);
-
-      return strcmp($compareA, $compareB);
-    });
+    ksort($acf_files);
 
     foreach($acf_files as $file) {
       include $file;
 
       // If contextType is null, or if contentType matches, add widget to list
-      if (!$contextType ||
+      if (!$contextType || is_array($widget_config["content-types"]) &&
             (in_array($contextType, $widget_config["content-types"]) &&
               (count($contentSizes) === 0 || in_array($contentSizes, $widget_config["content-sizes"]))
             )
@@ -89,8 +80,10 @@ class WidgetLoader {
       $fullpath = $path . '/' . $file;
       if(is_dir($fullpath))
         $return_array = array_merge($return_array, self::traverseHierarchy($fullpath));
-      elseif(substr($file, -7) == "acf.php")
-        $return_array[] = $fullpath;
+      elseif(substr($file, -7) == "acf.php") {
+        include $fullpath;
+        $return_array[$widget_config['label']] = $fullpath;
+      }
     }
     return $return_array;
   }
@@ -106,7 +99,8 @@ class WidgetLoader {
       $fullpath = plugin_dir_path(WP_CONTENT_DIR.'/plugins/'.$file).'widget-loader-acf.php';
       // If plugin directory contains acf.php file and is agreable prefixed...
       if(substr($file, 0, 8) === "agreable" && file_exists($fullpath)){
-        $return_array[] = $fullpath;
+        include $fullpath;        
+        $return_array[$widget_config['label']] = $fullpath;
       }
     }
     return $return_array;
